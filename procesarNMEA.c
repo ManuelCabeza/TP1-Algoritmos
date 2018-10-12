@@ -31,7 +31,7 @@
 #define CARACTER_SEPARACION_COMANDO ','
 #define CARACTER_SUMA_VER '*'
 
-typedef enum {PR_FIN, PR_OK, PR_ERR} procesar_t;
+typedef enum {PR_OK, PR_ERR, PR_FIN} procesar_t;
 
 typedef struct {
 	float horario;
@@ -46,7 +46,10 @@ typedef struct {
 
 unsigned char nmea_verificar_suma(const char * sentencia);
 
-//La funcion devuelve...
+/*La funcion devuelve:
+ * PR_FIN si no hay nada mas que leer en el archivo
+ * PR_ERR si el formato de una linea de datos no esta bien
+ * PR_OK si el dato de una linea fue procesado correctamente. */
 procesar_t procesarNMEA(gga * ggaptr) {
 	
 	char c; //Variable auxiliar para no usar tolower mas de 2 veces.
@@ -84,9 +87,9 @@ procesar_t procesarNMEA(gga * ggaptr) {
 		return PR_ERR;
 	}
 	
-	ggaptr->latitud = ((int)latitud / 100) + ((latitud - 100 * ((int)latitud / 100)) / 60 ) * (c == CARACTER_SUR ? -1 : 1);
+	//Asigna valor de latitud a partir de formato ddmm.mmm
+	ggaptr->latitud = (((int)latitud / 100) + ((latitud - 100 * ((int)latitud / 100)) / 60 )) * (c == CARACTER_SUR ? -1 : 1);
 	
-	printf("%f\n", ((latitud - 100 * ((int)latitud / 100)) / 60 ));
 	//Verifica que el cuarto argumento sea un numero(float) positivo
 	if ((longitud = strtof(++strptr, &strptr)) < 0 || ((* (strptr++)) != CARACTER_SEPARACION_COMANDO)) 
 		return PR_ERR;
@@ -94,8 +97,9 @@ procesar_t procesarNMEA(gga * ggaptr) {
 	c = tolower( * (strptr++));
 	if ((c != CARACTER_ESTE) && (c != CARACTER_OESTE)) //Verifica que el quinto argumento sea uno de dos chars
 		return PR_ERR;
-		
-	ggaptr->longitud = ((int)longitud / 1000) + ((longitud - 1000 * ((int)longitud / 1000)) / 60 ) * (c == CARACTER_OESTE ? -1 : 1); 
+	
+	//Asigna valor de longitud a partir de formato dddmm.mmm	
+	ggaptr->longitud = (((int)longitud / 100) + ((longitud - 100 * ((int)longitud / 100)) / 60 )) * (c == CARACTER_SUR ? -1 : 1); 
 	
 	//Verifica que el sexto argumento sea un numero entero entre 0 y 8
 	if ((ggaptr->calidad_fix = strtol(++strptr, &strptr, 10)) < MIN_VALOR_FIX || ((* (strptr++)) != CARACTER_SEPARACION_COMANDO) || (ggaptr->calidad_fix) > MAX_VALOR_FIX) 
