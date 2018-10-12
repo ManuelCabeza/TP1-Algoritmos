@@ -85,6 +85,7 @@ procesar_t procesarNMEA(gga * ggaptr) {
 	}
 	
 	ggaptr->latitud = ((int)latitud / 100) + ((latitud - 100 * ((int)latitud / 100)) / 60 ) * (c == CARACTER_SUR ? -1 : 1);
+	
 	printf("%f\n", ((latitud - 100 * ((int)latitud / 100)) / 60 ));
 	//Verifica que el cuarto argumento sea un numero(float) positivo
 	if ((longitud = strtof(++strptr, &strptr)) < 0 || ((* (strptr++)) != CARACTER_SEPARACION_COMANDO)) 
