@@ -53,94 +53,62 @@ procesar_t procesarNMEA() {
 	
 	strptr = string;
 	if (* strptr != CARACTER_INICIO_COMANDO) {
-		puts("Caracter incorrecto");
 		return PR_ERR;
 	}
 	
 	if ((strptr = strchr(string, CARACTER_SEPARACION_COMANDO)) != NULL) {
 		strptr++;
 		if ((horario = strtof(strptr, &strptr)) < 0 || ((* (strptr++)) != CARACTER_SEPARACION_COMANDO)) {
-			puts("Tiene horario invalido");
 			return PR_ERR;
 		}
 	}
-	
-	printf("|%c %c %c|\n", *(strptr - 1), *strptr, *(strptr + 1));
-	
+		
 	if ((longitud = strtof(strptr, &strptr)) < 0 || ((* (strptr++)) != CARACTER_SEPARACION_COMANDO)) {
-			puts("Tiene longitud invalida");
 			return PR_ERR;
 	}
-	
-	printf("|%c %c %c|\n", *(strptr - 1), *strptr, *(strptr + 1));
 	
 	c = tolower( * (strptr++));
 	if ((c != CARACTER_NORTE) && (c != CARACTER_SUR)){
-		puts("Tiene norte sur mal");
 		return PR_ERR;
 	}
 	
-	printf("|%c %c %c|\n", *(strptr - 1), *strptr, *(strptr + 1));
 	
 	if ((latitud = strtof(++strptr, &strptr)) < 0 || ((* (strptr++)) != CARACTER_SEPARACION_COMANDO)) {
-			puts("Tiene latitud invalida");
 			return PR_ERR;
 	}
 	
-	printf("|%c %c %c|\n", *(strptr - 1), *strptr, *(strptr + 1));
 	
 	c = tolower( * (strptr++));
 	if ((c != CARACTER_ESTE) && (c != CARACTER_OESTE)){
-		puts("Tiene oeste este mal");
 		return PR_ERR;
 	}
 	strptr++;
-	printf("|%c %c %c|\n", *(strptr - 1), *strptr, *(strptr + 1));
-
+	
 	if ((calfix = strtof(++strptr, &strptr)) < 0 || ((* (strptr++)) != CARACTER_SEPARACION_COMANDO)) {
-			puts("Tiene calfix invalida");
 			return PR_ERR;
 	}	
-	
-	printf("|%c %c %c|\n", *(strptr - 1), *strptr, *(strptr + 1));
-	
+		
 	if ((cantsat = strtof(++strptr, &strptr)) < 0 || ((* (strptr++)) != CARACTER_SEPARACION_COMANDO)) {
-			puts("Tiene cansat invalida");
 			return PR_ERR;
 	}
-	
-	printf("|%c %c %c|\n", *(strptr - 1), *strptr, *(strptr + 1));
-	
+		
 	if ((HDoP = strtof(++strptr, &strptr)) < 0 || ((* (strptr++)) != CARACTER_SEPARACION_COMANDO)) {
-			puts("Tiene HDoP invalida");
 			return PR_ERR;
 	}
-	
-	printf("|%c %c %c|\n", *(strptr - 1), *strptr, *(strptr + 1));
-	
+		
 	if ((elvacion = strtof(++strptr, &strptr)) < 0 || ((* (strptr++)) != CARACTER_SEPARACION_COMANDO)) {
-			puts("Tiene elevacion invalida");
 			return PR_ERR;
 	}
-	
-	printf("|%c %c %c|\n", *(strptr - 1), *strptr, *(strptr + 1));
-	
+		
 	if (tolower(* strptr++) != CARACTER_UNIDAD){
-		puts("Tiene unidad 1 mal");
 		return PR_ERR;
 	}
-	
-	printf("|%c %c %c|\n", *(strptr - 1), *strptr, *(strptr + 1));
-	
+		
 	if ((sepgeo = strtof(++strptr, &strptr)) < 0 || ((* (strptr++)) != CARACTER_SEPARACION_COMANDO)) {
-			puts("Tiene sepgeo invalida");
 			return PR_ERR;
 	}
 
-	printf("|%c %c %c|\n", *(strptr - 1), *strptr, *(strptr + 1));
-
 	if (tolower(* strptr) != CARACTER_UNIDAD){
-		puts("Tiene unidad 2 mal");
 		return PR_ERR;
 	}
 	
