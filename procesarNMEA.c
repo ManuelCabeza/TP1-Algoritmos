@@ -33,6 +33,8 @@
 
 typedef enum {PR_FIN, PR_OK, PR_ERR} procesar_t;
 
+
+
 unsigned char nmea_verificar_suma(const char * sentencia);
 
 procesar_t procesarNMEA() {
@@ -40,10 +42,9 @@ procesar_t procesarNMEA() {
 	char c; //Variable auxiliar para no usar tolower mas de 2 veces.
 	char string[MAX_LONG_SEN]; // Max longitud de un string posible
 	char * strptr;
-	unsigned char sumaux;
 	
 	int calfix, cantsat;
-	
+	long suma_verificacion;
 	float horario, HDoP, elvacion, sepgeo;
 	float longitud;
 	float latitud;
@@ -114,10 +115,12 @@ procesar_t procesarNMEA() {
 	
 	if ((strptr = strrchr(string, CARACTER_INICIO_SUMA_VER)) == NULL)
 		return PR_ERR;
-		
-	strptr = string + 1;
-	sumaux = nmea_verificar_suma( strptr);
-	printf("%u %c %i \n", sumaux, sumaux, sumaux);
+	
+	suma_verificacion = strtol( ++strptr, NULL, 16);
+	
+	strptr = string + 1;	
+	if (nmea_verificar_suma( strptr) != suma_verificacion)
+		return PR_ERR;
 	
 	puts("Esta bien");
 		
