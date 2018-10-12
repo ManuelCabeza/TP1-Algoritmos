@@ -28,17 +28,19 @@
 #define CARACTER_OESTE 'w'
 #define CARACTER_UNIDAD 'm'
 #define CARACTER_INICIO_COMANDO '$' 
-#define CARACTER_SEPARACION_COMANDO ',' 
+#define CARACTER_SEPARACION_COMANDO ','
+#define CARACTER_INICIO_SUMA_VER '*'
 
 typedef enum {PR_FIN, PR_OK, PR_ERR} procesar_t;
 
+unsigned char nmea_verificar_suma(const char * sentencia);
 
 procesar_t procesarNMEA() {
 	
 	char c; //Variable auxiliar para no usar tolower mas de 2 veces.
 	char string[MAX_LONG_SEN]; // Max longitud de un string posible
 	char * strptr;
-	
+	unsigned char sumaux;
 	
 	int calfix, cantsat;
 	
@@ -142,8 +144,24 @@ procesar_t procesarNMEA() {
 		return PR_ERR;
 	}
 	
+	if ((strptr = strrchr(string, CARACTER_INICIO_SUMA_VER)) == NULL)
+		return PR_ERR;
+		
+	strptr = string + 1;
+	sumaux = nmea_verificar_suma( strptr);
+	printf("%u %c %i \n", sumaux, sumaux, sumaux);
 	
 	puts("Esta bien");
 		
 	return PR_OK;
+}
+
+unsigned char nmea_verificar_suma(const char * sentencia) {
+	
+	unsigned char suma = 0;
+	
+	while ( * sentencia != '*' )
+		suma ^= *sentencia++;
+		
+	return suma;
 }
