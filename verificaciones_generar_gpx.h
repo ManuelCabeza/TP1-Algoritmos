@@ -1,1 +1,7 @@
-#include "verificaciones_generar_gpx.c"
+#ifndef VERIFICACIONES_GENERAR_GPX_H
+#define VERIFICACIONES_GENERAR_GPX_H
+
+
+
+
+#endif
