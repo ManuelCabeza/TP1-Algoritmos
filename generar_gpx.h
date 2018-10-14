@@ -6,7 +6,7 @@ typedef struct {
 } metadata;
 
 
-typedef enum { INICIAR, INICIAR_ENTER, FINAL, FINAL_ENTER} tipo_tag;
+typedef enum {INICIAR, INICIAR_ENTER, FINAL, FINAL_ENTER} tipo_tag;
 
 void generar_gpx(gga * ggaptr, metadata * metptr);
 
