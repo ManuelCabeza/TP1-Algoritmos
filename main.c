@@ -11,7 +11,9 @@ int main(int argc, char *argv[]) {
 	char nombre[100] = {0};
 	int fecha;
 	//Va en la gpx
-
+	
+	gga estructura;
+	metadata datosusuario;
 	status_t st;
 	st = procesar_argumentos(argc, argv, nombre, &fecha);
 	
@@ -29,8 +31,8 @@ int main(int argc, char *argv[]) {
 	printf("%s\n", nombre);
 	printf("%d\n", fecha);
 
-	
-	//llamar a funcion en procesarNMEA
+	generar_gpx(&estructura, &datosusuario);
+
 	return EXIT_SUCCESS;
 }
 //Verifica que los argumentos procesados sean correctos.
@@ -45,7 +47,7 @@ status_t procesar_argumentos(int argc, char *argv[], char *nombre, int *fecha) {
 								}; 
 
 	int i, j;
-	char *perr = NULL;
+	//char *perr = NULL;
 
 	if (nombre == NULL|| !argv|| !nombre|| !fecha)
 		return ST_ERROR_PUNTERO_NULO;
@@ -67,12 +69,12 @@ status_t procesar_argumentos(int argc, char *argv[], char *nombre, int *fecha) {
 					case ARG_NOMBRE:
 						//Guarda el nombre en la GPX
 						i++;
-						validar_argumento_nombre(argv[i], nombre);
+						//validar_argumento_nombre(argv[i], nombre);
 						//Tengo que verificar que todos esten bien CUIDADO
 						break;
 					case ARG_FECHA:
 						i++; 
-						validar_argumento_fecha(argv[i], fecha);
+						//validar_argumento_fecha(argv[i], fecha);
 						break;
 					case ARG_ANIO:
 						break;
