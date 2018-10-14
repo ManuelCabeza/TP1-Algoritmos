@@ -2,15 +2,13 @@
 #define MSJ_GPX_1 "? xml version = \" 1.0 \" encoding = \" UTF -8 \" ?"
 #define MSJ_GPX_2 "gpx version = \" 1.1 \" creator = \" 95.11 TP1 - Tracker \" xmlns = \" http: // www.topografix.com / GPX /1/1 \""
 
-
-
 #define CARACTER_TAG_INICIO '<'
 #define CARACTER_TAG_FINAL '>'
 #define CARACTER_TAG_FINALIZAR '/'
 #define CARACTER_INDENTACION '\t'
 
 #define INDENTACION_INICIAL 0
-#define INDENTACION_0 0
+#define INDENTACION_0 0 
 #define INDENTACION_1 1
 #define INDENTACION_2 2
 #define INDENTACION_3 3
@@ -80,7 +78,7 @@ void generar_gpx(gga * ggaptr, metadata * metptr) {
 // Imprime una tag, la empieza si recibe un uno y la termina con un 0;
 void tag(char * strptr, tipo_tag tipo, size_t indentacion) {
 	
-	int i;
+	size_t i;
 	
 	for (i = 0; i < INDENTACION_INICIAL + indentacion; i++)
 			putchar(CARACTER_INDENTACION);
