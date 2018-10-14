@@ -42,6 +42,8 @@ int main(int argc, char *argv[]) {
 	printf("%d\n", anio);
 	printf("%d\n", dia);
 	
+	st = partir_fecha(&fecha, &dia, &mes, &anio);
+
 	generar_gpx(&estructura, &datosusuario);
 	//llamar a funcion en procesarNMEA
 	return EXIT_SUCCESS;
@@ -59,7 +61,8 @@ status_t procesar_argumentos(int argc, char *argv[], char *nombre, int *fecha, i
 
 	int i, j;
 	status_t estado;
-
+	bool esta_fecha; // La uso como bandera indicadora para ver si esta el argumeto -f o --format
+	
 	if (!argv|| !nombre|| !fecha || !mes)
 		return ST_ERROR_PUNTERO_NULO;
 	
@@ -73,7 +76,7 @@ status_t procesar_argumentos(int argc, char *argv[], char *nombre, int *fecha, i
 
 	for (i = 1; i < argc; i++) { //Despues hacer que cuando encuentre ayuda el resto lo corte
 		for (j = 0; j < MAX_CANT_ARG; j++) { 
-			if (strcmp(argv[i], arg_validos[j]) == 0) {
+			if (strcmp(argv[i], arg_validos[j]) == 0) { 
 				j = j/2;
 				switch (j) {
 					case ARG_AYUDA: 
@@ -86,24 +89,32 @@ status_t procesar_argumentos(int argc, char *argv[], char *nombre, int *fecha, i
 						//Tengo que verificar que todos esten bien CUIDADO
 						break;
 					case ARG_FECHA:
+						esta_fecha = true;
 						i++; 
 						estado = validar_argumento_fecha(argv[i], fecha);
 						break;
 					case ARG_ANIO:
 						i++;
+						if (esta_fecha) // Si fecha estan indicada como true 
+							break;
 						estado = validar_argumento_anio(argv[i], anio);
 						break;
 					case ARG_MES:
 						i++;
+						if (esta_fecha)
+							break;
 						estado = validar_argumento_mes(argv[i], mes);
 						break;
 					case ARG_DIA:
 						i++;
+						if (esta_fecha)
+							break;
 						estado = validar_argumento_dia(argv[i], dia);
 						break;
 				}
 				if (estado != ST_OK)
 					return estado;
+
 			} 
 		}
 	}
@@ -112,9 +123,9 @@ status_t procesar_argumentos(int argc, char *argv[], char *nombre, int *fecha, i
 }
 
 void imprimir_ayuda() {
+
 	printf("%s\n", MSJ_IMPRIMIR_AYUDA);
 }
-
 
 void imprimir_errores(status_t estado) {
 
@@ -144,3 +155,4 @@ void imprimir_errores(status_t estado) {
 	}
 
 }
+
