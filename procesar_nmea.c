@@ -46,6 +46,8 @@ procesar_t procesar_nmea(gga * ggaptr) {
 		}
 	}
 		
+	procesarhorario(ggaptr, horario);
+		
 	if ((latitud = strtof(strptr, &strptr)) < 0 || ((* (strptr++)) != CARACTER_SEPARACION_COMANDO)) { //Verifica que el segundo argumento sea un numero (float) positivo
 		return PR_ERR;
 	}
@@ -80,9 +82,9 @@ procesar_t procesar_nmea(gga * ggaptr) {
 	//Verifica que el octavo argumento sea un numero(float) positivo y lo guarda
 	if ((ggaptr->hdop = strtof(++strptr, &strptr)) < 0 || ((* (strptr++)) != CARACTER_SEPARACION_COMANDO))
 		return PR_ERR;
-			
+		
 	//Verifica que el noveno argumento sea un numero(float) positivo y lo guarda
-	if ((ggaptr->elevacion = strtof(++strptr, &strptr)) < 0 || ((* (strptr++)) != CARACTER_SEPARACION_COMANDO)) 
+	if ((ggaptr->elevacion = strtof(strptr, &strptr)) < 0 || ((* (strptr++)) != CARACTER_SEPARACION_COMANDO)) 
 		return PR_ERR;
 	
 	//Verifica que el decimo argumento sea un caracter en especifico	
@@ -109,6 +111,16 @@ procesar_t procesar_nmea(gga * ggaptr) {
 	if (nmea_verificar_suma( strptr) != suma_verificacion)
 		return PR_ERR;
 	
+	/* Imprimir todo lo que contiene (para pruebas)
+	printf("\t\t%f\n",  ggaptr->horario);
+	printf("\t\t%f\n",  ggaptr->latitud);
+	printf("\t\t%f\n",  ggaptr->longitud);
+	printf("\t\t%i\n",  ggaptr->calidad_fix);
+	printf("\t\t%i\n",  ggaptr->cant_satelites);
+	printf("\t\t%f\n",  ggaptr->hdop);
+	printf("\t\t%f\n",  ggaptr->elevacion);
+	printf("\t\t%f\n",  ggaptr->sep_geo);
+	*/
 	return PR_OK;
 }
 
@@ -122,4 +134,13 @@ unsigned char nmea_verificar_suma(const char * sentencia) {
 		
 	return suma;
 }
+
+// Carga la estructura con un horario de formato hhmmss.sss (o mas s)
+void procesarhorario(gga * estructura, float horario) {
+	
+	estructura->horario.minuto = (horario - 10000 * (estructura->horario.hora = horario / 10000)) / 100;
+	
+	estructura->horario.segundos = horario - 100 * ((int)horario / 100);
+}
+
 
