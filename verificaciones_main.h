@@ -15,7 +15,8 @@
 #define ARG_VALIDO_DIA "-d"
 #define ARG_VALIDO_DIA_V "--day"
 
-#define MAX_CANT_ARG 6 //num del enum arg_t
+#define MAX_CANT_ARG 12 
+
 #define MSJ_IMPRIMIR_AYUDA "Argumentos que tiene que recibir el programa:\n\n" \
 							"-h , --help\n" \
 							"		Muestra la ayuda\n" \
@@ -36,37 +37,45 @@
 							"		Indica el día. día debe ser una secuencia de 1 ó 2 dígitos\n" \
 							"		que indiquen el día. Por ejemplo, 20 indica el día veinte.\n\n" \
 							"Si no se indica la fecha, se debe tomar la del sistema.\n" \
-//Ultima linea no poner contrabarra
 
-#define CANT_MIN_PALABRA 9 //validar nombre
+
+#define CANT_MIN_FECHA 999999999 //NO ME GUSTA ESTO
+#define CANT_MIN_MES 1
+#define CANT_MAX_MES 12
+#define CANT_MAX_ANIO 9999
+#define CANT_MIN_ANIO 0
+#define CANT_MAX_DIA 31
+#define CANT_MIN_DIA 0
 
 #define MSJ_ERROR_PREFIJO "Error"
-
 #define MSJ_ERROR_PUNTERO_NULO "Puntero nulo."
 #define MSJ_ERROR_FECHA_INVALIDA "La fecha ingresada es invalida."
 #define MSJ_ERROR_NOMBRE_INVALIDO "El nombre ingresado es invalido."
-#define MSJ_ERROR_SEGUNDO_INVALIDO "El segundo ingresado es invalido."
-#define MSJ_ERROR_MINUTO_INVALIDO "El minuto ingresado es invalido."
-#define MSJ_ERROR_HORA_INVALIDA "La hora ingresada es invalida. "
+#define MSJ_ERROR_DIA_INVALIDO "El dia ingresado es invalido."
+#define MSJ_ERROR_MES_INVALIDO "El mes ingresado es invalido."
+#define MSJ_ERROR_ANIO_INVALIDA "El año ingresado es invalido. "
 
-
-
-
-typedef enum { ARG_AYUDA = 0, ARG_NOMBRE, ARG_FECHA, ARG_ANIO, ARG_MES, ARG_DIA } arg_t;
+typedef enum {ARG_AYUDA = 0, ARG_NOMBRE, ARG_FECHA, ARG_ANIO, ARG_MES, ARG_DIA} arg_t;
 
 
 typedef enum estados {ST_OK, ST_ERROR_PUNTERO_NULO, ST_ERROR_FECHA_INVALIDA, ST_PEDIR_AYUDA,
-                        ST_ERROR_NOMBRE_INVALIDO, ST_ERROR_SEGUNDO_INVALIDO, ST_ERROR_MINUTO_INVALIDO,
-                        ST_ERROR_HORA_INVALIDA} status_t;  
+                        ST_ERROR_NOMBRE_INVALIDO, ST_ERROR_DIA_INVALIDO, ST_ERROR_MES_INVALIDO,
+                        ST_ERROR_ANIO_INVALIDO} status_t;  
 // NO ME GUSTA QUE AYUDA ESTE ACA
 
-status_t procesar_argumentos(int argc, char *argv[], char *nombre, int *fecha);
+bool convertir_a_numero_entero(char *cadena, int *resultado);
+
+status_t procesar_argumentos(int argc, char *argv[], char *nombre, int *fecha, int *mes, int *anio, int *dia);
 
 status_t validar_argumento_nombre(char *argv_nombre, char *nombre);
 status_t validar_argumento_fecha(char *argv_fecha, int *fecha);
+status_t validar_argumento_mes(char *argv_mes, int *mes);
+status_t validar_argumento_anio(char *argv_mes, int *anio);
+status_t validar_argumento_dia(char *argv_dia, int *dia);
 
 void imprimir_ayuda();
 void imprimir_errores(status_t estado);
+
 #endif 
 
 
