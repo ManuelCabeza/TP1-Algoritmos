@@ -3,8 +3,14 @@
 #include <time.h>
 #include <string.h>
 #include <stdbool.h>
+#include <ctype.h>
 
+#include "procesar_nmea.h"
+#include "generar_gpx.h"
 #include "verificaciones_main.h"
+
+#include "procesar_nmea.c"
+#include "generar_gpx.c" // Ya se que no van estos pero sino no compila
 
 int main(int argc, char *argv[]) {
 
