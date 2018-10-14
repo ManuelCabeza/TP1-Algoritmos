@@ -73,6 +73,8 @@ status_t validar_argumento_mes(char *argv_mes, int *mes);
 status_t validar_argumento_anio(char *argv_mes, int *anio);
 status_t validar_argumento_dia(char *argv_dia, int *dia);
 
+status_t partir_fecha(int *fecha, int *dia, int *mes, int *anio);
+
 void imprimir_ayuda();
 void imprimir_errores(status_t estado);
 

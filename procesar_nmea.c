@@ -18,6 +18,8 @@
  * PR_FIN si no hay nada mas que leer en el archivo
  * PR_ERR si el formato de una linea de datos no esta bien
  * PR_OK si el dato de una linea fue procesado correctamente. */
+#include <ctype.h>
+
 procesar_t procesar_nmea(gga * ggaptr) {
 	
 	char c; //Variable auxiliar para no usar tolower mas de 2 veces.
