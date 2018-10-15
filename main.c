@@ -46,6 +46,7 @@ int main(int argc, char *argv[]) {
 
 	cargar_fecha_por_omision(&datos_usuario);
 	cargar_nombre_por_omision(&datos_usuario);
+	cargar_hora_por_omision(&datos_usuario);
 
 	st = procesar_argumentos(argc, argv, &datos_usuario, &fecha);
 	
@@ -59,7 +60,7 @@ int main(int argc, char *argv[]) {
 		return EXIT_FAILURE;
 	}
 
-	/*
+	
 	printf("nombre: %s\n", datos_usuario.nombre);
 	printf("fecha: %d\n", fecha);
 	printf("dia: %d\n", datos_usuario.fecha.dia);
@@ -72,13 +73,12 @@ int main(int argc, char *argv[]) {
 	printf("dia: %d\n", datos_usuario.fecha.dia);
 	printf("mes: %d\n", datos_usuario.fecha.mes);	
 	printf("anio: %d\n", datos_usuario.fecha.anio);
+	
+	generar_gpx(&estructura, &datos_usuario);
 
 	printf("hora: %f\n", datos_usuario.horario.segundos);
 	printf("Minuto: %d\n", datos_usuario.horario.minuto);
 	printf("dia: %d\n", datos_usuario.horario.hora);
-	*/
-	
-	generar_gpx(&estructura, &datos_usuario);
 
 	return EXIT_SUCCESS;
 }
