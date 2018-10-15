@@ -1,7 +1,5 @@
-
-#define MSJ_GPX_1 "? xml version = \" 1.0 \" encoding = \" UTF -8 \" ?"
-#define MSJ_GPX_2 "gpx version = \" 1.1 \" creator = \" 95.11 TP1 - Tracker \" xmlns = \" http: // www.topografix.com / GPX /1/1 \""
-
+#define MSJ_GPX_1 "?xml version=\"1.0\" encoding=\" UTF-8\"?"
+#define MSJ_GPX_2 "gpx version=\"1.1\" creator=\"95.11 TP1 - Tracker\" xmlns=\"http://www.topografix.com/GPX/1/1\""
 #define CARACTER_TAG_INICIO '<'
 #define CARACTER_TAG_FINAL '>'
 #define CARACTER_TAG_FINALIZAR '/'
