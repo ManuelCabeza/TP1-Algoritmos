@@ -82,6 +82,16 @@ typedef struct {
 bool convertir_a_numero_entero(char *cadena, int *resultado);
 //char *nombre;
 status_t procesar_argumentos(int argc, char *argv[], metadata_t *datos_usuario, int *fecha);
+//Recibe la cantidad de elementos que tiene el vector argv, el vector argv, 
+//puntero a una estructura metada_t y donde guardar la fecha en caso de necesitarlo.
+
+// Esta funcion, verifica si lso argumentos que se ingresan por linea de comando son validos.
+// En caso de que si, llama a las recpectivas funciones de validaciones y guardan la fecha, o nombre
+// en la estructura datos_usuario 
+
+//Devuelve un ST_AYUDA en caso de que se haya ingresado el argumento -h o --help
+// un ST_ERROR--- en caso que algun argumento no sea valido
+// ST_OK si todos los argumentos son validos y sus contenidos tambien 
 
 status_t validar_argumento_nombre(char *argv_nombre, char *nombre);
 status_t validar_argumento_fecha(char *argv_fecha, int *fecha, metadata_t *datos_usuario);
