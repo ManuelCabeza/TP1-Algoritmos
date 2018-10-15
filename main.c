@@ -14,44 +14,47 @@
 
 int main(int argc, char *argv[]) {
 
-	char nombre[100] = {0};
 	int fecha;
-	int mes;
-	int anio;
-	int dia;
-	//Va en la gpx
 
+	fecha_t fecha_por_comando;
 	gga estructura;
-	metadata datos_usuario;
+	metadata datos_usuario; 
+
 	status_t st;
-	st = procesar_argumentos(argc, argv, nombre, &fecha, &mes, &anio, &dia);
+
+	cargar_fecha_por_omision(&fecha_por_comando);
+	cargar_nombre_por_omision(&datos_usuario);
+
+	st = procesar_argumentos(argc, argv, &datos_usuario, &fecha, &fecha_por_comando);
 	
 	if (st == ST_PEDIR_AYUDA) { 
 		imprimir_ayuda();
 		return EXIT_FAILURE;
 	}
 
-	//VER COMO ANALIZAR LOS DISTINTOS ERRORES
 	if (st != ST_OK && st != ST_PEDIR_AYUDA) {  
 		imprimir_errores(st);
 		return EXIT_FAILURE;
 	}
 
-	printf("%s\n", nombre);
+	printf("%s\n", datos_usuario.nombre);
 	printf("%d\n", fecha);
-	printf("%d\n", mes);
-	printf("%d\n", anio);
-	printf("%d\n", dia);
-	
-	st = partir_fecha(&fecha, &dia, &mes, &anio);
+	printf("%d\n", fecha_por_comando.mes);
+	printf("%d\n", fecha_por_comando.anio);
+	printf("%d\n", fecha_por_comando.dia);
 
-	generar_gpx(&estructura, &datos_usuario);
+
+	printf("La estructura queda:\n");
+	printf("dia: %d\n", fecha_por_comando.dia);
+	printf("mes: %d\n", fecha_por_comando.mes);	
+	printf("anio: %d\n", fecha_por_comando.anio);
 	
-	//llamar a funcion en procesarNMEA
+	generar_gpx(&estructura, &datos_usuario, &fecha_por_comando);
+
 	return EXIT_SUCCESS;
 }
 //Verifica que los argumentos procesados sean correctos.
-status_t procesar_argumentos(int argc, char *argv[], char *nombre, int *fecha, int *mes, int *anio, int *dia) {
+status_t procesar_argumentos(int argc, char *argv[], metadata *datos_usuario, int *fecha, fecha_t *fecha_por_comando) {
 
 	const char *arg_validos[] = { ARG_VALIDO_AYUDA, ARG_VALIDO_AYUDA_V , 
 								  ARG_VALIDO_NOMBRE, ARG_VALIDO_NOMBRE_V, 
@@ -65,16 +68,11 @@ status_t procesar_argumentos(int argc, char *argv[], char *nombre, int *fecha, i
 	status_t estado;
 	bool esta_fecha; // La uso como bandera indicadora para ver si esta el argumeto -f o --format
 	
-	if (!argv|| !nombre|| !fecha || !mes)
+	if (!argv|| !fecha)
 		return ST_ERROR_PUNTERO_NULO;
 	
 	//Aca pongo parametros por omision, para procesargpx
-	//hacerlo en una funcion aparte que se llame cargar_argumentos_por_omision;
-	strcpy(nombre, "tu mama");
 	*fecha = 20181011;
-	*mes = 10; 
-	*anio = 2018;
-	*dia = 23;
 
 	for (i = 1; i < argc; i++) { 
 		for (j = 0; j < MAX_CANT_ARG; j++) { 
@@ -85,9 +83,8 @@ status_t procesar_argumentos(int argc, char *argv[], char *nombre, int *fecha, i
 						return ST_PEDIR_AYUDA;
 						break;
 					case ARG_NOMBRE:
-						//Guarda el nombre en la GPX
 						i++;
-						estado = validar_argumento_nombre(argv[i], nombre);
+						estado = validar_argumento_nombre(argv[i], datos_usuario->nombre);
 						break;
 					case ARG_FECHA:
 						esta_fecha = true;
@@ -98,19 +95,19 @@ status_t procesar_argumentos(int argc, char *argv[], char *nombre, int *fecha, i
 						i++;
 						if (esta_fecha) // Si fecha estan indicada como true 
 							break;
-						estado = validar_argumento_anio(argv[i], anio);
+						estado = validar_argumento_anio(argv[i], &fecha_por_comando->anio);
 						break;
 					case ARG_MES:
 						i++;
 						if (esta_fecha)
 							break;
-						estado = validar_argumento_mes(argv[i], mes);
+						estado = validar_argumento_mes(argv[i],  &fecha_por_comando->mes);
 						break;
 					case ARG_DIA:
 						i++;
 						if (esta_fecha)
 							break;
-						estado = validar_argumento_dia(argv[i], dia);
+						estado = validar_argumento_dia(argv[i],  &fecha_por_comando->dia);
 						break;
 				}
 				if (estado != ST_OK)
@@ -153,6 +150,15 @@ void imprimir_errores(status_t estado) {
 			break;
 		case ST_PEDIR_AYUDA:
 			break;
+/*		case ST_ERROR_SEGUNDOS_INVALIDO:
+			fprintf(stderr, "%s : %s\n", MSJ_ERROR_PREFIJO, MSJ_ERROR_SEGUNDOS_INVALIDO);
+			break;
+		case ST_ERROR_MINUTO_INVALIDO:
+			fprintf(stderr, "%s : %s\n", MSJ_ERROR_PREFIJO, MSJ_ERROR_MINUTO_INVALIDO);
+			break;
+		case ST_ERROR_HORA_INVALIDA:
+			fprintf(stderr, "%s : %s\n", MSJ_ERROR_PREFIJO, MSJ_ERROR_HORA_INVALIDA);
+			break;*/
 	}
 
 }
