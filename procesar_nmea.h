@@ -1,7 +1,6 @@
 #ifndef PROCESAR_NMEA_H
 #define PROCESAR_NMEA_H
 
-
 #define MAX_LONG_SEN 85
 #define CANT_ARGUMENTOS 14
 #define MAX_VALOR_FIX 8
@@ -38,7 +37,7 @@ typedef struct {
 
 typedef enum {PR_OK, PR_ERR, PR_FIN} procesar_t;
 
-void procesarhorario(gga * estructura, float horario);
+void procesar_horario(gga * estructura, float horario);
 
 //Funcion que recibe una sentencia y calcula la XOR de todos los bytes hasta llegar a un caracter de corte
 unsigned char nmea_verificar_suma(const char * sentencia);
@@ -48,6 +47,7 @@ unsigned char nmea_verificar_suma(const char * sentencia);
  * PR_ERR si el formato de una linea de datos no esta bien
  * PR_OK si el dato de una linea fue procesado correctamente. */
 procesar_t procesar_nmea(gga * ggaptr);
+
 
 #endif 
 

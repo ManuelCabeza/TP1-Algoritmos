@@ -54,29 +54,48 @@
 #define MSJ_ERROR_DIA_INVALIDO "El dia ingresado es invalido."
 #define MSJ_ERROR_MES_INVALIDO "El mes ingresado es invalido."
 #define MSJ_ERROR_ANIO_INVALIDA "El año ingresado es invalido. "
+#define MSJ_ERROR_SEGUNDOS_INVALIDO "El segundo ingresado es invalido. "
+#define MSJ_ERROR_MINUTO_INVALIDO "El minuto ingresado es invalido. "
+#define MSJ_ERROR_HORA_INVALIDA "La hora ingresada es invalida. "
+
+#define CANT_MAX 150
+#define NOMBRE_POR_OMISION "jiji"
 
 typedef enum {ARG_AYUDA = 0, ARG_NOMBRE, ARG_FECHA, ARG_ANIO, ARG_MES, ARG_DIA} arg_t;
 
 
 typedef enum estados {ST_OK, ST_ERROR_PUNTERO_NULO, ST_ERROR_FECHA_INVALIDA, ST_PEDIR_AYUDA,
                         ST_ERROR_NOMBRE_INVALIDO, ST_ERROR_DIA_INVALIDO, ST_ERROR_MES_INVALIDO,
-                        ST_ERROR_ANIO_INVALIDO} status_t;  
+                        ST_ERROR_ANIO_INVALIDO,/* ST_ERROR_MINUTOS_INVALIDO, ST_ERROR_SEGUNDOS_INVALIDO,
+						ST_ERROR_HORA_INVALIDA*/} status_t;  
 // NO ME GUSTA QUE AYUDA ESTE ACA
 
-bool convertir_a_numero_entero(char *cadena, int *resultado);
+typedef struct {
+	int dia;
+	int mes;
+	int anio;
+} fecha_t;
 
-status_t procesar_argumentos(int argc, char *argv[], char *nombre, int *fecha, int *mes, int *anio, int *dia);
+ 
+
+bool convertir_a_numero_entero(char *cadena, int *resultado);
+//char *nombre;
+status_t procesar_argumentos(int argc, char *argv[], metadata *datos_usuario, int *fecha, fecha_t *fecha_por_comando);
 
 status_t validar_argumento_nombre(char *argv_nombre, char *nombre);
 status_t validar_argumento_fecha(char *argv_fecha, int *fecha);
 status_t validar_argumento_mes(char *argv_mes, int *mes);
-status_t validar_argumento_anio(char *argv_mes, int *anio);
+status_t validar_argumento_anio(char *argv_anio, int *anio);
 status_t validar_argumento_dia(char *argv_dia, int *dia);
 
 status_t partir_fecha(int *fecha, int *dia, int *mes, int *anio);
 
 void imprimir_ayuda();
 void imprimir_errores(status_t estado);
+
+status_t cargar_fecha_por_omision(fecha_t *fecha_por_comando);
+status_t cargar_nombre_por_omision(metadata *datos_usuario);
+
 
 #endif 
 
