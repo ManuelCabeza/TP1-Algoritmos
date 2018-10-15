@@ -81,22 +81,22 @@ typedef struct {
  
 bool convertir_a_numero_entero(char *cadena, int *resultado);
 //char *nombre;
-status_t procesar_argumentos(int argc, char *argv[], metadata *datos_usuario, int *fecha);
+status_t procesar_argumentos(int argc, char *argv[], metadata_t *datos_usuario, int *fecha);
 
 status_t validar_argumento_nombre(char *argv_nombre, char *nombre);
-status_t validar_argumento_fecha(char *argv_fecha, int *fecha, metadata *datos_usuario);
+status_t validar_argumento_fecha(char *argv_fecha, int *fecha, metadata_t *datos_usuario);
 status_t validar_argumento_mes(char *argv_mes, int *mes);
 status_t validar_argumento_anio(char *argv_anio, int *anio);
 status_t validar_argumento_dia(char *argv_dia, int *dia);
 
-status_t partir_fecha(int *fecha, metadata *datos_usuario);
+status_t partir_fecha(int *fecha, metadata_t *datos_usuario);
 
 void imprimir_ayuda();
 void imprimir_errores(status_t estado);
 
-bool cargar_fecha_por_omision (metadata * datos_usuario);
-bool cargar_nombre_por_omision(metadata *datos_usuario);
-bool cargar_hora_por_omision (metadata *datos_usuario);
+bool cargar_fecha_por_omision (metadata_t * datos_usuario);
+bool cargar_nombre_por_omision(metadata_t *datos_usuario);
+bool cargar_hora_por_omision (metadata_t *datos_usuario);
 
 
 #endif 
