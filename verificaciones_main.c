@@ -3,8 +3,6 @@
 #include <string.h>
 #include <stdbool.h>
 
-#include "verificaciones_main.h"
-
 bool convertir_a_numero_entero(char *cadena, int *resultado) {
 
 	char *perr = NULL;
@@ -19,7 +17,6 @@ bool convertir_a_numero_entero(char *cadena, int *resultado) {
 
 	return true;
 }
-
 status_t validar_argumento_nombre(char *argv_nombre, char *nombre) {
 
 	if (argv_nombre == NULL || nombre == NULL)
@@ -29,7 +26,6 @@ status_t validar_argumento_nombre(char *argv_nombre, char *nombre) {
 	return ST_OK;
 	
 }
-
 status_t validar_argumento_fecha(char *argv_fecha, int *fecha) { 
 //ANALIZAR COMO VALIDAR LOS MES Y DIA EN FECAH
 //validar mes y dia. y 30 de febrero no es una fecha
@@ -41,7 +37,6 @@ status_t validar_argumento_fecha(char *argv_fecha, int *fecha) {
 	
 	return ST_OK;
 }
-
 status_t validar_argumento_mes(char *argv_mes, int *mes) {
 	
 	if (!convertir_a_numero_entero(argv_mes, mes))
@@ -54,6 +49,7 @@ status_t validar_argumento_mes(char *argv_mes, int *mes) {
 }
 status_t validar_argumento_anio(char *argv_anio, int *anio) {
 //cuesta mas trabajo usar strlen para leer una cantidad de una cadena y despues ver si eso esta bien.
+	
 	if (!convertir_a_numero_entero(argv_anio, anio))
 		return ST_ERROR_ANIO_INVALIDO;
 
@@ -74,9 +70,7 @@ status_t validar_argumento_dia(char *argv_dia, int *dia) {
 
 }
 
-
-//NOMBRE DUDO, PROPENSO A CAMBIO
-
+//NOMBRE DUDOSO, PROPENSO A CAMBIO
 status_t partir_fecha(int *fecha, int *dia, int *mes, int *anio) {
 
 	if (!fecha || !dia || !mes || !anio)
@@ -93,4 +87,48 @@ status_t partir_fecha(int *fecha, int *dia, int *mes, int *anio) {
 
 	return ST_OK;
 	
+}
+
+status_t cargar_fecha_por_omision (fecha_t *fecha_por_comando) {
+    
+    time_t tiempo; 
+    struct tm *fecha; 
+    tiempo = time(NULL); 
+    fecha = localtime(&tiempo);
+
+	if(!fecha_por_comando)
+		return ST_ERROR_PUNTERO_NULO;
+	
+	fecha_por_comando -> dia = fecha -> tm_mday;
+	fecha_por_comando -> mes = fecha -> tm_mon;
+	fecha_por_comando -> anio = fecha -> tm_year; //VER PORQUE me da desde 1900
+
+	return ST_OK;
+}
+
+status_t cargar_nombre_por_omision(metadata *datos_usuario) {
+
+	if (!datos_usuario)
+		return ST_ERROR_PUNTERO_NULO;
+
+	strcpy(datos_usuario->nombre, NOMBRE_POR_OMISION); //VER QUE NOMBRE PONER
+
+
+	return ST_OK;
+}
+bool cargar_hora_por_omision (horario_t *horario) {
+    
+	time_t tiempo; 
+    struct tm *hora; 
+    tiempo = time(NULL); 
+    hora = localtime(&tiempo);
+
+	if(!horario)
+		return false;
+
+	horario -> segundos = hora -> tm_sec;
+	horario -> minuto = (hora -> tm_min) + 1;
+	horario -> hora = (hora ->tm_hour) + 1;
+
+	return true;
 }
