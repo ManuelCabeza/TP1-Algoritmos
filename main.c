@@ -4,6 +4,29 @@
 #include <string.h>
 #include <stdbool.h>
 
+//En realidad van definidas en otro lado pero es para pruebas
+// Esto va en verificaciones main.h
+typedef struct {
+	int dia;
+	int mes;
+	int anio;
+} fecha_t;
+
+// Esto va en procesarnmea.h 
+typedef struct {
+	int hora;
+	int minuto;
+	float segundos;
+} horario_t;
+
+//Esto va en generargpx.h
+#define MAX_LONG_NOMBRE 100
+typedef struct {
+	char nombre[MAX_LONG_NOMBRE];
+	horario_t horario;
+	fecha_t fecha;
+} metadata;
+
 #include "procesar_nmea.h"
 #include "generar_gpx.h"
 #include "verificaciones_main.h"
@@ -16,16 +39,15 @@ int main(int argc, char *argv[]) {
 
 	int fecha;
 
-	fecha_t fecha_por_comando;
 	gga estructura;
 	metadata datos_usuario; 
 
 	status_t st;
 
-	cargar_fecha_por_omision(&fecha_por_comando);
+	cargar_fecha_por_omision(&datos_usuario);
 	cargar_nombre_por_omision(&datos_usuario);
 
-	st = procesar_argumentos(argc, argv, &datos_usuario, &fecha, &fecha_por_comando);
+	st = procesar_argumentos(argc, argv, &datos_usuario, &fecha);
 	
 	if (st == ST_PEDIR_AYUDA) { 
 		imprimir_ayuda();
@@ -37,32 +59,34 @@ int main(int argc, char *argv[]) {
 		return EXIT_FAILURE;
 	}
 
+	/*
 	printf("%s\n", datos_usuario.nombre);
 	printf("%d\n", fecha);
-	printf("%d\n", fecha_por_comando.mes);
-	printf("%d\n", fecha_por_comando.anio);
-	printf("%d\n", fecha_por_comando.dia);
+	printf("%d\n", datos_usuario.fecha.mes);
+	printf("%d\n", datos_usuario.fecha.anio);
+	printf("%d\n", datos_usuario.fecha.dia);
 
 
 	printf("La estructura queda:\n");
-	printf("dia: %d\n", fecha_por_comando.dia);
-	printf("mes: %d\n", fecha_por_comando.mes);	
-	printf("anio: %d\n", fecha_por_comando.anio);
+	printf("dia: %d\n", datos_usuario.fecha.dia);
+	printf("mes: %d\n", datos_usuario.fecha.mes);	
+	printf("anio: %d\n", datos_usuario.fecha.anio);
+	*/
 	
-	generar_gpx(&estructura, &datos_usuario, &fecha_por_comando);
+	generar_gpx(&estructura, &datos_usuario);
 
 	return EXIT_SUCCESS;
 }
 //Verifica que los argumentos procesados sean correctos.
-status_t procesar_argumentos(int argc, char *argv[], metadata *datos_usuario, int *fecha, fecha_t *fecha_por_comando) {
+status_t procesar_argumentos(int argc, char * argv[], metadata * datos_usuario, int * fecha) {
 
-	const char *arg_validos[] = { ARG_VALIDO_AYUDA, ARG_VALIDO_AYUDA_V , 
-								  ARG_VALIDO_NOMBRE, ARG_VALIDO_NOMBRE_V, 
-								  ARG_VALIDO_FECHA, ARG_VALIDO_FECHA_V,
-								  ARG_VALIDO_ANIO, ARG_VALIDO_ANIO_V,
-								  ARG_VALIDO_MES, ARG_VALIDO_MES_V,
-								  ARG_VALIDO_DIA, ARG_VALIDO_DIA_V
-								}; 
+	const char * arg_validos[] = { ARG_VALIDO_AYUDA, ARG_VALIDO_AYUDA_V , 
+								   ARG_VALIDO_NOMBRE, ARG_VALIDO_NOMBRE_V, 
+								   ARG_VALIDO_FECHA, ARG_VALIDO_FECHA_V,
+								   ARG_VALIDO_ANIO, ARG_VALIDO_ANIO_V,
+								   ARG_VALIDO_MES, ARG_VALIDO_MES_V,
+								   ARG_VALIDO_DIA, ARG_VALIDO_DIA_V
+						          }; 
 
 	int i, j;
 	status_t estado;
@@ -72,12 +96,12 @@ status_t procesar_argumentos(int argc, char *argv[], metadata *datos_usuario, in
 		return ST_ERROR_PUNTERO_NULO;
 	
 	//Aca pongo parametros por omision, para procesargpx
-	*fecha = 20181011;
+	* fecha = 20181011;
 
 	for (i = 1; i < argc; i++) { 
 		for (j = 0; j < MAX_CANT_ARG; j++) { 
 			if (strcmp(argv[i], arg_validos[j]) == 0) { 
-				j = j/2;
+				j = j / 2;
 				switch (j) {
 					case ARG_AYUDA: 
 						return ST_PEDIR_AYUDA;
@@ -95,19 +119,19 @@ status_t procesar_argumentos(int argc, char *argv[], metadata *datos_usuario, in
 						i++;
 						if (esta_fecha) // Si fecha estan indicada como true 
 							break;
-						estado = validar_argumento_anio(argv[i], &fecha_por_comando->anio);
+						estado = validar_argumento_anio(argv[i], &((* datos_usuario).fecha.anio));
 						break;
 					case ARG_MES:
 						i++;
 						if (esta_fecha)
 							break;
-						estado = validar_argumento_mes(argv[i],  &fecha_por_comando->mes);
+						estado = validar_argumento_mes(argv[i],  &((* datos_usuario).fecha.mes));
 						break;
 					case ARG_DIA:
 						i++;
 						if (esta_fecha)
 							break;
-						estado = validar_argumento_dia(argv[i],  &fecha_por_comando->dia);
+						estado = validar_argumento_dia(argv[i],  &((* datos_usuario).fecha.dia));
 						break;
 				}
 				if (estado != ST_OK)

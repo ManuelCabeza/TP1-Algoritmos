@@ -19,8 +19,6 @@
  * PR_ERR si el formato de una linea de datos no esta bien
  * PR_OK si el dato de una linea fue procesado correctamente. */
 #include <ctype.h>
-#include <string.h>
-//#include "procesar_nmea.h"
 
 procesar_t procesar_nmea(gga * ggaptr) {
 	

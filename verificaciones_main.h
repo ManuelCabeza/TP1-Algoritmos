@@ -69,18 +69,18 @@ typedef enum estados {ST_OK, ST_ERROR_PUNTERO_NULO, ST_ERROR_FECHA_INVALIDA, ST_
                         ST_ERROR_ANIO_INVALIDO,/* ST_ERROR_MINUTOS_INVALIDO, ST_ERROR_SEGUNDOS_INVALIDO,
 						ST_ERROR_HORA_INVALIDA*/} status_t;  
 // NO ME GUSTA QUE AYUDA ESTE ACA
-
+/* Esta se define de vardad qaca
 typedef struct {
 	int dia;
 	int mes;
 	int anio;
 } fecha_t;
-
+*/ 
  
 
 bool convertir_a_numero_entero(char *cadena, int *resultado);
 //char *nombre;
-status_t procesar_argumentos(int argc, char *argv[], metadata *datos_usuario, int *fecha, fecha_t *fecha_por_comando);
+status_t procesar_argumentos(int argc, char *argv[], metadata *datos_usuario, int *fecha);
 
 status_t validar_argumento_nombre(char *argv_nombre, char *nombre);
 status_t validar_argumento_fecha(char *argv_fecha, int *fecha);
@@ -93,7 +93,7 @@ status_t partir_fecha(int *fecha, int *dia, int *mes, int *anio);
 void imprimir_ayuda();
 void imprimir_errores(status_t estado);
 
-status_t cargar_fecha_por_omision(fecha_t *fecha_por_comando);
+status_t cargar_fecha_por_omision (metadata * datos_usuario);
 status_t cargar_nombre_por_omision(metadata *datos_usuario);
 
 

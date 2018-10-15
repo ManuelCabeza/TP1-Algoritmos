@@ -25,7 +25,7 @@
 
 #define CANT_MAX 150
 
-void generar_gpx(gga * ggaptr, metadata * metptr, fecha_t *fecha_por_comando) {
+void generar_gpx(gga * ggaptr, metadata * metptr) {
 	
 
 //TEMPORALMENTE VA A ESTAR ESTO	
@@ -79,7 +79,7 @@ void generar_gpx(gga * ggaptr, metadata * metptr, fecha_t *fecha_por_comando) {
 			tag(TAG_TIEMPO, INICIAR, INDENTACION_4);
 			// Analizar como imprimir por defecto si fecha esta o no. (- f)
 			//ahora pienso como si no estuviera
-			printf("%d-%d-%dT%2i:%2i:%3.3fZ", fecha_por_comando->anio, fecha_por_comando->mes, fecha_por_comando->dia, ggaptr->horario.hora, ggaptr->horario.minuto, ggaptr->horario.segundos);
+			printf("%d-%d-%dT%2i:%2i:%3.3fZ", metptr->fecha.anio, metptr->fecha.mes, metptr->fecha.dia, ggaptr->horario.hora, ggaptr->horario.minuto, ggaptr->horario.segundos);
 			
 			tag(TAG_TIEMPO, FINAL_ENTER, INDENTACION_0);
 			

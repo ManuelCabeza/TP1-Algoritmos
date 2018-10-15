@@ -18,12 +18,13 @@
 
 typedef enum {INVALIDO, GPS, DGPS, PPS, RTK, FRTK, ESTIMADA, MANUAL, SIMULACION} cal_fix;
 
+/* Esto esta definido aca
 typedef struct {
 	int hora;
 	int minuto;
 	float segundos;
 } horario_t;
-
+*/
 typedef struct {
 	horario_t horario;
 	float latitud;

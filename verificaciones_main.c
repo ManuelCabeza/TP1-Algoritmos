@@ -17,6 +17,7 @@ bool convertir_a_numero_entero(char *cadena, int *resultado) {
 
 	return true;
 }
+
 status_t validar_argumento_nombre(char *argv_nombre, char *nombre) {
 
 	if (argv_nombre == NULL || nombre == NULL)
@@ -26,6 +27,7 @@ status_t validar_argumento_nombre(char *argv_nombre, char *nombre) {
 	return ST_OK;
 	
 }
+
 status_t validar_argumento_fecha(char *argv_fecha, int *fecha) { 
 //ANALIZAR COMO VALIDAR LOS MES Y DIA EN FECAH
 //validar mes y dia. y 30 de febrero no es una fecha
@@ -37,6 +39,7 @@ status_t validar_argumento_fecha(char *argv_fecha, int *fecha) {
 	
 	return ST_OK;
 }
+
 status_t validar_argumento_mes(char *argv_mes, int *mes) {
 	
 	if (!convertir_a_numero_entero(argv_mes, mes))
@@ -47,6 +50,7 @@ status_t validar_argumento_mes(char *argv_mes, int *mes) {
 
 	return ST_OK;	
 }
+
 status_t validar_argumento_anio(char *argv_anio, int *anio) {
 //cuesta mas trabajo usar strlen para leer una cantidad de una cadena y despues ver si eso esta bien.
 	
@@ -58,6 +62,7 @@ status_t validar_argumento_anio(char *argv_anio, int *anio) {
 
 	return ST_OK;
 }
+
 status_t validar_argumento_dia(char *argv_dia, int *dia) {
 
 	if (!convertir_a_numero_entero(argv_dia, dia))
@@ -89,19 +94,20 @@ status_t partir_fecha(int *fecha, int *dia, int *mes, int *anio) {
 	
 }
 
-status_t cargar_fecha_por_omision (fecha_t *fecha_por_comando) {
+status_t cargar_fecha_por_omision (metadata * datos_usuario) {
     
     time_t tiempo; 
-    struct tm *fecha; 
+    struct tm * fecha_actual; 
     tiempo = time(NULL); 
-    fecha = localtime(&tiempo);
-
-	if(!fecha_por_comando)
-		return ST_ERROR_PUNTERO_NULO;
+    fecha_actual = localtime(&tiempo);
 	
-	fecha_por_comando -> dia = fecha -> tm_mday;
-	fecha_por_comando -> mes = fecha -> tm_mon;
-	fecha_por_comando -> anio = fecha -> tm_year; //VER PORQUE me da desde 1900
+	/* Validar algo ??
+	if(!())
+		return ST_ERROR_PUNTERO_NULO;
+	*/
+	datos_usuario->fecha.dia  = fecha_actual->tm_mday;
+	datos_usuario->fecha.mes  = fecha_actual->tm_mon;
+	datos_usuario->fecha.anio = fecha_actual->tm_year; //VER PORQUE me da desde 1900
 
 	return ST_OK;
 }
@@ -116,6 +122,7 @@ status_t cargar_nombre_por_omision(metadata *datos_usuario) {
 
 	return ST_OK;
 }
+
 bool cargar_hora_por_omision (horario_t *horario) {
     
 	time_t tiempo; 
