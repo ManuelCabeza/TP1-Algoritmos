@@ -39,7 +39,7 @@
 							"Si no se indica la fecha, se debe tomar la del sistema.\n" \
 
 
-#define CANT_MIN_FECHA 999999999 //NO ME GUSTA ESTO
+#define CANT_MIN_FECHA 99991231 //NO ME GUSTA ESTO
 #define CANT_MIN_MES 1
 #define CANT_MAX_MES 12
 #define CANT_MAX_ANIO 9999
@@ -61,6 +61,7 @@
 #define CANT_MAX 150
 #define NOMBRE_POR_OMISION "jiji"
 
+#define AJUSTE_DE_NUM 1
 #define ANIO_DE_LINUX 1900
 
 typedef enum {ARG_AYUDA = 0, ARG_NOMBRE, ARG_FECHA, ARG_ANIO, ARG_MES, ARG_DIA} arg_t;
@@ -68,8 +69,7 @@ typedef enum {ARG_AYUDA = 0, ARG_NOMBRE, ARG_FECHA, ARG_ANIO, ARG_MES, ARG_DIA} 
 
 typedef enum estados {ST_OK, ST_ERROR_PUNTERO_NULO, ST_ERROR_FECHA_INVALIDA, ST_PEDIR_AYUDA,
                         ST_ERROR_NOMBRE_INVALIDO, ST_ERROR_DIA_INVALIDO, ST_ERROR_MES_INVALIDO,
-                        ST_ERROR_ANIO_INVALIDO,/* ST_ERROR_MINUTOS_INVALIDO, ST_ERROR_SEGUNDOS_INVALIDO,
-						ST_ERROR_HORA_INVALIDA*/} status_t;  
+                        ST_ERROR_ANIO_INVALIDO} status_t;  
 // NO ME GUSTA QUE AYUDA ESTE ACA
 /* Esta se define de vardad qaca
 typedef struct {
@@ -79,7 +79,6 @@ typedef struct {
 } fecha_t;
 */ 
  
-
 bool convertir_a_numero_entero(char *cadena, int *resultado);
 //char *nombre;
 status_t procesar_argumentos(int argc, char *argv[], metadata *datos_usuario, int *fecha);
@@ -101,7 +100,6 @@ bool cargar_hora_por_omision (metadata *datos_usuario);
 
 
 #endif 
-
 
 // solo van en el .h si otras funciones necesitan esas variables.
 //Caso contratario va en el .c
