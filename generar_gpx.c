@@ -1,5 +1,5 @@
 
-void generar_gpx(gga * ggaptr, metadata * metptr) {
+void generar_gpx(gga * ggaptr, metadata_t * metptr) {
 	
 	int i;
 	procesar_t nmea_aux;

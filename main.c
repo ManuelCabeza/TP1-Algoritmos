@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
 		return EXIT_FAILURE;
 	}
 
-	
+/*	
 	printf("nombre: %s\n", datos_usuario.nombre);
 	printf("fecha: %d\n", fecha);
 	printf("dia: %d\n", datos_usuario.fecha.dia);
@@ -73,13 +73,13 @@ int main(int argc, char *argv[]) {
 	printf("dia: %d\n", datos_usuario.fecha.dia);
 	printf("mes: %d\n", datos_usuario.fecha.mes);	
 	printf("anio: %d\n", datos_usuario.fecha.anio);
-	
+*/	
 	generar_gpx(&estructura, &datos_usuario);
-
+/*
 	printf("hora: %f\n", datos_usuario.horario.segundos);
 	printf("Minuto: %d\n", datos_usuario.horario.minuto);
 	printf("dia: %d\n", datos_usuario.horario.hora);
-
+*/
 	return EXIT_SUCCESS;
 }
 //Verifica que los argumentos procesados sean correctos.
@@ -101,7 +101,7 @@ status_t procesar_argumentos(int argc, char * argv[], metadata * datos_usuario, 
 		return ST_ERROR_PUNTERO_NULO;
 	
 	//Aca pongo parametros por omision, para procesargpx
-	* fecha = 20181011;
+	*fecha = 20181011;
 
 	for (i = 1; i < argc; i++) { 
 		for (j = 0; j < MAX_CANT_ARG; j++) { 
@@ -179,15 +179,6 @@ void imprimir_errores(status_t estado) {
 			break;
 		case ST_PEDIR_AYUDA:
 			break;
-/*		case ST_ERROR_SEGUNDOS_INVALIDO:
-			fprintf(stderr, "%s : %s\n", MSJ_ERROR_PREFIJO, MSJ_ERROR_SEGUNDOS_INVALIDO);
-			break;
-		case ST_ERROR_MINUTO_INVALIDO:
-			fprintf(stderr, "%s : %s\n", MSJ_ERROR_PREFIJO, MSJ_ERROR_MINUTO_INVALIDO);
-			break;
-		case ST_ERROR_HORA_INVALIDA:
-			fprintf(stderr, "%s : %s\n", MSJ_ERROR_PREFIJO, MSJ_ERROR_HORA_INVALIDA);
-			break;*/
 	}
 
 }
