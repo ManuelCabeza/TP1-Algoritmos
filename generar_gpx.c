@@ -23,11 +23,22 @@
 #define TAG_METADATA "metadata"
 #define TAG_NOMBRE "name"
 
-void generar_gpx(gga * ggaptr, metadata * metptr) {
+#define CANT_MAX 150
+
+void generar_gpx(gga * ggaptr, metadata * metptr, fecha_t *fecha_por_comando) {
 	
+
+//TEMPORALMENTE VA A ESTAR ESTO	
+    char aux[1900];
+    time_t tiempo;
+    struct tm *fecha; 
+    tiempo = time(NULL); 
+    fecha = localtime(&tiempo);
+
+
 	int i;
 	procesar_t nmea_aux;
-	
+
 	tag(MSJ_GPX_1, INICIAR_ENTER, INDENTACION_0);
 	tag(MSJ_GPX_2, INICIAR_ENTER, INDENTACION_0);
 	
@@ -36,7 +47,14 @@ void generar_gpx(gga * ggaptr, metadata * metptr) {
 	printf("%s", metptr->nombre);
 	tag(TAG_NOMBRE, FINAL_ENTER, INDENTACION_0);
 	tag(TAG_TIEMPO, INICIAR, INDENTACION_2);
-	printf("%s", metptr->nombre);
+
+
+	//ANALIZAR CCON PROFUNDIDAD
+	strftime(aux,1900,"%Y-%m-%dT%H:%M:%SZ", fecha);
+    printf("%s", aux);
+	//printf("%s", metptr->nombre); //ACA TENGO QUE PONER EL TIEMPO
+	
+	
 	tag(TAG_TIEMPO, FINAL_ENTER, INDENTACION_0);
 	tag(TAG_METADATA, FINAL_ENTER, INDENTACION_1);
 	
@@ -59,7 +77,10 @@ void generar_gpx(gga * ggaptr, metadata * metptr) {
 			tag(TAG_ELEVACION, FINAL_ENTER, INDENTACION_0);
 			
 			tag(TAG_TIEMPO, INICIAR, INDENTACION_4);
-			printf("imprimirfechametadataT%2i:%2i:%3.3fZ", ggaptr->horario.hora, ggaptr->horario.minuto, ggaptr->horario.segundos);
+			// Analizar como imprimir por defecto si fecha esta o no. (- f)
+			//ahora pienso como si no estuviera
+			printf("%d-%d-%dT%2i:%2i:%3.3fZ", fecha_por_comando->anio, fecha_por_comando->mes, fecha_por_comando->dia, ggaptr->horario.hora, ggaptr->horario.minuto, ggaptr->horario.segundos);
+			
 			tag(TAG_TIEMPO, FINAL_ENTER, INDENTACION_0);
 			
 			tag(TAG_TRKPT, FINAL_ENTER, INDENTACION_3);
@@ -92,3 +113,4 @@ void tag(char * strptr, tipo_tag tipo, size_t indentacion) {
 	if ((tipo != INICIAR) && (tipo != FINAL))
 		putchar('\n');
 }
+
