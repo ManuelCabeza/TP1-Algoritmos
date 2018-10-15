@@ -76,7 +76,7 @@ status_t procesar_argumentos(int argc, char *argv[], char *nombre, int *fecha, i
 	*anio = 2018;
 	*dia = 23;
 
-	for (i = 1; i < argc; i++) { //Despues hacer que cuando encuentre ayuda el resto lo corte
+	for (i = 1; i < argc; i++) { 
 		for (j = 0; j < MAX_CANT_ARG; j++) { 
 			if (strcmp(argv[i], arg_validos[j]) == 0) { 
 				j = j/2;
@@ -88,7 +88,6 @@ status_t procesar_argumentos(int argc, char *argv[], char *nombre, int *fecha, i
 						//Guarda el nombre en la GPX
 						i++;
 						estado = validar_argumento_nombre(argv[i], nombre);
-						//Tengo que verificar que todos esten bien CUIDADO
 						break;
 					case ARG_FECHA:
 						esta_fecha = true;

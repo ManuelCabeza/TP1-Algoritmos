@@ -21,8 +21,7 @@ bool convertir_a_numero_entero(char *cadena, int *resultado) {
 }
 
 status_t validar_argumento_nombre(char *argv_nombre, char *nombre) {
-//Nombre puede aceptar numeros? onda nombre123 como los mails
-//valido que si me ponen nombre -123435?
+
 	if (argv_nombre == NULL || nombre == NULL)
 		return ST_ERROR_PUNTERO_NULO;
 	
@@ -31,7 +30,8 @@ status_t validar_argumento_nombre(char *argv_nombre, char *nombre) {
 	
 }
 
-status_t validar_argumento_fecha(char *argv_fecha, int *fecha) { //ANALIZAR COMO VALIDAR LOS MES Y DIA EN FECAH
+status_t validar_argumento_fecha(char *argv_fecha, int *fecha) { 
+//ANALIZAR COMO VALIDAR LOS MES Y DIA EN FECAH
 //validar mes y dia. y 30 de febrero no es una fecha
 	if (!convertir_a_numero_entero(argv_fecha, fecha))
 		return ST_ERROR_MES_INVALIDO;
