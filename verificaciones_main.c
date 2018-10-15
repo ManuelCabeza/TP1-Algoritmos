@@ -69,7 +69,7 @@ status_t validar_argumento_anio(char *argv_anio, int *anio) {
 	if (!convertir_a_numero_entero(argv_anio, anio))
 		return ST_ERROR_ANIO_INVALIDO;
 
-	if (*anio > CANT_MIN_ANIO || *anio < CANT_MAX_ANIO)
+	if (*anio < CANT_MIN_ANIO || *anio > CANT_MAX_ANIO)
 		return ST_ERROR_ANIO_INVALIDO;
 
 	return ST_OK;
@@ -80,22 +80,22 @@ status_t validar_argumento_dia(char *argv_dia, int *dia) {
 	if (!convertir_a_numero_entero(argv_dia, dia))
 		return ST_ERROR_DIA_INVALIDO;
 
-	if (*dia > CANT_MIN_DIA || *dia < CANT_MAX_DIA)
+	if (*dia < CANT_MIN_DIA || *dia > CANT_MAX_DIA)
 		return ST_ERROR_DIA_INVALIDO;
 
 	return ST_OK;
 
 }
 
-//NOMBRE DUDOSO, PROPENSO A CAMBIO
 status_t partir_fecha(int *fecha, metadata *datos_usuario) {
 
 	if (!fecha || !datos_usuario)
 		return ST_ERROR_PUNTERO_NULO;
 
+//ESTO ES HARDCODE ???
 	datos_usuario->fecha.anio = *fecha / 10000;
-	datos_usuario->fecha.mes = (*fecha % 10000) / 100; //ver que sea del 1 al 12
-	datos_usuario->fecha.dia = (*fecha % 10000) % 100; // ver que sea del 0 al 31
+	datos_usuario->fecha.mes = (*fecha % 10000) / 100; 
+	datos_usuario->fecha.dia = (*fecha % 10000) % 100; 
 	
 	return ST_OK;
 	
@@ -112,8 +112,8 @@ bool cargar_fecha_por_omision (metadata * datos_usuario) {
 		return false;
 
 	datos_usuario->fecha.dia  = fecha_actual->tm_mday;
-	datos_usuario->fecha.mes  = (fecha_actual->tm_mon) + 1;
-	datos_usuario->fecha.anio = (fecha_actual->tm_year) + 1900; //VER PORQUE me da desde 1900
+	datos_usuario->fecha.mes  = (fecha_actual->tm_mon) + AJUSTE_DE_NUM;
+	datos_usuario->fecha.anio = (fecha_actual->tm_year) + ANIO_DE_LINUX; 
 
 	return true;
 }
@@ -123,7 +123,7 @@ bool cargar_nombre_por_omision(metadata *datos_usuario) {
 	if (!datos_usuario)
 		return false;
 
-	strcpy(datos_usuario->nombre, NOMBRE_POR_OMISION); //VER QUE NOMBRE PONER
+	strcpy(datos_usuario->nombre, NOMBRE_POR_OMISION);
 
 
 	return true;
@@ -139,9 +139,9 @@ bool cargar_hora_por_omision (metadata *datos_usuario) {
 	if(!datos_usuario)
 		return false;
 
-	datos_usuario -> horario.segundos =(float)hora -> tm_sec;
-	datos_usuario -> horario.minuto = (hora -> tm_min) + 1;
-	datos_usuario -> horario.hora = (hora ->tm_hour) + 1;
+	datos_usuario -> horario.segundos = (float)hora -> tm_sec;
+	datos_usuario -> horario.minuto = (hora -> tm_min) + AJUSTE_DE_NUM;
+	datos_usuario -> horario.hora = (hora ->tm_hour) + AJUSTE_DE_NUM;
 
 	return true;
 }
