@@ -25,7 +25,7 @@ typedef struct {
 	char nombre[MAX_LONG_NOMBRE];
 	horario_t horario;
 	fecha_t fecha;
-} metadata;
+} metadata_t;
 
 #include "procesar_nmea.h"
 #include "generar_gpx.h"
@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
 	int fecha;
 
 	gga estructura;
-	metadata datos_usuario; 
+	metadata_t datos_usuario; 
 
 	status_t st;
 
@@ -83,7 +83,7 @@ int main(int argc, char *argv[]) {
 	return EXIT_SUCCESS;
 }
 //Verifica que los argumentos procesados sean correctos.
-status_t procesar_argumentos(int argc, char * argv[], metadata * datos_usuario, int * fecha) {
+status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario, int * fecha) {
 
 	const char * arg_validos[] = { ARG_VALIDO_AYUDA, ARG_VALIDO_AYUDA_V , 
 								   ARG_VALIDO_NOMBRE, ARG_VALIDO_NOMBRE_V, 
