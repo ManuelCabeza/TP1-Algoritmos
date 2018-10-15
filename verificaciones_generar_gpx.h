@@ -1,7 +1,0 @@
-#ifndef VERIFICACIONES_GENERAR_GPX_H
-#define VERIFICACIONES_GENERAR_GPX_H
-
-
-
-
-#endif
