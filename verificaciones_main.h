@@ -6,7 +6,7 @@
 #define ARG_VALIDO_AYUDA_V "--help"
 #define ARG_VALIDO_NOMBRE "-n"
 #define ARG_VALIDO_NOMBRE_V "--name"
-#define ARG_VALIDO_FECHA "-f" //Si no se indica fecha se toma la del sistema
+#define ARG_VALIDO_FECHA "-f" 
 #define ARG_VALIDO_FECHA_V "--format"
 #define ARG_VALIDO_ANIO "-Y"
 #define ARG_VALIDO_ANIO_V "--year"
@@ -61,6 +61,8 @@
 #define CANT_MAX 150
 #define NOMBRE_POR_OMISION "jiji"
 
+#define ANIO_DE_LINUX 1900
+
 typedef enum {ARG_AYUDA = 0, ARG_NOMBRE, ARG_FECHA, ARG_ANIO, ARG_MES, ARG_DIA} arg_t;
 
 
@@ -83,18 +85,19 @@ bool convertir_a_numero_entero(char *cadena, int *resultado);
 status_t procesar_argumentos(int argc, char *argv[], metadata *datos_usuario, int *fecha);
 
 status_t validar_argumento_nombre(char *argv_nombre, char *nombre);
-status_t validar_argumento_fecha(char *argv_fecha, int *fecha);
+status_t validar_argumento_fecha(char *argv_fecha, int *fecha, metadata *datos_usuario);
 status_t validar_argumento_mes(char *argv_mes, int *mes);
 status_t validar_argumento_anio(char *argv_anio, int *anio);
 status_t validar_argumento_dia(char *argv_dia, int *dia);
 
-status_t partir_fecha(int *fecha, int *dia, int *mes, int *anio);
+status_t partir_fecha(int *fecha, metadata *datos_usuario);
 
 void imprimir_ayuda();
 void imprimir_errores(status_t estado);
 
-status_t cargar_fecha_por_omision (metadata * datos_usuario);
-status_t cargar_nombre_por_omision(metadata *datos_usuario);
+bool cargar_fecha_por_omision (metadata * datos_usuario);
+bool cargar_nombre_por_omision(metadata *datos_usuario);
+bool cargar_hora_por_omision (metadata *datos_usuario);
 
 
 #endif 
