@@ -27,14 +27,6 @@
 
 void generar_gpx(gga * ggaptr, metadata * metptr) {
 	
-//TEMPORALMENTE VA A ESTAR ESTO	
-    char aux[CANT_MAX];
-    time_t tiempo;
-    struct tm *fecha; 
-    tiempo = time(NULL); 
-    fecha = localtime(&tiempo);
-
-
 	int i;
 	procesar_t nmea_aux;
 
@@ -46,15 +38,7 @@ void generar_gpx(gga * ggaptr, metadata * metptr) {
 	printf("%s", metptr->nombre);
 	tag(TAG_NOMBRE, FINAL_ENTER, INDENTACION_0);
 	tag(TAG_TIEMPO, INICIAR, INDENTACION_2);
-
-
-	//ANALIZAR CCON PROFUNDIDAD
-	strftime(aux,CANT_MAX,"%Y-%m-%dT%H:%M:%SZ", fecha);
-    //printf("%s", aux);
-	printf("%d-%02d-%dT%2i:%2i:%3.3fZ", metptr->fecha.anio, metptr->fecha.mes, metptr->fecha.dia, ggaptr->horario.hora, ggaptr->horario.minuto, ggaptr->horario.segundos);
-	//printf("%s", metptr->nombre); //ACA TENGO QUE PONER EL TIEMPO
-	
-	
+	printf("%d-%02d-%dT%02d:%02d:%02.0fZ", metptr->fecha.anio, metptr->fecha.mes, metptr->fecha.dia, metptr->horario.hora, metptr->horario.minuto, metptr->horario.segundos);
 	tag(TAG_TIEMPO, FINAL_ENTER, INDENTACION_0);
 	tag(TAG_METADATA, FINAL_ENTER, INDENTACION_1);
 	
@@ -77,8 +61,6 @@ void generar_gpx(gga * ggaptr, metadata * metptr) {
 			tag(TAG_ELEVACION, FINAL_ENTER, INDENTACION_0);
 			
 			tag(TAG_TIEMPO, INICIAR, INDENTACION_4);
-			// Analizar como imprimir por defecto si fecha esta o no. (- f)
-			//ahora pienso como si no estuviera
 			printf("%d-%02d-%dT%2i:%2i:%3.3fZ", metptr->fecha.anio, metptr->fecha.mes, metptr->fecha.dia, ggaptr->horario.hora, ggaptr->horario.minuto, ggaptr->horario.segundos);
 			
 			tag(TAG_TIEMPO, FINAL_ENTER, INDENTACION_0);
