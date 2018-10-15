@@ -37,7 +37,7 @@ typedef struct {
 
 int main(int argc, char *argv[]) {
 
-	int fecha;
+	int fecha = 0;
 
 	gga estructura;
 	metadata_t datos_usuario; 
@@ -99,9 +99,6 @@ status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario
 	
 	if (!argv|| !fecha)
 		return ST_ERROR_PUNTERO_NULO;
-	
-	//Aca pongo parametros por omision, para procesargpx
-	*fecha = 20181011;
 
 	for (i = 1; i < argc; i++) { 
 		for (j = 0; j < MAX_CANT_ARG; j++) { 
