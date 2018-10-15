@@ -8,6 +8,7 @@
 #include "generar_gpx.h"
 #include "verificaciones_main.h"
 
+#include "verificaciones_main.c"
 #include "procesar_nmea.c"
 #include "generar_gpx.c" // Ya se que no van estos pero sino no compila
 
@@ -21,7 +22,7 @@ int main(int argc, char *argv[]) {
 	//Va en la gpx
 
 	gga estructura;
-	metadata datosusuario;
+	metadata datos_usuario;
 	status_t st;
 	st = procesar_argumentos(argc, argv, nombre, &fecha, &mes, &anio, &dia);
 	
@@ -44,7 +45,8 @@ int main(int argc, char *argv[]) {
 	
 	st = partir_fecha(&fecha, &dia, &mes, &anio);
 
-	generar_gpx(&estructura, &datosusuario);
+	generar_gpx(&estructura, &datos_usuario);
+	
 	//llamar a funcion en procesarNMEA
 	return EXIT_SUCCESS;
 }
