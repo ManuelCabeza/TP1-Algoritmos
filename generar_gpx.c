@@ -27,9 +27,8 @@
 
 void generar_gpx(gga * ggaptr, metadata * metptr) {
 	
-
 //TEMPORALMENTE VA A ESTAR ESTO	
-    char aux[1900];
+    char aux[CANT_MAX];
     time_t tiempo;
     struct tm *fecha; 
     tiempo = time(NULL); 
@@ -50,8 +49,9 @@ void generar_gpx(gga * ggaptr, metadata * metptr) {
 
 
 	//ANALIZAR CCON PROFUNDIDAD
-	strftime(aux,1900,"%Y-%m-%dT%H:%M:%SZ", fecha);
-    printf("%s", aux);
+	strftime(aux,CANT_MAX,"%Y-%m-%dT%H:%M:%SZ", fecha);
+    //printf("%s", aux);
+	printf("%d-%02d-%dT%2i:%2i:%3.3fZ", metptr->fecha.anio, metptr->fecha.mes, metptr->fecha.dia, ggaptr->horario.hora, ggaptr->horario.minuto, ggaptr->horario.segundos);
 	//printf("%s", metptr->nombre); //ACA TENGO QUE PONER EL TIEMPO
 	
 	
@@ -79,7 +79,7 @@ void generar_gpx(gga * ggaptr, metadata * metptr) {
 			tag(TAG_TIEMPO, INICIAR, INDENTACION_4);
 			// Analizar como imprimir por defecto si fecha esta o no. (- f)
 			//ahora pienso como si no estuviera
-			printf("%d-%d-%dT%2i:%2i:%3.3fZ", metptr->fecha.anio, metptr->fecha.mes, metptr->fecha.dia, ggaptr->horario.hora, ggaptr->horario.minuto, ggaptr->horario.segundos);
+			printf("%d-%02d-%dT%2i:%2i:%3.3fZ", metptr->fecha.anio, metptr->fecha.mes, metptr->fecha.dia, ggaptr->horario.hora, ggaptr->horario.minuto, ggaptr->horario.segundos);
 			
 			tag(TAG_TIEMPO, FINAL_ENTER, INDENTACION_0);
 			
