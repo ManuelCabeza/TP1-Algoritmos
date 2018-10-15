@@ -28,7 +28,7 @@ status_t validar_argumento_nombre(char *argv_nombre, char *nombre) {
 	
 }
 
-status_t validar_argumento_fecha(char *argv_fecha, int *fecha, metadata *datos_usuario) { 
+status_t validar_argumento_fecha(char *argv_fecha, int *fecha, metadata_t *datos_usuario) { 
 //validar mes y dia. y 30 de febrero no es una fecha
 	
 	if(!argv_fecha || !fecha || !datos_usuario)
@@ -87,7 +87,7 @@ status_t validar_argumento_dia(char *argv_dia, int *dia) {
 
 }
 
-status_t partir_fecha(int *fecha, metadata *datos_usuario) {
+status_t partir_fecha(int *fecha, metadata_t *datos_usuario) {
 
 	if (!fecha || !datos_usuario)
 		return ST_ERROR_PUNTERO_NULO;
@@ -101,7 +101,7 @@ status_t partir_fecha(int *fecha, metadata *datos_usuario) {
 	
 }
 
-bool cargar_fecha_por_omision (metadata * datos_usuario) {
+bool cargar_fecha_por_omision (metadata_t * datos_usuario) {
     
     time_t tiempo; 
     struct tm * fecha_actual; 
@@ -118,18 +118,17 @@ bool cargar_fecha_por_omision (metadata * datos_usuario) {
 	return true;
 }
 
-bool cargar_nombre_por_omision(metadata *datos_usuario) {
+bool cargar_nombre_por_omision(metadata_t *datos_usuario) {
 
 	if (!datos_usuario)
 		return false;
 
 	strcpy(datos_usuario->nombre, NOMBRE_POR_OMISION);
 
-
 	return true;
 }
 
-bool cargar_hora_por_omision (metadata *datos_usuario) {
+bool cargar_hora_por_omision (metadata_t *datos_usuario) {
     
 	time_t tiempo; 
     struct tm *hora; 
