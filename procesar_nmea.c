@@ -19,6 +19,8 @@
  * PR_ERR si el formato de una linea de datos no esta bien
  * PR_OK si el dato de una linea fue procesado correctamente. */
 #include <ctype.h>
+#include <string.h>
+//#include "procesar_nmea.h"
 
 procesar_t procesar_nmea(gga * ggaptr) {
 	
@@ -48,7 +50,7 @@ procesar_t procesar_nmea(gga * ggaptr) {
 		}
 	}
 		
-	procesarhorario(ggaptr, horario);
+	procesar_horario(ggaptr, horario);
 		
 	if ((latitud = strtof(strptr, &strptr)) < 0 || ((* (strptr++)) != CARACTER_SEPARACION_COMANDO)) { //Verifica que el segundo argumento sea un numero (float) positivo
 		return PR_ERR;
@@ -138,11 +140,13 @@ unsigned char nmea_verificar_suma(const char * sentencia) {
 }
 
 // Carga la estructura con un horario de formato hhmmss.sss (o mas s)
-void procesarhorario(gga * estructura, float horario) {
+void procesar_horario(gga * estructura, float horario) {
 	
 	estructura->horario.minuto = (horario - 10000 * (estructura->horario.hora = horario / 10000)) / 100;
 	
 	estructura->horario.segundos = horario - 100 * ((int)horario / 100);
 }
+
+
 
 
