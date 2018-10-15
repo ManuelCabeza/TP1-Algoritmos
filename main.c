@@ -60,17 +60,22 @@ int main(int argc, char *argv[]) {
 	}
 
 	/*
-	printf("%s\n", datos_usuario.nombre);
-	printf("%d\n", fecha);
-	printf("%d\n", datos_usuario.fecha.mes);
-	printf("%d\n", datos_usuario.fecha.anio);
-	printf("%d\n", datos_usuario.fecha.dia);
+	printf("nombre: %s\n", datos_usuario.nombre);
+	printf("fecha: %d\n", fecha);
+	printf("dia: %d\n", datos_usuario.fecha.dia);
+	printf("mes: %d\n", datos_usuario.fecha.mes);
+	printf("año: %d\n", datos_usuario.fecha.anio);
 
 
+	partir_fecha(&fecha, &datos_usuario);
 	printf("La estructura queda:\n");
 	printf("dia: %d\n", datos_usuario.fecha.dia);
 	printf("mes: %d\n", datos_usuario.fecha.mes);	
 	printf("anio: %d\n", datos_usuario.fecha.anio);
+
+	printf("hora: %f\n", datos_usuario.horario.segundos);
+	printf("Minuto: %d\n", datos_usuario.horario.minuto);
+	printf("dia: %d\n", datos_usuario.horario.hora);
 	*/
 	
 	generar_gpx(&estructura, &datos_usuario);
@@ -113,7 +118,7 @@ status_t procesar_argumentos(int argc, char * argv[], metadata * datos_usuario, 
 					case ARG_FECHA:
 						esta_fecha = true;
 						i++; 
-						estado = validar_argumento_fecha(argv[i], fecha);
+						estado = validar_argumento_fecha(argv[i], fecha, datos_usuario);
 						break;
 					case ARG_ANIO:
 						i++;
