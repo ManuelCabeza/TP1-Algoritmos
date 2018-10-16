@@ -85,12 +85,12 @@ bool convertir_a_numero_entero(char *cadena, int *resultado);
 /*n entero en basse10.
 
 */
-status_t procesar_argumentos(int argc, char *argv[], metadata_t *datos_usuario, int *fecha);
+status_t procesar_argumentos(int argc, char *argv[], metadata_t *datos_usuario);
 /*
 Verifica si los argumentos que se ingresan por linea de comando son validos.
 En caso de que si, lo almacena en la estructura datos_usuario. 
 
-Recibe un arreglo de cadenas argv, la cantidad de cadenas que haya en argc
+Recibe un arreglo de cadenas argv, la cantidad de cadenas que haya en argv es argc
 Aclarar donde se guardaran los resultados en metadata_t  
 
 Devuelve un ST_AYUDA en caso de que se haya ingresado el argumento -h o --help
