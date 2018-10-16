@@ -1,6 +1,16 @@
 #ifndef PROCESAR_NMEA_H
 #define PROCESAR_NMEA_H
 
+#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include <time.h>
+
+#include "verificaciones_main.h"
+#include "main.h"
+
 #define MAX_LONG_SEN 85
 #define CANT_ARGUMENTOS 14
 #define MAX_VALOR_FIX 8
@@ -18,13 +28,6 @@
 
 typedef enum {INVALIDO, GPS, DGPS, PPS, RTK, FRTK, ESTIMADA, MANUAL, SIMULACION} cal_fix;
 
-/* Esto esta definido aca
-typedef struct {
-	int hora;
-	int minuto;
-	float segundos;
-} horario_t;
-*/
 typedef struct {
 	horario_t horario;
 	float latitud;
