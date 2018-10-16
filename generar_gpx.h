@@ -1,6 +1,15 @@
 #ifndef GENERAR_GPX_H
 #define GENERAR_GPX_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include <time.h>
+
+#include "verificaciones_main.h"
+#include "procesar_nmea.h"
+#include "main.h"
 
 #define MSJ_GPX_1 "?xml version=\"1.0\" encoding=\" UTF-8\"?"
 #define MSJ_GPX_2 "gpx version=\"1.1\" creator=\"95.11 TP1 - Tracker\" xmlns=\"http://www.topografix.com/GPX/1/1\""
@@ -26,17 +35,6 @@
 #define TAG_TIEMPO "time"
 #define TAG_METADATA "metadata"
 #define TAG_NOMBRE "name"
-
-
-/* Esta se define de vardad aca
-#define MAX_LONG_NOMBRE 100
-
-typedef struct {
-	char nombre[MAX_LONG_NOMBRE];
-	horario_t horario;
-	fecha_t fecha;
-} metadata;
-*/
 
 typedef enum {INICIAR, INICIAR_ENTER, FINAL, FINAL_ENTER} tipo_tag;
 
