@@ -11,18 +11,15 @@
 
 int main(int argc, char *argv[]) {
 
-	int fecha = 0;
-
 	gga estructura;
 	metadata_t datos_usuario; 
-
 	status_t st;
 
 	cargar_fecha_por_omision(&datos_usuario);
 	cargar_nombre_por_omision(&datos_usuario);
 	cargar_hora_por_omision(&datos_usuario);
 
-	st = procesar_argumentos(argc, argv, &datos_usuario, &fecha);
+	st = procesar_argumentos(argc, argv, &datos_usuario);
 	
 	if (st == ST_PEDIR_AYUDA) { 
 		imprimir_ayuda();
@@ -57,8 +54,9 @@ int main(int argc, char *argv[]) {
 	return EXIT_SUCCESS;
 }
 //Verifica que los argumentos procesados sean correctos.
-status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario, int * fecha) {
+status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario) {
 
+	
 	const char * arg_validos[] = { ARG_VALIDO_AYUDA, ARG_VALIDO_AYUDA_V , 
 								   ARG_VALIDO_NOMBRE, ARG_VALIDO_NOMBRE_V, 
 								   ARG_VALIDO_FECHA, ARG_VALIDO_FECHA_V,
@@ -67,11 +65,12 @@ status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario
 								   ARG_VALIDO_DIA, ARG_VALIDO_DIA_V
 						          }; 
 
+	int fecha = 0;
 	int i, j;
 	status_t estado;
 	bool esta_fecha; // La uso como bandera indicadora para ver si esta el argumeto -f o --format
 	
-	if (!argv|| !fecha)
+	if (!argv|| !datos_usuario)
 		return ST_ERROR_PUNTERO_NULO;
 
 	for (i = 1; i < argc; i++) { 
@@ -89,7 +88,7 @@ status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario
 					case ARG_FECHA:
 						esta_fecha = true;
 						i++; 
-						estado = validar_argumento_fecha(argv[i], fecha, datos_usuario);
+						estado = validar_argumento_fecha(argv[i], &fecha, datos_usuario);
 						break;
 					case ARG_ANIO:
 						i++;
