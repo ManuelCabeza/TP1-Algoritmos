@@ -18,7 +18,18 @@
  * PR_FIN si no hay nada mas que leer en el archivo
  * PR_ERR si el formato de una linea de datos no esta bien
  * PR_OK si el dato de una linea fue procesado correctamente. */
+#include "procesar_nmea.h"
+#include "main.h"
+#include "verificaciones_main.h"
+#include "generar_gpx.h"
+
+
 #include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include <time.h>
 
 procesar_t procesar_nmea(gga * ggaptr) {
 	
