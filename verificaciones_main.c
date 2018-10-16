@@ -1,7 +1,13 @@
-#include <stdlib.h>
+#include "verificaciones_main.h"
+#include "generar_gpx.h"
+#include "procesar_nmea.h"
+#include "main.h"
+
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <time.h>
 
 bool convertir_a_numero_entero(char *cadena, int *resultado) {
 
@@ -64,7 +70,6 @@ status_t validar_argumento_mes(char *argv_mes, int *mes) {
 }
 
 status_t validar_argumento_anio(char *argv_anio, int *anio) {
-//cuesta mas trabajo usar strlen para leer una cantidad de una cadena y despues ver si eso esta bien.
 	
 	if (!convertir_a_numero_entero(argv_anio, anio))
 		return ST_ERROR_ANIO_INVALIDO;
