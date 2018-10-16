@@ -1,39 +1,13 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <string.h>
-#include <stdbool.h>
-
-//En realidad van definidas en otro lado pero es para pruebas
-// Esto va en verificaciones main.h
-typedef struct {
-	int dia;
-	int mes;
-	int anio;
-} fecha_t;
-
-// Esto va en procesarnmea.h 
-typedef struct {
-	int hora;
-	int minuto;
-	float segundos;
-} horario_t;
-
-//Esto va en generargpx.h
-#define MAX_LONG_NOMBRE 100
-typedef struct {
-	char nombre[MAX_LONG_NOMBRE];
-	horario_t horario;
-	fecha_t fecha;
-} metadata_t;
-
+#include "main.h"
+#include "verificaciones_main.h"
 #include "procesar_nmea.h"
 #include "generar_gpx.h"
-#include "verificaciones_main.h"
 
-#include "verificaciones_main.c"
-#include "procesar_nmea.c"
-#include "generar_gpx.c" // Ya se que no van estos pero sino no compila
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include <time.h>
 
 int main(int argc, char *argv[]) {
 
