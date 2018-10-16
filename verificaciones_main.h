@@ -1,6 +1,14 @@
 #ifndef VALIDACIONES_MAIN_H
 #define VALIDACIONES_MAIN_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include <time.h>
+
+#include "main.h"
+
 //No se me ocurren nombres de variables mas representativos.
 #define ARG_VALIDO_AYUDA "-h"
 #define ARG_VALIDO_AYUDA_V "--help"
@@ -68,30 +76,27 @@ typedef enum {ARG_AYUDA = 0, ARG_NOMBRE, ARG_FECHA, ARG_ANIO, ARG_MES, ARG_DIA} 
 
 
 typedef enum estados {ST_OK, ST_ERROR_PUNTERO_NULO, ST_ERROR_FECHA_INVALIDA, ST_PEDIR_AYUDA,
-                        ST_ERROR_NOMBRE_INVALIDO, ST_ERROR_DIA_INVALIDO, ST_ERROR_MES_INVALIDO,
-                        ST_ERROR_ANIO_INVALIDO} status_t;  
-// NO ME GUSTA QUE AYUDA ESTE ACA
-/* Esta se define de vardad qaca
-typedef struct {
-	int dia;
-	int mes;
-	int anio;
-} fecha_t;
-*/ 
+                      ST_ERROR_NOMBRE_INVALIDO, ST_ERROR_DIA_INVALIDO, ST_ERROR_MES_INVALIDO,
+                      ST_ERROR_ANIO_INVALIDO} status_t;  
  
-bool convertir_a_numero_entero(char *cadena, int *resultado);
-//char *nombre;
+// PARA DOCUMENTAR NO EXPLICAR COMO LO HACE, SINO EL QUE HACE!!
+
+bool convertir_a_numero_entero(char *cadena, int *resultado); 
+/*n entero en basse10.
+
+*/
 status_t procesar_argumentos(int argc, char *argv[], metadata_t *datos_usuario, int *fecha);
-//Recibe la cantidad de elementos que tiene el vector argv, el vector argv, 
-//puntero a una estructura metada_t y donde guardar la fecha en caso de necesitarlo.
+/*
+Verifica si los argumentos que se ingresan por linea de comando son validos.
+En caso de que si, lo almacena en la estructura datos_usuario. 
 
-// Esta funcion, verifica si lso argumentos que se ingresan por linea de comando son validos.
-// En caso de que si, llama a las recpectivas funciones de validaciones y guardan la fecha, o nombre
-// en la estructura datos_usuario 
+Recibe un arreglo de cadenas argv, la cantidad de cadenas que haya en argc
+Aclarar donde se guardaran los resultados en metadata_t  
 
-//Devuelve un ST_AYUDA en caso de que se haya ingresado el argumento -h o --help
-// un ST_ERROR--- en caso que algun argumento no sea valido
-// ST_OK si todos los argumentos son validos y sus contenidos tambien 
+Devuelve un ST_AYUDA en caso de que se haya ingresado el argumento -h o --help
+ST_ERROR--- en caso que algun argumento no sea valido
+ST_OK si todos los argumentos son validos y sus contenidos tambien 
+*/
 
 status_t validar_argumento_nombre(char *argv_nombre, char *nombre);
 status_t validar_argumento_fecha(char *argv_fecha, int *fecha, metadata_t *datos_usuario);
@@ -111,5 +116,3 @@ bool cargar_hora_por_omision (metadata_t *datos_usuario);
 
 #endif 
 
-// solo van en el .h si otras funciones necesitan esas variables.
-//Caso contratario va en el .c
