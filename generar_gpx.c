@@ -1,3 +1,12 @@
+#include "generar_gpx.h"
+#include "verificaciones_main.h"
+#include "main.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include <time.h>
 
 void generar_gpx(gga * ggaptr, metadata_t * metptr) {
 	
