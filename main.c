@@ -66,6 +66,10 @@ status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario
 						          }; 
 
 	int fecha = 0;
+	int mes;
+	int anio;
+	int dia;
+
 	int i, j;
 	status_t estado;
 	bool esta_fecha; // La uso como bandera indicadora para ver si esta el argumeto -f o --format
@@ -94,19 +98,20 @@ status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario
 						i++;
 						if (esta_fecha) // Si fecha estan indicada como true 
 							break;
-						estado = validar_argumento_anio(argv[i], &(datos_usuario->fecha.anio));
+						estado = validar_argumento_anio(argv[i], &anio, datos_usuario);
+/*&(datos_usuario->fecha.anio)*/						
 						break;
 					case ARG_MES:
 						i++;
 						if (esta_fecha)
 							break;
-						estado = validar_argumento_mes(argv[i],  &(datos_usuario->fecha.mes));
+						estado = validar_argumento_mes(argv[i], &mes, datos_usuario);
 						break;
 					case ARG_DIA:
 						i++;
 						if (esta_fecha)
 							break;
-						estado = validar_argumento_dia(argv[i],  &(datos_usuario->fecha.dia));
+						estado = validar_argumento_dia(argv[i], &dia, datos_usuario);
 						break;
 				}
 				if (estado != ST_OK)
