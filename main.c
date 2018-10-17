@@ -78,7 +78,6 @@ status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario
 						estado = validar_argumento_fecha(argv[i], &fecha, datos_usuario);
 						break;
 					case ARG_ANIO:
-                        puts("EN EL AÑO");
 						i++;
 						if (esta_fecha)
 							break;
