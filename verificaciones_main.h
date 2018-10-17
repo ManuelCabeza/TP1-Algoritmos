@@ -124,15 +124,17 @@ Parte a la fecha ingresada por linea de comando, de forma tal que pueda ser
 cargada correctamente en la estructura datos_usuario.
 Caso contrario, devuelve un estado de error correspondiente. 
 */
-status_t validar_argumento_mes(char *argv_mes, int *mes);
-status_t validar_argumento_anio(char *argv_anio, int *anio);
-status_t validar_argumento_dia(char *argv_dia, int *dia);
+status_t validar_argumento_mes(char *argv_mes, int *mes, metadata_t *datos_usuario);
+status_t validar_argumento_anio(char *argv_anio, int *anio, metadata_t *datos_usuario);
+status_t validar_argumento_dia(char *argv_dia, int *dia, metadata_t *datos_usuario);
 
 /*
 Para las tres funciones anteriores es la misma idea:
 
 Verifica que el argumento ingresado por linea de comando sea valido. 
-En caso que sea valido, lo almacena en la estructura datos_usuario.
+En caso que sea valido, lo guarda en una variable auxiliar.
+Valida que la variable sea correcta, y en caso de serlo, lo guarde en la estructura 
+datos_usuario.
 Caso contrario, devuelve un estado de error correspondiente.
 
 Recibe un arreglo de cadenas argv correspondiente, y un puntero a un
