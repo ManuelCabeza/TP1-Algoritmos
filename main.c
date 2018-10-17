@@ -94,19 +94,19 @@ status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario
 						i++;
 						if (esta_fecha) // Si fecha estan indicada como true 
 							break;
-						estado = validar_argumento_anio(argv[i], &((* datos_usuario).fecha.anio));
+						estado = validar_argumento_anio(argv[i], &(datos_usuario->fecha.anio));
 						break;
 					case ARG_MES:
 						i++;
 						if (esta_fecha)
 							break;
-						estado = validar_argumento_mes(argv[i],  &((* datos_usuario).fecha.mes));
+						estado = validar_argumento_mes(argv[i],  &(datos_usuario->fecha.mes));
 						break;
 					case ARG_DIA:
 						i++;
 						if (esta_fecha)
 							break;
-						estado = validar_argumento_dia(argv[i],  &((* datos_usuario).fecha.dia));
+						estado = validar_argumento_dia(argv[i],  &(datos_usuario->fecha.dia));
 						break;
 				}
 				if (estado != ST_OK)
