@@ -64,8 +64,6 @@ status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario
 		for (j = 0; j < MAX_CANT_ARG; j++) {
 			if (strcmp(argv[i], arg_validos[j]) == 0) {
 				j = j / 2;
-				puts("ACA pre switch");
-				printf("%i\n", j);
 				switch (j) {
 					case ARG_AYUDA:
 						return ST_PEDIR_AYUDA;
