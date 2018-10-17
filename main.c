@@ -31,28 +31,10 @@ int main(int argc, char *argv[]) {
 		return EXIT_FAILURE;
 	}
 
-/*
-	printf("nombre: %s\n", datos_usuario.nombre);
-	printf("fecha: %d\n", fecha);
-	printf("dia: %d\n", datos_usuario.fecha.dia);
-	printf("mes: %d\n", datos_usuario.fecha.mes);
-	printf("año: %d\n", datos_usuario.fecha.anio);
-
-
-	partir_fecha(&fecha, &datos_usuario);
-	printf("La estructura queda:\n");
-	printf("dia: %d\n", datos_usuario.fecha.dia);
-	printf("mes: %d\n", datos_usuario.fecha.mes);
-	printf("anio: %d\n", datos_usuario.fecha.anio);
-*/
 	generar_gpx(&estructura, &datos_usuario);
-/*
-	printf("hora: %f\n", datos_usuario.horario.segundos);
-	printf("Minuto: %d\n", datos_usuario.horario.minuto);
-	printf("dia: %d\n", datos_usuario.horario.hora);
-*/
 	return EXIT_SUCCESS;
 }
+
 //Verifica que los argumentos procesados sean correctos.
 status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario) {
 
@@ -72,7 +54,8 @@ status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario
 
 	int i, j;
 	status_t estado;
-	bool esta_fecha = false; // La uso como bandera indicadora para ver si esta el argumeto -f o --format
+	bool esta_fecha = false;
+	// La uso como bandera indicadora para ver si esta el argumeto -f o --format
 
 	if (!argv|| !datos_usuario)
 		return ST_ERROR_PUNTERO_NULO;
@@ -99,10 +82,9 @@ status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario
 					case ARG_ANIO:
                         puts("EN EL AÑO");
 						i++;
-						if (esta_fecha) // Si fecha estan indicada como true
+						if (esta_fecha)
 							break;
 						estado = validar_argumento_anio(argv[i], &anio, datos_usuario);
-                        /*&(datos_usuario->fecha.anio)*/
 						break;
 					case ARG_MES:
 						i++;
