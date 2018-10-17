@@ -48,7 +48,7 @@
 
 
 #define CANT_MIN_FECHA 99991231 //NO ME GUSTA ESTO
-#define CANT_MIN_MES 1
+#define CANT_MIN_MES 0
 #define CANT_MAX_MES 12
 #define CANT_MAX_ANIO 9999
 #define CANT_MIN_ANIO 0
