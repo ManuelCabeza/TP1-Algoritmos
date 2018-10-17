@@ -67,7 +67,7 @@
 #define MSJ_ERROR_HORA_INVALIDA "La hora ingresada es invalida. "
 
 #define CANT_MAX 150
-#define NOMBRE_POR_OMISION "jiji"
+#define NOMBRE_POR_OMISION "ARSAT-15"
 
 #define AJUSTE_DE_NUM 1
 #define ANIO_DE_LINUX 1900
