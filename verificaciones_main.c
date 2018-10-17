@@ -58,18 +58,20 @@ status_t validar_argumento_fecha(char *argv_fecha, int *fecha, metadata_t *datos
 	return ST_OK;
 }
 
-status_t validar_argumento_mes(char *argv_mes, int *mes) {
+status_t validar_argumento_mes(char *argv_mes, int *mes, metadata_t *datos_usuario) {
 	
 	if (!convertir_a_numero_entero(argv_mes, mes))
 		return ST_ERROR_MES_INVALIDO;
 
 	if (*mes < CANT_MIN_MES || *mes > CANT_MAX_MES) 
 		return ST_ERROR_MES_INVALIDO;
+		
+	datos_usuario->fecha.mes = *mes;
 
 	return ST_OK;	
 }
 
-status_t validar_argumento_anio(char *argv_anio, int *anio) {
+status_t validar_argumento_anio(char *argv_anio, int *anio, metadata_t *datos_usuario) {
 	
 	if (!convertir_a_numero_entero(argv_anio, anio))
 		return ST_ERROR_ANIO_INVALIDO;
@@ -77,16 +79,20 @@ status_t validar_argumento_anio(char *argv_anio, int *anio) {
 	if (*anio < CANT_MIN_ANIO || *anio > CANT_MAX_ANIO)
 		return ST_ERROR_ANIO_INVALIDO;
 
+	datos_usuario->fecha.anio = *anio;
+
 	return ST_OK;
 }
 
-status_t validar_argumento_dia(char *argv_dia, int *dia) {
+status_t validar_argumento_dia(char *argv_dia, int *dia, metadata_t *datos_usuario) {
 
 	if (!convertir_a_numero_entero(argv_dia, dia))
 		return ST_ERROR_DIA_INVALIDO;
 
 	if (*dia < CANT_MIN_DIA || *dia > CANT_MAX_DIA)
 		return ST_ERROR_DIA_INVALIDO;
+
+	datos_usuario->fecha.dia = *dia;
 
 	return ST_OK;
 
