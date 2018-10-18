@@ -8,7 +8,7 @@
 #include <stdbool.h>
 #include <time.h>
 
-void generar_gpx(gga * ggaptr, metadata_t * metptr) {
+void generar_gpx(gga_t * ggaptr, metadata_t * metptr) {
 
 	int i;
 	procesar_t nmea_aux;
