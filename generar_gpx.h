@@ -38,7 +38,7 @@
 
 typedef enum {INICIAR, INICIAR_ENTER, FINAL, FINAL_ENTER} tipo_tag;
 
-void generar_gpx(gga * ggaptr, metadata_t * metptr);
+void generar_gpx(gga_t * ggaptr, metadata_t * metptr);
 
 void tag(char * strptr, tipo_tag tipo, size_t indentacion);
 
