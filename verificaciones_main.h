@@ -79,80 +79,84 @@ typedef enum estados {ST_OK, ST_ERROR_PUNTERO_NULO, ST_ERROR_FECHA_INVALIDA, ST_
                       ST_ERROR_NOMBRE_INVALIDO, ST_ERROR_DIA_INVALIDO, ST_ERROR_MES_INVALIDO,
                       ST_ERROR_ANIO_INVALIDO} status_t;  
  
-// PARA DOCUMENTAR NO EXPLICAR COMO LO HACE, SINO EL QUE HACE!!
 
 
+/* Verifica que los argumentos que se ingresan por linea de comando sean validos.
+ * En caso de que sean validos, los almacena en la estructura datos_usuario.
+ * Caso contrario, devuelve un estado de error que corresponda.  
+ * 
+ * Recibe un arreglo de cadenas argv, la cantidad de cadenas que haya en argv es argc,
+ * y un puntero a una estructura datos_usuario donde se guardaran los resultados.
+ * 
+ * Devuelve un ST_AYUDA en caso de que se haya ingresado el argumento -h o --help
+ * ST_ERROR... en caso que algun argumento no sea valido
+ * ST_OK si todos los argumentos son validos y sus contenidos tambien 
+ */
 status_t procesar_argumentos(int argc, char *argv[], metadata_t *datos_usuario);
-/*
-Verifica que los argumentos que se ingresan por linea de comando sean validos.
-En caso de que sean validos, los almacena en la estructura datos_usuario.
-Caso contrario, devuelve un estado de error que corresponda.  
 
-Recibe un arreglo de cadenas argv, la cantidad de cadenas que haya en argv es argc,
-y un puntero a una estructura datos_usuario donde se guardaran los resultados.
 
-Devuelve un ST_AYUDA en caso de que se haya ingresado el argumento -h o --help
-ST_ERROR... en caso que algun argumento no sea valido
-ST_OK si todos los argumentos son validos y sus contenidos tambien 
-*/
-bool convertir_a_numero_entero(char *cadena, int *resultado); 
 /* Convierte cualquier cadena que se le pase a un numero entero en base 10.
-Si se puede convertir la cadena, lo guarda en resultado y devuelve true.
-Caso contrario, devuelve un false y la funcion no hace nada.
-*/
+ * Si se puede convertir la cadena, lo guarda en resultado y devuelve true.
+ * Caso contrario, devuelve un false y la funcion no hace nada. 
+ */
+bool convertir_a_numero_entero(char *cadena, int *resultado); 
 
+
+/* Verifica que el argumento ingresado por linea de comando argv_nombre sea 
+ * valido. Si el argumento es valido, se guarda en nombre. Caso contrario, devuelve
+ * un estado de error, y la funcion no hace nada.
+ */
 status_t validar_argumento_nombre(char *argv_nombre, char *nombre);
-/* Verifica que el argumento ingresado por linea de comando argv_nombre sea valido.
-Si el argumento es valido, se guarda en nombre. Caso contrario, devuelve un estado 
-de error, y la funcion no hace nada.
 
-*/
+
+/* Verifica que el argumento fecha ingresado por linea de comando sea valido.
+ * En caso que sea valido, lo almacena en la estructura datos_usuario.
+ * Caso contrario, devuelve un estado de error correspondiente.
+ * 
+ * Recibe un arreglo de cadenas argv, un puntero a donde esta almacenado el
+ * valor de fecha, y un puntero a una estructura donde se guardaran todos los datos. 
+ */
 status_t validar_argumento_fecha(char *argv_fecha, int *fecha, metadata_t *datos_usuario);
-/*
-Verifica que el argumento fecha ingresado por linea de comando sea valido.
-En caso que sea valido, lo almacena en la estructura datos_usuario.
-Caso contrario, devuelve un estado de error correspondiente.
 
-Recibe un arreglo de cadenas argv, un puntero a donde esta almacenado el
-valor de fecha, y un puntero a una estructura donde se guardaran todos los datos.
 
+/* Parte a la fecha ingresada por linea de comando, de forma tal que pueda ser
+ * cargada correctamente en la estructura datos_usuario.
+ * Caso contrario, devuelve un estado de error correspondiente. 
 */
-
 status_t partir_fecha(int *fecha, metadata_t *datos_usuario);
-/*
-Parte a la fecha ingresada por linea de comando, de forma tal que pueda ser
-cargada correctamente en la estructura datos_usuario.
-Caso contrario, devuelve un estado de error correspondiente. 
+
+
+
+
+/* Las siguientes tres funciones siguen la misma idea:
+
+ * Verifica que el argumento ingresado por linea de comando sea valido. 
+ * En caso que sea valido, lo guarda en una variable auxiliar.
+ * Valida que la variable auxiliar sea correcta, y en caso de serlo, 
+ * lo guarde en la estructura datos_usuario.
+ * Caso contrario, devuelve un estado de error correspondiente.
+ * 
+ * Recibe un arreglo de cadenas argv correspondiente, un puntero a una
+ * variable a validar, y un puntero a una estructura donde se guarda
+ * dicho valor si es correcto.
 */
+
 status_t validar_argumento_mes(char *argv_mes, int *mes, metadata_t *datos_usuario);
 status_t validar_argumento_anio(char *argv_anio, int *anio, metadata_t *datos_usuario);
 status_t validar_argumento_dia(char *argv_dia, int *dia, metadata_t *datos_usuario);
 
-/*
-Para las tres funciones anteriores es la misma idea:
-
-Verifica que el argumento ingresado por linea de comando sea valido. 
-En caso que sea valido, lo guarda en una variable auxiliar.
-Valida que la variable auxiliar sea correcta, y en caso de serlo, 
-lo guarde en la estructura datos_usuario.
-Caso contrario, devuelve un estado de error correspondiente.
-
-Recibe un arreglo de cadenas argv correspondiente, un puntero a una
-variable a validar, y un puntero a una estructura donde se guarda
-dicho valor si es correcto.
-
-*/
-
-
+/* Imprime la ayuda por stdout en caso que sea llamada la funcion. */
 void imprimir_ayuda();
-/* Imprime la ayuda por stdin en caso que sea llamada la funcion. */
 
-bool cargar_fecha_por_omision (metadata_t * datos_usuario);
 /* Inicializa a la estructura datos_usuario con la fecha actual del sistema. */
-bool cargar_nombre_por_omision(metadata_t *datos_usuario);
+bool cargar_fecha_por_omision (metadata_t * datos_usuario);
+
 /* Inicializa a la estructura datos_usuario con un nombre por defecto. */
-bool cargar_hora_por_omision (metadata_t *datos_usuario);
+bool cargar_nombre_por_omision(metadata_t *datos_usuario);
+
 /* Inicializa a la estructura datos_usuario con la hora actual del sistema. */
+bool cargar_hora_por_omision (metadata_t *datos_usuario);
+
 
 
 
