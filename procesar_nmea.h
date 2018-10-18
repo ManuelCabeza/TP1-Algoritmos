@@ -11,7 +11,7 @@
 #include "verificaciones_main.h"
 #include "estructuras.h"
 
-#define MAX_LONG_SEN 85
+#define MAX_LONG_SEN 90
 #define CANT_ARGUMENTOS 14
 #define MAX_VALOR_FIX 8
 #define MIN_VALOR_FIX 0
@@ -42,16 +42,33 @@ typedef struct {
 typedef enum {PR_OK, PR_ERR, PR_FIN} procesar_t;
 
 void procesar_horario(gga_t * estructura, float horario);
+/* Carga la estructura con un horario de formato hhmmss.sss (o mas s), recibe 
+ * un puntero a la estructura del tipo gga y un horario a convertir. 
+ * Carga la estructura con :
+ * estructura.horario.hora = hh
+ * estructura.horario.minuto = mm
+ * estructura.horario.segundo = ss.sss
+*/
 
-//Funcion que recibe una sentencia y calcula la XOR de todos los bytes hasta llegar a un caracter de corte
 unsigned char nmea_verificar_suma(const char * sentencia);
+/*Funcion que recibe una sentencia y calcula la XOR de todos los bytes hasta llegar a un caracter de corte 
+ * que se define por la macro CARACTER_SUMA_VER.
+ * 
+ * Recibe un puntero al comienzo de la sentencia a calcular
+ * Devuelve la suma XOR
+ * 
+*/
 
-/*La funcion devuelve:
- * PR_FIN si no hay nada mas que leer en el archivo
- * PR_ERR si el formato de una linea de datos no esta bien
- * PR_OK si el dato de una linea fue procesado correctamente. */
 procesar_t procesar_nmea(gga_t * ggaptr);
-
+/* Procesa una línea de stdin (hasta \n) de hasta MAX_LONG_SEN. Una vez que se verifica un dato y es correcto,
+ * se carga en la estructura gga_t, hasta que se acabe la sentencia o halla alguno incorrecto.
+ * 
+ * Recibe un puntero a la estructura del tipo gga_t
+ * 
+ * La funcion devuelve:
+ * PR_FIN si no hay nada mas que leer en el archivo
+ * PR_ERR si el formato de cualquier argumento de una linea de datos no esta bien
+ * PR_OK si el dato de una linea fue procesado correctamente. */
 
 #endif 
 

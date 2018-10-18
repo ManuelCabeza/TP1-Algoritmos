@@ -145,7 +145,7 @@ dicho valor si es correcto.
 
 
 void imprimir_ayuda();
-/* Imprime la ayuda por stdin en caso que sea invocada la funcion. */
+/* Imprime la ayuda por stdin en caso que sea llamada la funcion. */
 
 bool cargar_fecha_por_omision (metadata_t * datos_usuario);
 /* Inicializa a la estructura datos_usuario con la fecha actual del sistema. */

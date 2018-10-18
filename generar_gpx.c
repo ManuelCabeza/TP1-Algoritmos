@@ -58,8 +58,6 @@ void generar_gpx(gga_t * ggaptr, metadata_t * metptr) {
 
 }
 
-
-// Imprime una tag, la empieza si recibe un uno y la termina con un 0;
 void tag(char * strptr, tipo_tag tipo, size_t indentacion) {
 
 	size_t i;

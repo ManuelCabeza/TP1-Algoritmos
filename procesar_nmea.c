@@ -10,14 +10,10 @@
  * Cantidad de satélites, número del 0 a 12 discreto
  * HDop debe ser 1.0 ? Preguntar a Pato .. Rta: Debe ser numero
  * Elevación debe ser 0.0 ? Preguntar a Pato .. Rta: Debe ser numero
- * Unidad Las dos deben ser M
+ * Unidad: Las dos deben ser M
  * Suma de verificacion
  */
 
-/*La funcion devuelve:
- * PR_FIN si no hay nada mas que leer en el archivo
- * PR_ERR si el formato de una linea de datos no esta bien
- * PR_OK si el dato de una linea fue procesado correctamente. */
 #include "procesar_nmea.h"
 #include "estructuras.h"
 #include "verificaciones_main.h"
@@ -122,21 +118,10 @@ procesar_t procesar_nmea(gga_t * ggaptr) {
 	//Verifica la suma de verificacion (Valga la redundancia)
 	if (nmea_verificar_suma( strptr) != suma_verificacion)
 		return PR_ERR;
-
-	/* Imprimir todo lo que contiene (para pruebas)
-	printf("\t\t%f\n",  ggaptr->horario);
-	printf("\t\t%f\n",  ggaptr->latitud);
-	printf("\t\t%f\n",  ggaptr->longitud);
-	printf("\t\t%i\n",  ggaptr->calidad_fix);
-	printf("\t\t%i\n",  ggaptr->cant_satelites);
-	printf("\t\t%f\n",  ggaptr->hdop);
-	printf("\t\t%f\n",  ggaptr->elevacion);
-	printf("\t\t%f\n",  ggaptr->sep_geo);
-	*/
+	
 	return PR_OK;
 }
 
-//Funcion que recibe una sentencia y calcula la XOR de todos los bytes hasta llegar a un caracter de corte
 unsigned char nmea_verificar_suma(const char * sentencia) {
 
 	unsigned char suma = 0;
@@ -147,7 +132,6 @@ unsigned char nmea_verificar_suma(const char * sentencia) {
 	return suma;
 }
 
-// Carga la estructura con un horario de formato hhmmss.sss (o mas s)
 void procesar_horario(gga_t * estructura, float horario) {
 
 	estructura->horario.minuto = (horario - 10000 * (estructura->horario.hora = horario / 10000)) / 100;
