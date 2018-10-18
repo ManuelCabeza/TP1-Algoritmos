@@ -46,7 +46,8 @@
 							"Si no se indica la fecha, se debe tomar la del sistema.\n" \
 
 
-#define CANT_MIN_FECHA 99991231 
+#define CANT_MAX_FECHA 99991231
+#define CANT_MIN_FECHA 0 
 #define CANT_MIN_MES 0
 #define CANT_MAX_MES 12
 #define CANT_MAX_ANIO 9999
@@ -80,11 +81,6 @@ typedef enum estados {ST_OK, ST_ERROR_PUNTERO_NULO, ST_ERROR_FECHA_INVALIDA, ST_
  
 // PARA DOCUMENTAR NO EXPLICAR COMO LO HACE, SINO EL QUE HACE!!
 
-bool convertir_a_numero_entero(char *cadena, int *resultado); 
-/* Convierte cualquier cadena que se le pase a un numero entero en base 10.
-Si se puede convertir la cadena, lo guarda en resultado y devuelve true.
-Caso contrario, devuelve un false y la funcion no hace nada.
-*/
 
 status_t procesar_argumentos(int argc, char *argv[], metadata_t *datos_usuario);
 /*
@@ -98,6 +94,11 @@ y un puntero a una estructura datos_usuario donde se guardaran los resultados.
 Devuelve un ST_AYUDA en caso de que se haya ingresado el argumento -h o --help
 ST_ERROR... en caso que algun argumento no sea valido
 ST_OK si todos los argumentos son validos y sus contenidos tambien 
+*/
+bool convertir_a_numero_entero(char *cadena, int *resultado); 
+/* Convierte cualquier cadena que se le pase a un numero entero en base 10.
+Si se puede convertir la cadena, lo guarda en resultado y devuelve true.
+Caso contrario, devuelve un false y la funcion no hace nada.
 */
 
 status_t validar_argumento_nombre(char *argv_nombre, char *nombre);
@@ -132,22 +133,20 @@ Para las tres funciones anteriores es la misma idea:
 
 Verifica que el argumento ingresado por linea de comando sea valido. 
 En caso que sea valido, lo guarda en una variable auxiliar.
-Valida que la variable sea correcta, y en caso de serlo, lo guarde en la estructura 
-datos_usuario.
+Valida que la variable auxiliar sea correcta, y en caso de serlo, 
+lo guarde en la estructura datos_usuario.
 Caso contrario, devuelve un estado de error correspondiente.
 
-Recibe un arreglo de cadenas argv correspondiente, y un puntero a un
-campo de la estructura 
-
-DUDOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOSO LO ULTIMO !!
+Recibe un arreglo de cadenas argv correspondiente, un puntero a una
+variable a validar, y un puntero a una estructura donde se guarda
+dicho valor si es correcto.
 
 */
 
 
 void imprimir_ayuda();
 /* Imprime la ayuda por stdin en caso que sea invocada la funcion. */
-void imprimir_errores(status_t estado);
-/* Dependiendo del estado que reciba, imprime el correspondiente mensaje de error. */
+
 bool cargar_fecha_por_omision (metadata_t * datos_usuario);
 /* Inicializa a la estructura datos_usuario con la fecha actual del sistema. */
 bool cargar_nombre_por_omision(metadata_t *datos_usuario);
