@@ -1,6 +1,6 @@
 /* Las líneas de tipo NMEA son de la forma
  *
- *  $GPGGA,hhmmss.sss,ddmm.mmm,S(o N),dddmm.mmm, E(o W), Calidad del fix, Cantidad de satélites, HDop, elevación, Unidad, SepGeo, Unidad, *camposnulos*, *SV
+ *  $GPGGA_t,hhmmss.sss,ddmm.mmm,S(o N),dddmm.mmm, E(o W), Calidad del fix, Cantidad de satélites, HDop, elevación, Unidad, SepGeo, Unidad, *camposnulos*, *SV
  *
  * hhmmss.sss horario del fix;
  * ddmm.mmm la primera es latitud, la seguna longitud
@@ -23,7 +23,6 @@
 #include "verificaciones_main.h"
 #include "generar_gpx.h"
 
-
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -31,7 +30,7 @@
 #include <stdbool.h>
 #include <time.h>
 
-procesar_t procesar_nmea(gga * ggaptr) {
+procesar_t procesar_nmea(gga_t * ggaptr) {
 
 	char c; //Variable auxiliar para no usar tolower mas de 2 veces.
 	char string[MAX_LONG_SEN]; // Max longitud de un string posible
@@ -149,7 +148,7 @@ unsigned char nmea_verificar_suma(const char * sentencia) {
 }
 
 // Carga la estructura con un horario de formato hhmmss.sss (o mas s)
-void procesar_horario(gga * estructura, float horario) {
+void procesar_horario(gga_t * estructura, float horario) {
 
 	estructura->horario.minuto = (horario - 10000 * (estructura->horario.hora = horario / 10000)) / 100;
 
