@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "errores.h"
 #include "verificaciones_main.h"
 
