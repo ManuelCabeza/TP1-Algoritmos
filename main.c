@@ -1,4 +1,5 @@
 #include "main.h"
+#include "errores.h"
 #include "verificaciones_main.h"
 #include "procesar_nmea.h"
 #include "generar_gpx.h"
@@ -32,111 +33,12 @@ int main(int argc, char *argv[]) {
 	}
 
 	generar_gpx(&estructura, &datos_usuario);
+
+
 	return EXIT_SUCCESS;
 }
 
-//Verifica que los argumentos procesados sean correctos.
-status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario) {
 
 
-	const char * arg_validos[] = { ARG_VALIDO_AYUDA, ARG_VALIDO_AYUDA_V ,
-								   ARG_VALIDO_NOMBRE, ARG_VALIDO_NOMBRE_V,
-								   ARG_VALIDO_FECHA, ARG_VALIDO_FECHA_V,
-								   ARG_VALIDO_ANIO, ARG_VALIDO_ANIO_V,
-								   ARG_VALIDO_MES, ARG_VALIDO_MES_V,
-								   ARG_VALIDO_DIA, ARG_VALIDO_DIA_V
-						          };
 
-	int fecha = 0;
-	int mes;
-	int anio;
-	int dia;
-
-	int i, j;
-	status_t estado;
-	bool esta_fecha = false;
-	// La uso como bandera indicadora para ver si esta el argumeto -f o --format
-
-	if (!argv|| !datos_usuario)
-		return ST_ERROR_PUNTERO_NULO;
-
-	for (i = 1; i < argc; i++) {
-		for (j = 0; j < MAX_CANT_ARG; j++) {
-			if (strcmp(argv[i], arg_validos[j]) == 0) {
-				j = j / 2;
-				switch (j) {
-					case ARG_AYUDA:
-						return ST_PEDIR_AYUDA;
-						break;
-					case ARG_NOMBRE:
-						i++;
-						estado = validar_argumento_nombre(argv[i], datos_usuario->nombre);
-						break;
-					case ARG_FECHA:
-						esta_fecha = true;
-						i++;
-						estado = validar_argumento_fecha(argv[i], &fecha, datos_usuario);
-						break;
-					case ARG_ANIO:
-						i++;
-						if (esta_fecha)
-							break;
-						estado = validar_argumento_anio(argv[i], &anio, datos_usuario);
-						break;
-					case ARG_MES:
-						i++;
-						if (esta_fecha)
-							break;
-						estado = validar_argumento_mes(argv[i], &mes, datos_usuario);
-						break;
-					case ARG_DIA:
-						i++;
-						if (esta_fecha)
-							break;
-						estado = validar_argumento_dia(argv[i], &dia, datos_usuario);
-						break;
-				}
-				if (estado != ST_OK)
-					return estado;
-
-			}
-		}
-	}
-
-	return ST_OK;
-}
-
-void imprimir_ayuda() {
-
-	printf("%s\n", MSJ_IMPRIMIR_AYUDA);
-}
-
-void imprimir_errores(status_t estado) {
-
-	switch (estado) {
-		case ST_OK:
-			break;
-		case ST_ERROR_PUNTERO_NULO:
-			fprintf(stderr, "%s : %s\n", MSJ_ERROR_PREFIJO, MSJ_ERROR_PUNTERO_NULO);
-			break;
-		case ST_ERROR_FECHA_INVALIDA:
-			fprintf(stderr, "%s : %s\n", MSJ_ERROR_PREFIJO, MSJ_ERROR_FECHA_INVALIDA);
-			break;
-		case ST_ERROR_NOMBRE_INVALIDO:
-			fprintf(stderr, "%s : %s\n", MSJ_ERROR_PREFIJO, MSJ_ERROR_NOMBRE_INVALIDO);
-			break;
-		case ST_ERROR_DIA_INVALIDO:
-			fprintf(stderr, "%s : %s\n", MSJ_ERROR_PREFIJO, MSJ_ERROR_DIA_INVALIDO);
-			break;
-		case ST_ERROR_MES_INVALIDO:
-			fprintf(stderr, "%s : %s\n", MSJ_ERROR_PREFIJO, MSJ_ERROR_MES_INVALIDO);
-			break;
-		case ST_ERROR_ANIO_INVALIDO:
-			fprintf(stderr, "%s : %s\n", MSJ_ERROR_PREFIJO, MSJ_ERROR_ANIO_INVALIDA);
-			break;
-		case ST_PEDIR_AYUDA:
-			break;
-	}
-
-}
 
