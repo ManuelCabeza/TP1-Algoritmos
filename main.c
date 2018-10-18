@@ -12,7 +12,7 @@
 
 int main(int argc, char *argv[]) {
 
-	gga estructura;
+	gga_t estructura;
 	metadata_t datos_usuario;
 	status_t st;
 
@@ -33,7 +33,6 @@ int main(int argc, char *argv[]) {
 	}
 
 	generar_gpx(&estructura, &datos_usuario);
-
 
 	return EXIT_SUCCESS;
 }
