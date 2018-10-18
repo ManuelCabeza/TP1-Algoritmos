@@ -10,7 +10,6 @@
 #include <stdbool.h>
 #include <time.h>
 
-
 status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario) {
 
 	const char * arg_validos[] = { ARG_VALIDO_AYUDA, ARG_VALIDO_AYUDA_V ,
@@ -80,7 +79,6 @@ status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario
 	return ST_OK;
 }
 
-
 bool convertir_a_numero_entero(char *cadena, int *resultado) {
 
 	char *perr = NULL;
@@ -107,7 +105,6 @@ status_t validar_argumento_nombre(char *argv_nombre, char *nombre) {
 }
 
 status_t validar_argumento_fecha(char *argv_fecha, int *fecha, metadata_t *datos_usuario) {
-//validar mes y dia. y 30 de febrero no es una fecha
 
 	if(!argv_fecha || !fecha || !datos_usuario)
 		return ST_ERROR_PUNTERO_NULO;
@@ -132,7 +129,6 @@ status_t validar_argumento_fecha(char *argv_fecha, int *fecha, metadata_t *datos
 
 status_t validar_argumento_mes(char *argv_mes, int * mes, metadata_t *datos_usuario) {
 
-
 	if(!argv_mes || !mes || !datos_usuario)
 		return ST_ERROR_PUNTERO_NULO;
 
@@ -149,7 +145,6 @@ status_t validar_argumento_mes(char *argv_mes, int * mes, metadata_t *datos_usua
 
 status_t validar_argumento_anio(char *argv_anio, int *anio, metadata_t *datos_usuario) {
 
-	
 	if(!argv_anio || !anio || !datos_usuario)
 		return ST_ERROR_PUNTERO_NULO;
 

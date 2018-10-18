@@ -51,6 +51,8 @@ procesar_t procesar_nmea(gga_t * ggaptr) {
 	/* Asigna valor de latitud a partir de formato ddmm.mmm */
 	ggaptr->latitud = (((int)latitud / 100) + ((latitud - 100 * ((int)latitud / 100)) / 60 )) * (c == CARACTER_SUR ? -1 : 1);
 
+
+
 	if ((longitud = strtof(++strptr, &strptr)) < 0 || ((* (strptr++)) != CARACTER_SEPARACION_COMANDO))
 		return PR_ERR;
 
@@ -95,6 +97,9 @@ procesar_t procesar_nmea(gga_t * ggaptr) {
 	return PR_OK;
 }
 
+
+
+
 unsigned char nmea_verificar_suma(const char * sentencia) {
 
 	unsigned char suma = 0;
@@ -111,7 +116,3 @@ void procesar_horario(gga_t * estructura, float horario) {
 
 	estructura->horario.segundos = horario - 100 * ((int)horario / 100);
 }
-
-
-
-

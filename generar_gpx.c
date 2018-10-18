@@ -76,4 +76,3 @@ void tag(char * strptr, tipo_tag tipo, size_t indentacion) {
 	if ((tipo != INICIAR) && (tipo != FINAL))
 		putchar('\n');
 }
-
