@@ -1,5 +1,5 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef ESTRUCTURAS_H
+#define ESTRUCTURAS_H
 
 #define MAX_LONG_NOMBRE 100
 

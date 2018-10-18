@@ -1,6 +1,6 @@
 #include "generar_gpx.h"
 #include "verificaciones_main.h"
-#include "main.h"
+#include "estructuras.h"
 
 #include <stdio.h>
 #include <stdlib.h>

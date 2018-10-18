@@ -1,7 +1,7 @@
 #include "verificaciones_main.h"
 #include "generar_gpx.h"
 #include "procesar_nmea.h"
-#include "main.h"
+#include "estructuras.h"
 #include "errores.h"
 
 #include <stdio.h>

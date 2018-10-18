@@ -7,7 +7,7 @@
 #include <stdbool.h>
 #include <time.h>
 
-#include "main.h"
+#include "estructuras.h"
 
 #define ARG_VALIDO_AYUDA "-h"
 #define ARG_VALIDO_AYUDA_V "--help"

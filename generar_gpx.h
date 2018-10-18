@@ -9,7 +9,7 @@
 
 #include "verificaciones_main.h"
 #include "procesar_nmea.h"
-#include "main.h"
+#include "estructuras.h"
 
 #define MSJ_GPX_1 "?xml version=\"1.0\" encoding=\" UTF-8\"?"
 #define MSJ_GPX_2 "gpx version=\"1.1\" creator=\"95.11 TP1 - Tracker\" xmlns=\"http://www.topografix.com/GPX/1/1\""

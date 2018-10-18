@@ -19,7 +19,7 @@
  * PR_ERR si el formato de una linea de datos no esta bien
  * PR_OK si el dato de una linea fue procesado correctamente. */
 #include "procesar_nmea.h"
-#include "main.h"
+#include "estructuras.h"
 #include "verificaciones_main.h"
 #include "generar_gpx.h"
 

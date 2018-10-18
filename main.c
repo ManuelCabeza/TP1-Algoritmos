@@ -1,4 +1,4 @@
-#include "main.h"
+#include "estructuras.h"
 #include "errores.h"
 #include "verificaciones_main.h"
 #include "procesar_nmea.h"
