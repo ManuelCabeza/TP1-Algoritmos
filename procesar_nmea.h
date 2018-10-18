@@ -42,7 +42,7 @@ typedef struct {
 typedef enum {PR_OK, PR_ERR, PR_FIN} procesar_t;
 
 /* Carga la estructura con un horario de formato hhmmss.sss (o mas s), recibe 
- * un puntero a la estructura del tipo gga y un horario a convertir. 
+ * un puntero a la estructura del tipo gga_t y un horario a convertir. 
  * Carga la estructura con :
  * estructura.horario.hora = hh
  * estructura.horario.minuto = mm
@@ -50,8 +50,8 @@ typedef enum {PR_OK, PR_ERR, PR_FIN} procesar_t;
 */
 void procesar_horario(gga_t * estructura, float horario);
 
-/*Funcion que recibe una sentencia y calcula la XOR de todos los bytes hasta llegar a un caracter de corte 
- * que se define por la macro CARACTER_SUMA_VER.
+/* Recibe una sentencia y calcula la XOR de todos los bytes hasta llegar a
+ * un caracter de corte que se define por la macro CARACTER_SUMA_VER.
  * 
  * Recibe un puntero al comienzo de la sentencia a calcular
  * Devuelve la suma XOR
@@ -59,8 +59,9 @@ void procesar_horario(gga_t * estructura, float horario);
 unsigned char nmea_verificar_suma(const char * sentencia);
 
 
-/* Procesa una línea de stdin (hasta \n) de hasta MAX_LONG_SEN. Una vez que se verifica un dato y es correcto,
- * se carga en la estructura gga_t, hasta que se acabe la sentencia o halla alguno incorrecto.
+/* Procesa una línea de stdin (hasta \n) hasta MAX_LONG_SEN. Una vez que se 
+ * verifica un dato y es correcto, se carga en la estructura gga_t, 
+ * hasta que se acabe la sentencia o halla alguno incorrecto.
  * 
  * Recibe un puntero a la estructura del tipo gga_t
  * 
