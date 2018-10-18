@@ -9,7 +9,6 @@
 
 #include "main.h"
 
-//No se me ocurren nombres de variables mas representativos.
 #define ARG_VALIDO_AYUDA "-h"
 #define ARG_VALIDO_AYUDA_V "--help"
 #define ARG_VALIDO_NOMBRE "-n"
@@ -47,7 +46,7 @@
 							"Si no se indica la fecha, se debe tomar la del sistema.\n" \
 
 
-#define CANT_MIN_FECHA 99991231 //NO ME GUSTA ESTO
+#define CANT_MIN_FECHA 99991231 
 #define CANT_MIN_MES 0
 #define CANT_MAX_MES 12
 #define CANT_MAX_ANIO 9999
@@ -146,28 +145,15 @@ DUDOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOSO LO ULTIMO !!
 
 
 void imprimir_ayuda();
-/*
-Imprime la ayuda por stdin en caso que sea invocada la funcion. 
-*/
+/* Imprime la ayuda por stdin en caso que sea invocada la funcion. */
 void imprimir_errores(status_t estado);
-
-/*
-Dependiendo del estado que reciba, imprime el correspondiente mensaje de error. 
-*/
-
+/* Dependiendo del estado que reciba, imprime el correspondiente mensaje de error. */
 bool cargar_fecha_por_omision (metadata_t * datos_usuario);
-/* 
-Inicializa a la estructura datos_usuario con la fecha actual del sistema.
-*/
-
+/* Inicializa a la estructura datos_usuario con la fecha actual del sistema. */
 bool cargar_nombre_por_omision(metadata_t *datos_usuario);
-/* 
-Inicializa a la estructura datos_usuario con un nombre por defecto.
-*/
+/* Inicializa a la estructura datos_usuario con un nombre por defecto. */
 bool cargar_hora_por_omision (metadata_t *datos_usuario);
-/* 
-Inicializa a la estructura datos_usuario con la hora actual del sistema.
-*/
+/* Inicializa a la estructura datos_usuario con la hora actual del sistema. */
 
 
 
