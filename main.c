@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
 
 	if (st == ST_PEDIR_AYUDA) {
 		imprimir_ayuda();
-		return EXIT_FAILURE;
+		return EXIT_SUCCESS;
 	}
 
 	if (st != ST_OK && st != ST_PEDIR_AYUDA) {
