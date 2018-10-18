@@ -37,11 +37,11 @@ typedef struct {
 	float hdop;
 	float elevacion;
 	float sep_geo;
-} gga;
+} gga_t;
 
 typedef enum {PR_OK, PR_ERR, PR_FIN} procesar_t;
 
-void procesar_horario(gga * estructura, float horario);
+void procesar_horario(gga_t * estructura, float horario);
 
 //Funcion que recibe una sentencia y calcula la XOR de todos los bytes hasta llegar a un caracter de corte
 unsigned char nmea_verificar_suma(const char * sentencia);
@@ -50,7 +50,7 @@ unsigned char nmea_verificar_suma(const char * sentencia);
  * PR_FIN si no hay nada mas que leer en el archivo
  * PR_ERR si el formato de una linea de datos no esta bien
  * PR_OK si el dato de una linea fue procesado correctamente. */
-procesar_t procesar_nmea(gga * ggaptr);
+procesar_t procesar_nmea(gga_t * ggaptr);
 
 
 #endif 
