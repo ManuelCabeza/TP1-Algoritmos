@@ -27,6 +27,9 @@ void imprimir_errores(status_t estado) {
 			break;
 		case ST_PEDIR_AYUDA:
 			break;
+		case ST_ERROR_ARG_INVALIDO:
+			fprintf(stderr, "%s : %s\n", MSJ_ERROR_PREFIJO, MSJ_ERROR_ARG_INVALIDO);
+			break;
 	}
 
 }
