@@ -6,7 +6,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <time.h>
-#include "estructuras.h"
+#include "main.h"
 
 #define ARG_VALIDO_AYUDA "-h"
 #define ARG_VALIDO_AYUDA_V "--help"
@@ -21,6 +21,8 @@
 #define ARG_VALIDO_DIA "-d"
 #define ARG_VALIDO_DIA_V "--day"
 #define MAX_CANT_ARG 12 
+
+
 
 #define MSJ_IMPRIMIR_AYUDA "Argumentos que tiene que recibir el programa:\n\n" \
 							"-h , --help\n" \
@@ -45,24 +47,13 @@
 
 
 #define CANT_MAX_FECHA 99991231
-#define CANT_MIN_FECHA 0 
-#define CANT_MIN_MES 0
-#define CANT_MAX_MES 12
+#define CANT_MIN_FECHA 0
+#define CANT_MAX_MES 12 
+#define CANT_MIN_MES 1
 #define CANT_MAX_ANIO 9999
 #define CANT_MIN_ANIO 0
 #define CANT_MAX_DIA 31
-#define CANT_MIN_DIA 0
-
-#define MSJ_ERROR_PREFIJO "Error"
-#define MSJ_ERROR_PUNTERO_NULO "Puntero nulo."
-#define MSJ_ERROR_FECHA_INVALIDA "La fecha ingresada es invalida."
-#define MSJ_ERROR_NOMBRE_INVALIDO "El nombre ingresado es invalido."
-#define MSJ_ERROR_DIA_INVALIDO "El dia ingresado es invalido."
-#define MSJ_ERROR_MES_INVALIDO "El mes ingresado es invalido."
-#define MSJ_ERROR_ANIO_INVALIDA "El año ingresado es invalido. "
-#define MSJ_ERROR_SEGUNDOS_INVALIDO "El segundo ingresado es invalido. "
-#define MSJ_ERROR_MINUTO_INVALIDO "El minuto ingresado es invalido. "
-#define MSJ_ERROR_HORA_INVALIDA "La hora ingresada es invalida. "
+#define CANT_MIN_DIA 1
 
 #define CANT_MAX 150
 #define NOMBRE_POR_OMISION "ARSAT-15"
@@ -75,8 +66,8 @@ typedef enum {ARG_AYUDA = 0, ARG_NOMBRE, ARG_FECHA, ARG_ANIO, ARG_MES, ARG_DIA} 
 typedef enum estados {ST_OK, ST_ERROR_PUNTERO_NULO, ST_ERROR_FECHA_INVALIDA, 
 					  ST_PEDIR_AYUDA, ST_ERROR_NOMBRE_INVALIDO, 
 					  ST_ERROR_DIA_INVALIDO, ST_ERROR_MES_INVALIDO,
-                      ST_ERROR_ANIO_INVALIDO} status_t;  
- 
+                      ST_ERROR_ANIO_INVALIDO, ST_ERROR_ARG_INVALIDO} status_t;  
+
 /* Verifica que los argumentos que se ingresan por linea de comando sean validos.
  * En caso de que sean validos, los almacena en la estructura datos_usuario.
  * Caso contrario, devuelve un estado de error que corresponda.  
@@ -109,14 +100,14 @@ status_t validar_argumento_nombre(char *argv_nombre, char *nombre);
  * Recibe una cadena argv, un puntero a donde esta almacenado el
  * valor de fecha, y un puntero a una estructura donde se guardaran todos los datos. 
  */
-status_t validar_argumento_fecha(char *argv_fecha, int *fecha, metadata_t *datos_usuario);
+status_t validar_argumento_fecha(char *argv_fecha, fecha_t *fecha);
 
 /* Se espera que fecha sea de la forma yyyymmdd ingresada por linea de comando,
  * y la parte de forma tal que quede año = yyyy , mes = mm, dia = dd
  * cargada correctamente en la estructura datos_usuario.
  * Caso contrario, devuelve un estado de error correspondiente. 
 */
-status_t partir_fecha(int *fecha, metadata_t *datos_usuario);
+status_t partir_fecha(int fecha_actual, fecha_t *fecha);
 
 /* Las siguientes tres funciones siguen la misma idea:
  * Verifica que el argumento ingresado por linea de comando sea valido. 
@@ -129,18 +120,18 @@ status_t partir_fecha(int *fecha, metadata_t *datos_usuario);
  * variable a validar, y un puntero a una estructura donde se guarda
  * dicho valor si es correcto.
 */
-status_t validar_argumento_mes(char *argv_mes, int *mes, metadata_t *datos_usuario);
-status_t validar_argumento_anio(char *argv_anio, int *anio, metadata_t *datos_usuario);
-status_t validar_argumento_dia(char *argv_dia, int *dia, metadata_t *datos_usuario);
+status_t validar_argumento_mes(char *argv_mes, int *mes);
+status_t validar_argumento_anio(char *argv_anio, int *anio);
+status_t validar_argumento_dia(char *argv_dia, int *dia);
 
 /* Imprime la ayuda por stdout. */
-void imprimir_ayuda();
+void imprimir_ayuda(void);
 
 /* Inicializa a la estructura datos_usuario con la fecha actual del sistema. 
  * Si recibe un puntero nulo, entonces devuelve false.
  * Caso contrario, devuelve true 
  */
-bool cargar_fecha_por_omision (metadata_t * datos_usuario);
+bool cargar_fecha_por_omision (fecha_t * fecha);
 
 /* Inicializa a la estructura datos_usuario con un nombre por defecto. 
  * Si recibe un puntero nulo, entonces devuelve false.
@@ -152,6 +143,6 @@ bool cargar_nombre_por_omision(metadata_t *datos_usuario);
  * Si recibe un puntero nulo, entonces devuelve false.
  * Caso contrario, devuelve true 
  */
-bool cargar_hora_por_omision (metadata_t *datos_usuario);
+bool cargar_hora_por_omision (horario_t *horario);
 
 #endif 
