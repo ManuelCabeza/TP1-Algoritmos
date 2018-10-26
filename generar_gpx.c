@@ -1,6 +1,6 @@
 #include "generar_gpx.h"
 #include "verificaciones_main.h"
-#include "estructuras.h"
+#include "main.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -31,9 +31,9 @@ void generar_gpx(gga_t * ggaptr, metadata_t * metptr) {
 	while ((nmea_aux = procesar_nmea(ggaptr)) != PR_FIN) {
 		if (nmea_aux != PR_ERR) {
 
-			for (i = 0; i < INDENTACION_3; i++)
+			for (i = 0; i < INDENTACION_3; i++)	{
 				putchar(CARACTER_INDENTACION);
-
+			}
 			putchar(CARACTER_TAG_INICIO);
 			printf("%s %s\"%f\" %s\"%f\"", TAG_TRKPT, TAG_LATITUD, ggaptr->latitud, TAG_LONGITUD, ggaptr->longitud);
 			putchar(CARACTER_TAG_FINAL);
@@ -44,7 +44,7 @@ void generar_gpx(gga_t * ggaptr, metadata_t * metptr) {
 			tag(TAG_ELEVACION, FINAL_ENTER, INDENTACION_0);
 
 			tag(TAG_TIEMPO, INICIAR, INDENTACION_4);
-			printf("%04d-%02d-%dT%2i:%2i:%3.3fZ", metptr->fecha.anio, metptr->fecha.mes, metptr->fecha.dia, ggaptr->horario.hora, ggaptr->horario.minuto, ggaptr->horario.segundos);
+			printf("%04d-%02d-%02dT%2i:%2i:%3.3fZ", metptr->fecha.anio, metptr->fecha.mes, metptr->fecha.dia, ggaptr->horario.hora, ggaptr->horario.minuto, ggaptr->horario.segundos);
 
 			tag(TAG_TIEMPO, FINAL_ENTER, INDENTACION_0);
 
@@ -62,17 +62,18 @@ void tag(char * strptr, tipo_tag tipo, size_t indentacion) {
 
 	size_t i;
 
-	for (i = 0; i < INDENTACION_INICIAL + indentacion; i++)
+	for (i = 0; i < INDENTACION_INICIAL + indentacion; i++) { 
 			putchar(CARACTER_INDENTACION);
-
+	}
 	putchar(CARACTER_TAG_INICIO);
 
-	if ((tipo != INICIAR) && (tipo != INICIAR_ENTER))
+	if ((tipo != INICIAR) && (tipo != INICIAR_ENTER)) { 
 		putchar(CARACTER_TAG_FINALIZAR);
-
+	}
 	printf("%s", strptr);
 	putchar(CARACTER_TAG_FINAL);
 
-	if ((tipo != INICIAR) && (tipo != FINAL))
+	if ((tipo != INICIAR) && (tipo != FINAL)) { 
 		putchar('\n');
+	}
 }
