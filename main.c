@@ -1,4 +1,4 @@
-#include "estructuras.h"
+#include "main.h"
 #include "errores.h"
 #include "verificaciones_main.h"
 #include "procesar_nmea.h"
@@ -16,9 +16,9 @@ int main(int argc, char *argv[]) {
 	metadata_t datos_usuario;
 	status_t st;
 
-	cargar_fecha_por_omision(&datos_usuario);
+	cargar_fecha_por_omision(&(datos_usuario.fecha));
 	cargar_nombre_por_omision(&datos_usuario);
-	cargar_hora_por_omision(&datos_usuario);
+	cargar_hora_por_omision(&(datos_usuario.horario));
 
 	st = procesar_argumentos(argc, argv, &datos_usuario);
 
@@ -36,8 +36,3 @@ int main(int argc, char *argv[]) {
 
 	return EXIT_SUCCESS;
 }
-
-
-
-
-
