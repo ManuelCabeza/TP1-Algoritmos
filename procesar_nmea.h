@@ -9,7 +9,7 @@
 #include <time.h>
 
 #include "verificaciones_main.h"
-#include "estructuras.h"
+#include "main.h"
 
 #define MAX_LONG_SEN 90
 #define CANT_ARGUMENTOS 14
