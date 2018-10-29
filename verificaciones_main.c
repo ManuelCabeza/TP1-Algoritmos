@@ -4,6 +4,8 @@
 #include "main.h"
 #include "errores.h"
 
+#define MAX_CANT_ARG 10
+
 status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario) {
 
 	const char * arg_validos[] = { ARG_VALIDO_AYUDA, ARG_VALIDO_AYUDA_V ,
@@ -17,15 +19,18 @@ status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario
 	int i, j;
 	status_t estado;
 	bool esta_fecha = false;
-//	bool invalido = false;
-	// La uso como bandera indicadora para ver si esta el argumeto -f o --format
+// La uso como bandera indicadora para ver si esta el argumeto -f o --format
 
 	if (!argv || !datos_usuario) { 
 		return ST_ERROR_PUNTERO_NULO;
 	}
 
+	if (argc > MAX_CANT_ARG) {
+		return ST_ERROR_CANT_ARG_INVALIDO;
+	}
+
 	for (i = 1; i < argc; i++) {
-		for (j = 0; j < MAX_CANT_ARG; j++) {
+		for (j = 0; j < MAX_CANT_ARG_VALIDOS; j++) {
 			if (strcmp(argv[i], arg_validos[j]) == 0) {
 				j = j / 2;
 				switch (j) {
@@ -64,19 +69,17 @@ status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario
 						break;
 			
 				}
+
 				if (estado != ST_OK) {
 					return estado;
 				}
 
 			}
 //			else {
-//				invalido = true;
+//				return ST_ERROR_ARG_INVALIDO;
 //			}
 
 		}
-//		if (invalido == true) { 
-//			return ST_ERROR_ARG_INVALIDO;
-//		}
 	}
 
 	return ST_OK;
@@ -98,13 +101,22 @@ bool convertir_a_numero_entero(char *cadena, int *resultado) {
 }
 
 status_t validar_argumento_nombre(char *argv_nombre, char *nombre) {
+//que no este vacio, y que no empieze con un signo menos.
 
+//argv  no sea mas largo que los caracteres que pueda copiar.
+	size_t largo;
 	if (!argv_nombre|| !nombre) { 
 		return ST_ERROR_PUNTERO_NULO;
 	}
-	strcpy(nombre, argv_nombre);
-	return ST_OK;
 
+	largo = (strlen(argv_nombre) + 1);
+
+	if (largo > CANT_MAX) {
+		return ST_ERROR_NOMBRE_INVALIDO;
+	}
+	strcpy(nombre, argv_nombre);
+
+	return ST_OK;
 }
 
 status_t validar_argumento_fecha(char *argv_fecha, fecha_t *fecha) {
@@ -145,7 +157,6 @@ status_t validar_argumento_mes(char *argv_mes, int * mes) {
 	if (*mes < CANT_MIN_MES || *mes > CANT_MAX_MES) {
 		return ST_ERROR_MES_INVALIDO;
 	}
-	//datos_usuario->fecha.mes = * mes;
 
 	return ST_OK;
 }
@@ -161,7 +172,6 @@ status_t validar_argumento_anio(char *argv_anio, int *anio) {
 	if (*anio < CANT_MIN_ANIO || *anio > CANT_MAX_ANIO) {
 		return ST_ERROR_ANIO_INVALIDO;
 	}
-	//datos_usuario->fecha.anio = *anio;
 
 	return ST_OK;
 }
@@ -177,10 +187,8 @@ status_t validar_argumento_dia(char *argv_dia, int *dia) {
 	if (*dia < CANT_MIN_DIA || *dia > CANT_MAX_DIA) {
 		return ST_ERROR_DIA_INVALIDO;
 	}
-	//datos_usuario->fecha.dia = *dia;
 
 	return ST_OK;
-
 }
 
 /*Recibe a fecha:aaaammdd y carga a la estructura año = aaaa, mes = mm y dia = dd */
@@ -194,7 +202,6 @@ status_t partir_fecha(int fecha_actual, fecha_t *fecha) {
 	fecha->dia = (fecha_actual % 10000) % 100;
 
 	return ST_OK;
-
 }
 
 bool cargar_fecha_por_omision(fecha_t *fecha) {
@@ -214,12 +221,19 @@ bool cargar_fecha_por_omision(fecha_t *fecha) {
 	return true;
 }
 
-bool cargar_nombre_por_omision(metadata_t *datos_usuario) {
+bool cargar_nombre_por_omision(char *nombre) { //metadata_t *datos_usuario
 
-	if (!datos_usuario) {
+	size_t largo;
+
+	if (!nombre) {
 		return false;
 	}
-	strcpy(datos_usuario->nombre, NOMBRE_POR_OMISION);
+	largo = (strlen(nombre) + 1);
+
+	if (largo > CANT_MAX) {
+		return ST_ERROR_NOMBRE_INVALIDO;
+	}
+	strcpy(nombre, NOMBRE_POR_OMISION);
 
 	return true;
 }
