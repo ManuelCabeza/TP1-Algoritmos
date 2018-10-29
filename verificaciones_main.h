@@ -20,7 +20,7 @@
 #define ARG_VALIDO_MES_V "--month"
 #define ARG_VALIDO_DIA "-d"
 #define ARG_VALIDO_DIA_V "--day"
-#define MAX_CANT_ARG 12 
+#define MAX_CANT_ARG_VALIDOS 12 
 
 
 
@@ -55,7 +55,7 @@
 #define CANT_MAX_DIA 31
 #define CANT_MIN_DIA 1
 
-#define CANT_MAX 150
+#define CANT_MAX 100
 #define NOMBRE_POR_OMISION "ARSAT-15"
 
 #define AJUSTE_DE_NUM 1
@@ -66,7 +66,8 @@ typedef enum {ARG_AYUDA = 0, ARG_NOMBRE, ARG_FECHA, ARG_ANIO, ARG_MES, ARG_DIA} 
 typedef enum estados {ST_OK, ST_ERROR_PUNTERO_NULO, ST_ERROR_FECHA_INVALIDA, 
 					  ST_PEDIR_AYUDA, ST_ERROR_NOMBRE_INVALIDO, 
 					  ST_ERROR_DIA_INVALIDO, ST_ERROR_MES_INVALIDO,
-                      ST_ERROR_ANIO_INVALIDO, ST_ERROR_ARG_INVALIDO} status_t;  
+                      ST_ERROR_ANIO_INVALIDO, ST_ERROR_CANT_ARG_INVALIDO,
+					  ST_ERROR_ARG_INVALIDO} status_t;  
 
 /* Verifica que los argumentos que se ingresan por linea de comando sean validos.
  * En caso de que sean validos, los almacena en la estructura datos_usuario.
@@ -137,7 +138,7 @@ bool cargar_fecha_por_omision (fecha_t * fecha);
  * Si recibe un puntero nulo, entonces devuelve false.
  * Caso contrario, devuelve true 
  */
-bool cargar_nombre_por_omision(metadata_t *datos_usuario);
+bool cargar_nombre_por_omision(char *nombre);
 
 /* Inicializa a la estructura datos_usuario con la hora actual del sistema. 
  * Si recibe un puntero nulo, entonces devuelve false.
