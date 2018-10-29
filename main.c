@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
 	status_t st;
 
 	cargar_fecha_por_omision(&(datos_usuario.fecha));
-	cargar_nombre_por_omision(&datos_usuario);
+	cargar_nombre_por_omision(datos_usuario.nombre);
 	cargar_hora_por_omision(&(datos_usuario.horario));
 
 	st = procesar_argumentos(argc, argv, &datos_usuario);
