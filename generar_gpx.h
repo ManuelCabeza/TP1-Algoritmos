@@ -7,7 +7,7 @@
 #include <stdbool.h>
 #include <time.h>
 
-#include "verificaciones_main.h"
+#include "verificar_argumentos.h"
 #include "procesar_nmea.h"
 #include "main.h"
 
