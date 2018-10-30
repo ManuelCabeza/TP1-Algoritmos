@@ -42,9 +42,9 @@ procesar_t procesar_nmea(gga_t * ggaptr) {
 	}
 
 	/* Asigna valor de latitud a partir de formato ddmm.mmm */
-	ggaptr->latitud = (((int)latitud / 100) + ((latitud - 100 * ((int)latitud / 100)) / 60 )) * (c == CARACTER_SUR ? -1 : 1);
-
-
+	ggaptr->latitud = (((int)latitud / 100) + ((latitud - 100 * ((int)latitud / 100)) / 60 )) * (c == CARACTER_SUR ? MULTIPLICADOR_SUR : MULTIPLICADOR_NORTE);
+	
+	
 
 	if ((longitud = strtof(++str, &str)) < 0 || ((* (str++)) != CARACTER_SEPARACION_COMANDO)) {
 		return PR_ERR;
@@ -54,7 +54,7 @@ procesar_t procesar_nmea(gga_t * ggaptr) {
 		return PR_ERR;
 	}
 	/* Asigna valor de longitud a partir de formato dddmm.mmm */
-	ggaptr->longitud = (((int)longitud / 100) + ((longitud - 100 * ((int)longitud / 100)) / 60 )) * (c == CARACTER_OESTE ? -1 : 1);
+	ggaptr->longitud = (((int)longitud / 100) + ((longitud - 100 * ((int)longitud / 100)) / 60 )) * (c == CARACTER_OESTE ? MULTIPLICADOR_OESTE : MULTIPLICADOR_ESTE);
 
 	if ((ggaptr->calidad_fix = strtol(++str, &str, 10)) < MIN_VALOR_FIX || ((* (str++)) != CARACTER_SEPARACION_COMANDO) || (ggaptr->calidad_fix) > MAX_VALOR_FIX) {
 		return PR_ERR;
