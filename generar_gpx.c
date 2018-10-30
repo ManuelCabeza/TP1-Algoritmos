@@ -1,5 +1,5 @@
 #include "generar_gpx.h"
-#include "verificaciones_main.h"
+#include "verificar_argumentos.h"
 #include "main.h"
 
 #include <stdio.h>
