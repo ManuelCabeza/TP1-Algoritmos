@@ -7,7 +7,7 @@
 #define MAX_CANT_ARG 10
 
 status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario) {
-
+/*
 	const char * arg_validos[] = { ARG_VALIDO_AYUDA, ARG_VALIDO_AYUDA_V ,
 								   ARG_VALIDO_NOMBRE, ARG_VALIDO_NOMBRE_V,
 								   ARG_VALIDO_FECHA, ARG_VALIDO_FECHA_V,
@@ -15,11 +15,12 @@ status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario
 								   ARG_VALIDO_MES, ARG_VALIDO_MES_V,
 								   ARG_VALIDO_DIA, ARG_VALIDO_DIA_V
 						          };
-
-	int i, j;
+*/
+	int i;
 	status_t estado;
-	bool esta_fecha = false;
-// La uso como bandera indicadora para ver si esta el argumeto -f o --format
+	bool esta_fecha = false;  /* La uso como bandera indicadora para ver si esta el argumeto -f o --format */
+	arg_t argumento;
+
 
 	if (!argv || !datos_usuario) { 
 		return ST_ERROR_PUNTERO_NULO;
@@ -30,10 +31,13 @@ status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario
 	}
 
 	for (i = 1; i < argc; i++) {
-		for (j = 0; j < MAX_CANT_ARG_VALIDOS; j++) {
+/*		for (j = 0; j < MAX_CANT_ARG_VALIDOS; j++) {
 			if (strcmp(argv[i], arg_validos[j]) == 0) {
 				j = j / 2;
 				switch (j) {
+*/
+		argumento = validar_arg(argv[i]);
+				switch (argumento) { 
 					case ARG_AYUDA:
 						return ST_PEDIR_AYUDA;
 						break;
@@ -67,22 +71,39 @@ status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario
 						}
 						estado = validar_argumento_dia(argv[i], &(datos_usuario->fecha).dia);
 						break;
+					case ARG_INVALIDO: 
+						return ST_ERROR_ARG_INVALIDO;
+						break;
 			
 				}
 
 				if (estado != ST_OK) {
 					return estado;
 				}
-
-			}
-//			else {
-//				return ST_ERROR_ARG_INVALIDO;
-//			}
-
-		}
 	}
 
 	return ST_OK;
+}
+
+arg_t validar_arg(char *arg) {
+
+	const char * arg_validos[] = { ARG_VALIDO_AYUDA, ARG_VALIDO_AYUDA_V ,
+								   ARG_VALIDO_NOMBRE, ARG_VALIDO_NOMBRE_V,
+								   ARG_VALIDO_FECHA, ARG_VALIDO_FECHA_V,
+								   ARG_VALIDO_ANIO, ARG_VALIDO_ANIO_V,
+								   ARG_VALIDO_MES, ARG_VALIDO_MES_V,
+								   ARG_VALIDO_DIA, ARG_VALIDO_DIA_V
+						          };
+	size_t i;
+	
+	for (i = 0; i < MAX_CANT_ARG_VALIDOS; i++) {
+		if (strcmp(arg, arg_validos[i]) == 0) {
+			i = i / 2;
+			return i;
+		}
+	}
+	
+	return ARG_INVALIDO;
 }
 
 bool convertir_a_numero_entero(char *cadena, int *resultado) {
@@ -101,9 +122,7 @@ bool convertir_a_numero_entero(char *cadena, int *resultado) {
 }
 
 status_t validar_argumento_nombre(char *argv_nombre, char *nombre) {
-//que no este vacio, y que no empieze con un signo menos.
 
-//argv  no sea mas largo que los caracteres que pueda copiar.
 	size_t largo;
 	if (!argv_nombre|| !nombre) { 
 		return ST_ERROR_PUNTERO_NULO;
