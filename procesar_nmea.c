@@ -30,7 +30,7 @@ procesar_t procesar_nmea(gga_t * ggaptr) {
 		}
 	}
 
-	procesar_horario(ggaptr, horario);
+	procesar_horario( &(ggaptr->horario), horario);
 
 	if ((latitud = strtof(str, &str)) < 0 || ((* (str++)) != CARACTER_SEPARACION_COMANDO)) { 
 		return PR_ERR;
@@ -103,9 +103,9 @@ unsigned char nmea_verificar_suma(const char * sentencia) {
 	return suma;
 }
 
-void procesar_horario(gga_t * estructura, float horario) {
+void procesar_horario(horario_t * horario_str, float horario) {
 
-	estructura->horario.minuto = (horario - 10000 * (estructura->horario.hora = horario / 10000)) / 100;
+	horario_str->minuto = (horario - 10000 * (horario_str->hora = horario / 10000)) / 100;
 
-	estructura->horario.segundos = horario - 100 * ((int)horario / 100);
+	horario_str->segundos = horario - 100 * ((int)horario / 100);
 }

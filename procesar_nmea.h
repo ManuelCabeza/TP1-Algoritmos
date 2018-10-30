@@ -42,13 +42,13 @@ typedef struct {
 typedef enum {PR_OK, PR_ERR, PR_FIN} procesar_t;
 
 /* Carga la estructura con un horario de formato hhmmss.sss (o mas s), recibe 
- * un puntero a la estructura del tipo gga_t y un horario a convertir. 
+ * un puntero a la estructura del tipo horario_t y un horario a convertir. 
  * Carga la estructura con :
- * estructura.horario.hora = hh
- * estructura.horario.minuto = mm
- * estructura.horario.segundo = ss.sss
+ * horario.hora = hh
+ * horario.minuto = mm
+ * horario.segundo = ss.sss
 */
-void procesar_horario(gga_t * estructura, float horario);
+void procesar_horario(horario_t * horario_str, float horario);
 
 /* Recibe una sentencia y calcula la XOR de todos los bytes hasta llegar a
  * un caracter de corte que se define por la macro CARACTER_SUMA_VER.
