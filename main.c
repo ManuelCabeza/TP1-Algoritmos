@@ -1,14 +1,14 @@
-#include "main.h"
-#include "errores.h"
-#include "verificar_argumentos.h"
-#include "procesar_nmea.h"
-#include "generar_gpx.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 #include <time.h>
+
+#include "main.h"
+#include "errores.h"
+#include "verificar_argumentos.h"
+#include "procesar_nmea.h"
+#include "generar_gpx.h"
 
 int main(int argc, char *argv[]) {
 
@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	if (st != ST_OK && st != ST_PEDIR_AYUDA) {
-		imprimir_errores(st);
+		imprimir_error(st);
 		return EXIT_FAILURE;
 	}
 
