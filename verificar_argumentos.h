@@ -6,6 +6,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <time.h>
+
 #include "main.h"
 
 #define ARG_VALIDO_AYUDA "-h"
@@ -20,9 +21,8 @@
 #define ARG_VALIDO_MES_V "--month"
 #define ARG_VALIDO_DIA "-d"
 #define ARG_VALIDO_DIA_V "--day"
+
 #define MAX_CANT_ARG_VALIDOS 12 
-
-
 
 #define MSJ_IMPRIMIR_AYUDA "Argumentos que tiene que recibir el programa:\n\n" \
 							"-h , --help\n" \
@@ -61,13 +61,16 @@
 #define AJUSTE_DE_NUM 1
 #define ANIO_DE_LINUX 1900
 
-typedef enum {ARG_AYUDA = 0, ARG_NOMBRE, ARG_FECHA, ARG_ANIO, ARG_MES, ARG_DIA} arg_t;
+typedef enum {ARG_AYUDA = 0, ARG_NOMBRE, ARG_FECHA, ARG_ANIO, ARG_MES, ARG_DIA, ARG_INVALIDO} arg_t;
 
 typedef enum estados {ST_OK, ST_PEDIR_AYUDA, ST_ERROR_PUNTERO_NULO,  
 					  ST_ERROR_FECHA_INVALIDA, ST_ERROR_NOMBRE_INVALIDO, 
 					  ST_ERROR_DIA_INVALIDO, ST_ERROR_MES_INVALIDO,
                       ST_ERROR_ANIO_INVALIDO, ST_ERROR_CANT_ARG_INVALIDO,
 					  ST_ERROR_ARG_INVALIDO} status_t;   
+
+
+arg_t validar_arg(char *arg);
 
 /* Verifica que los argumentos que se ingresan por linea de comando sean validos.
  * En caso de que sean validos, los almacena en la estructura datos_usuario.
