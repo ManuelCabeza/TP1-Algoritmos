@@ -1,6 +1,6 @@
 #include "main.h"
 #include "errores.h"
-#include "verificaciones_main.h"
+#include "verificar_argumentos.h"
 #include "procesar_nmea.h"
 #include "generar_gpx.h"
 
