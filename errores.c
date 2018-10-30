@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "errores.h"
-#include "verificaciones_main.h"
+#include "verificar_argumentos.h"
 
 void imprimir_errores(status_t estado) {
 
