@@ -8,7 +8,7 @@
 #include <stdbool.h>
 #include <time.h>
 
-#include "verificaciones_main.h"
+#include "verificar_argumentos.h"
 #include "main.h"
 
 #define MAX_LONG_SEN 90
