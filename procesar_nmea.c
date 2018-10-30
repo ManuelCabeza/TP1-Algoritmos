@@ -1,6 +1,6 @@
 #include "procesar_nmea.h"
 #include "main.h"
-#include "verificaciones_main.h"
+#include "verificar_argumentos.h"
 #include "generar_gpx.h"
 
 procesar_t procesar_nmea(gga_t * ggaptr) {
