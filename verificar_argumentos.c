@@ -86,6 +86,7 @@ arg_t validar_arg(char *arg) {
 	
 	for (i = 0; i < MAX_CANT_ARG_VALIDOS; i++) {
 		if (strcmp(arg, arg_validos[i]) == 0) {
+			// El  i / 2 es para hacer compatible el arreglo con el tipedeef
 			i = i / 2;
 			return i;
 		}
@@ -136,7 +137,7 @@ status_t validar_argumento_fecha(char *argv_fecha, fecha_t *fecha) {
 	if (!convertir_a_numero_entero(argv_fecha, &fecha_por_comando)) {
 		return ST_ERROR_FECHA_INVALIDA;
 	}
-	if (fecha_por_comando < CANT_MIN_FECHA) {
+	if (fecha_por_comando < CANT_MIN_FECHA || fecha_por_comando > CANT_MAX_FECHA) {
 		return ST_ERROR_FECHA_INVALIDA;
 	}
 	partir_fecha(fecha_por_comando, fecha);
