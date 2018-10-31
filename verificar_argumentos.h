@@ -92,37 +92,35 @@ status_t procesar_argumentos(int argc, char *argv[], metadata_t *datos_usuario);
 bool convertir_a_numero_entero(char *cadena, int *resultado); 
 
 /* Verifica que el argumento ingresado por linea de comando argv_nombre sea 
- * valido. Si el argumento es valido, se guarda en nombre. Caso contrario, devuelve
- * un estado de error, y la funcion no hace nada.
+ * valido. Si el argumento es valido, se guarda en el campo nombre de la 
+ * estructura. 
+ * Caso contrario, devuelve un estado de error, y la funcion no hace nada.
  */
 status_t validar_argumento_nombre(char *argv_nombre, char *nombre);
 
 /* Verifica que el argumento fecha ingresado por linea de comando sea valido.
- * En caso que sea valido, lo almacena en la estructura datos_usuario.
- * Caso contrario, devuelve un estado de error correspondiente.
+ * En caso que sea valido, lo almacena en el campo de la estructura 
+ * datos_usuario. Caso contrario, devuelve un estado de error correspondiente.
  * 
- * Recibe una cadena argv, un puntero a donde esta almacenado el
- * valor de fecha, y un puntero a una estructura donde se guardaran todos los datos. 
+ * Recibe una cadena argv y un puntero a una estructura donde se guardaran
+ * todos los datos. 
  */
 status_t validar_argumento_fecha(char *argv_fecha, fecha_t *fecha);
 
 /* Se espera que fecha sea de la forma yyyymmdd ingresada por linea de comando,
  * y la parte de forma tal que quede año = yyyy , mes = mm, dia = dd
- * cargada correctamente en la estructura datos_usuario.
+ * cargada correctamente en el campo de la estructura datos_usuario.
  * Caso contrario, devuelve un estado de error correspondiente. 
 */
 status_t partir_fecha(int fecha_actual, fecha_t *fecha);
 
 /* Las siguientes tres funciones siguen la misma idea:
  * Verifica que el argumento ingresado por linea de comando sea valido. 
- * En caso que sea valido, lo guarda en una variable auxiliar.
- * Valida que la variable auxiliar sea correcta, y en caso de serlo, 
- * lo guarde en la estructura datos_usuario.
+ * Y en caso de serlo, lo guarda al campo de fecha la estructura.
  * Caso contrario, devuelve un estado de error correspondiente.
  * 
- * Recibe un arreglo de cadenas argv correspondiente, un puntero a una
- * variable a validar, y un puntero a una estructura donde se guarda
- * dicho valor si es correcto.
+ * Recibe un arreglo de cadenas argv correspondiente y un puntero a una
+ * estructura donde se guarda dicho valor si es correcto.
 */
 status_t validar_argumento_mes(char *argv_mes, int *mes);
 status_t validar_argumento_anio(char *argv_anio, int *anio);
@@ -131,21 +129,21 @@ status_t validar_argumento_dia(char *argv_dia, int *dia);
 /* Imprime la ayuda por stdout. */
 void imprimir_ayuda(void);
 
-/* Inicializa a la estructura datos_usuario con la fecha actual del sistema. 
+/* Inicializa al campo fecha de la estructura con la fecha actual del sistema. 
  * Si recibe un puntero nulo, entonces devuelve false.
- * Caso contrario, devuelve true 
+ * Caso contrario, devuelve true. 
  */
 bool cargar_fecha_por_omision (fecha_t * fecha);
 
-/* Inicializa a la estructura datos_usuario con un nombre por defecto. 
+/* Inicializa al campo nombre de la estructura con un nombre por defecto. 
  * Si recibe un puntero nulo, entonces devuelve false.
- * Caso contrario, devuelve true 
+ * Caso contrario, devuelve true. 
  */
 bool cargar_nombre_por_omision(char *nombre);
 
-/* Inicializa a la estructura datos_usuario con la hora actual del sistema. 
+/* Inicializa al campo horario de la estructura con la hora actual del sistema. 
  * Si recibe un puntero nulo, entonces devuelve false.
- * Caso contrario, devuelve true 
+ * Caso contrario, devuelve true. 
  */
 bool cargar_hora_por_omision (horario_t *horario);
 
