@@ -116,7 +116,7 @@ status_t validar_argumento_nombre(char *argv_nombre, char *nombre) {
 		return ST_ERROR_PUNTERO_NULO;
 	}
 
-	largo = (strlen(argv_nombre) + 1);
+	largo = (strlen(argv_nombre) + 1); /* Mas el '\0' */
 
 	if (largo > CANT_MAX) {
 		return ST_ERROR_NOMBRE_INVALIDO;
@@ -235,7 +235,7 @@ bool cargar_nombre_por_omision(char *nombre) {
 	if (!nombre) {
 		return false;
 	}
-	largo = (strlen(nombre) + 1);
+	largo = (strlen(nombre) + 1); /* Mas el '\0' */
 
 	if (largo > CANT_MAX) {
 		return ST_ERROR_NOMBRE_INVALIDO;
