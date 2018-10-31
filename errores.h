@@ -4,6 +4,7 @@
 #include "verificar_argumentos.h"
 
 #define MSJ_ERROR_PREFIJO "Error"
+#define MSJ_VACIO ""
 #define MSJ_ERROR_PUNTERO_NULO "Puntero nulo."
 #define MSJ_ERROR_FECHA_INVALIDA "La fecha ingresada es invalida."
 #define MSJ_ERROR_NOMBRE_INVALIDO "El nombre ingresado es invalido."
