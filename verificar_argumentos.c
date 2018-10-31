@@ -7,20 +7,12 @@
 #define MAX_CANT_ARG 10
 
 status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario) {
-/*
-	const char * arg_validos[] = { ARG_VALIDO_AYUDA, ARG_VALIDO_AYUDA_V ,
-								   ARG_VALIDO_NOMBRE, ARG_VALIDO_NOMBRE_V,
-								   ARG_VALIDO_FECHA, ARG_VALIDO_FECHA_V,
-								   ARG_VALIDO_ANIO, ARG_VALIDO_ANIO_V,
-								   ARG_VALIDO_MES, ARG_VALIDO_MES_V,
-								   ARG_VALIDO_DIA, ARG_VALIDO_DIA_V
-						          };
-*/
+
 	int i;
 	status_t estado;
-	bool esta_fecha = false;  /* La uso como bandera indicadora para ver si esta el argumeto -f o --format */
+	bool esta_fecha = false;  
+	/* La uso como bandera indicadora para ver si esta el argumeto -f o --format */
 	arg_t argumento;
-
 
 	if (!argv || !datos_usuario) { 
 		return ST_ERROR_PUNTERO_NULO;
@@ -31,55 +23,50 @@ status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario
 	}
 
 	for (i = 1; i < argc; i++) {
-/*		for (j = 0; j < MAX_CANT_ARG_VALIDOS; j++) {
-			if (strcmp(argv[i], arg_validos[j]) == 0) {
-				j = j / 2;
-				switch (j) {
-*/
 		argumento = validar_arg(argv[i]);
-				switch (argumento) { 
-					case ARG_AYUDA:
-						return ST_PEDIR_AYUDA;
-						break;
-					case ARG_NOMBRE:
-						i++;
-						estado = validar_argumento_nombre(argv[i], datos_usuario->nombre);
-						break;
-					case ARG_FECHA:
-						esta_fecha = true;
-						i++;
-						estado = validar_argumento_fecha(argv[i], &(datos_usuario->fecha));
-						break;
-					case ARG_ANIO:
-						i++;
-						if (esta_fecha) { 
-							break;
-						}
-						estado = validar_argumento_anio(argv[i], &(datos_usuario->fecha).anio);
-						break;
-					case ARG_MES:
-						i++;
-						if (esta_fecha) {
-							break;
-						}
-						estado = validar_argumento_mes(argv[i], &(datos_usuario->fecha).mes);
-						break;
-					case ARG_DIA:
-						i++;
-						if (esta_fecha) { 
-							break;
-						}
-						estado = validar_argumento_dia(argv[i], &(datos_usuario->fecha).dia);
-						break;
-					case ARG_INVALIDO: 
-						return ST_ERROR_ARG_INVALIDO;
-						break;
-			
+		switch (argumento) { 
+			case ARG_AYUDA:
+				return ST_PEDIR_AYUDA;
+				break;
+			case ARG_NOMBRE:
+				i++;
+				estado = validar_argumento_nombre(argv[i], datos_usuario->nombre);
+				break;
+			case ARG_FECHA:
+				esta_fecha = true;
+				i++;
+				estado = validar_argumento_fecha(argv[i], &(datos_usuario->fecha));
+				break;
+			case ARG_ANIO:
+				i++;
+				if (esta_fecha) { 
+					break;
 				}
+				estado = validar_argumento_anio(argv[i], &(datos_usuario->fecha).anio);
+				break;
+			case ARG_MES:
+				i++;
+				if (esta_fecha) {
+					break;
+				}
+				estado = validar_argumento_mes(argv[i], &(datos_usuario->fecha).mes);
+				break;
+			case ARG_DIA:
+				i++;
+				if (esta_fecha) { 
+					break;
+				}
+				estado = validar_argumento_dia(argv[i], &(datos_usuario->fecha).dia);
+				break;
+			case ARG_INVALIDO: 
+				return ST_ERROR_ARG_INVALIDO;
+				break;
+		}
 
-				if (estado != ST_OK) {
-					return estado;
-				}
+		if (estado != ST_OK) {
+			return estado;
+		}
+
 	}
 
 	return ST_OK;
@@ -94,6 +81,7 @@ arg_t validar_arg(char *arg) {
 								   ARG_VALIDO_MES, ARG_VALIDO_MES_V,
 								   ARG_VALIDO_DIA, ARG_VALIDO_DIA_V
 						          };
+
 	size_t i;
 	
 	for (i = 0; i < MAX_CANT_ARG_VALIDOS; i++) {
@@ -240,7 +228,7 @@ bool cargar_fecha_por_omision(fecha_t *fecha) {
 	return true;
 }
 
-bool cargar_nombre_por_omision(char *nombre) { //metadata_t *datos_usuario
+bool cargar_nombre_por_omision(char *nombre) {
 
 	size_t largo;
 
@@ -269,7 +257,7 @@ bool cargar_hora_por_omision (horario_t *horario) {
 	}
 	horario->segundos = (float)hora -> tm_sec;
 	horario->minuto = (hora -> tm_min) + AJUSTE_DE_NUM;
-	horario->hora = (hora ->tm_hour) /*+ AJUSTE_DE_NUM*/;
+	horario->hora = (hora ->tm_hour);
 
 	return true;
 }
