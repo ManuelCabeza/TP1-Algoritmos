@@ -31,7 +31,7 @@ void generar_gpx(gga_t * ggaptr, metadata_t * metptr) {
 	while ((nmea_aux = procesar_nmea(ggaptr)) != PR_FIN) {
 		if (nmea_aux != PR_ERR) {
 
-			for (i = 0; i < INDENTACION_3; i++)	{
+			for (i = 0; i < INDENTACION_3 * CANT_CARACTERES_INDENTACION; i++)	{
 				putchar(CARACTER_INDENTACION);
 			}
 			putchar(CARACTER_TAG_INICIO);
@@ -62,7 +62,7 @@ void tag(char * strptr, tipo_tag tipo, size_t indentacion) {
 
 	size_t i;
 
-	for (i = 0; i < INDENTACION_INICIAL + indentacion; i++) { 
+	for (i = 0; i < (INDENTACION_INICIAL + indentacion) * CANT_CARACTERES_INDENTACION; i++) { 
 			putchar(CARACTER_INDENTACION);
 	}
 	putchar(CARACTER_TAG_INICIO);
