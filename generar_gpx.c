@@ -12,10 +12,11 @@ void generar_gpx(gga_t * ggaptr, metadata_t * metptr) {
 
 	int i;
 	procesar_t nmea_aux;
-
+	/*Imprime las dos líneas por stdout, siempre las mismas*/
 	tag(MSJ_GPX_1, INICIAR_ENTER, INDENTACION_0);
 	tag(MSJ_GPX_2, INICIAR_ENTER, INDENTACION_0);
 
+	/*Esta sección se ocupa de imprimir todo lo contenido en metadata*/
 	tag(TAG_METADATA, INICIAR_ENTER, INDENTACION_1);
 	tag(TAG_NOMBRE, INICIAR, INDENTACION_2);
 	printf("%s", metptr->nombre);
@@ -27,7 +28,7 @@ void generar_gpx(gga_t * ggaptr, metadata_t * metptr) {
 
 	tag(TAG_TRK, INICIAR_ENTER, INDENTACION_1);
 	tag(TAG_TRKSEG, INICIAR_ENTER, INDENTACION_2);
-
+	/*A partir de aca se empieza a imprimir cada uno de los trkpt*/
 	while ((nmea_aux = procesar_nmea(ggaptr)) != PR_FIN) {
 		if (nmea_aux != PR_ERR) {
 
@@ -51,7 +52,7 @@ void generar_gpx(gga_t * ggaptr, metadata_t * metptr) {
 			tag(TAG_TRKPT, FINAL_ENTER, INDENTACION_3);
 		}
 	}
-
+	/*Se cierran las tags que se abrieron al comienzo*/
 	tag(TAG_TRKSEG, FINAL_ENTER, INDENTACION_2);
 	tag(TAG_TRK, FINAL_ENTER, INDENTACION_1);
 	tag(TAG_GPX, FINAL_ENTER, INDENTACION_0);
