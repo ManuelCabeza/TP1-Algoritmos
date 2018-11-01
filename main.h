@@ -1,6 +1,12 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include <time.h>
+
 #define MAX_LONG_NOMBRE 100
 
 typedef struct {

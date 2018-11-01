@@ -1,6 +1,7 @@
 #ifndef ERRORES_H
 #define ERRORES_H
 
+#include <stdio.h>
 #include "verificar_argumentos.h"
 
 #define MSJ_ERROR_PREFIJO "Error"
