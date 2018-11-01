@@ -11,7 +11,7 @@ status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario
 	int i;
 	status_t estado;
 	bool esta_fecha = false;  
-	/* La uso como bandera indicadora para ver si esta el argumeto -f o --format */
+	/* Se usa como bandera indicadora para ver si esta el argumeto -f o --format */
 	arg_t argumento;
 
 	if (!argv || !datos_usuario) { 
@@ -86,7 +86,7 @@ arg_t validar_arg(char *arg) {
 	
 	for (i = 0; i < MAX_CANT_ARG_VALIDOS; i++) {
 		if (strcmp(arg, arg_validos[i]) == 0) {
-			// El  i / 2 es para hacer compatible el arreglo con el tipedeef
+			/* El  i / 2 es para hacer compatible arg_validos con el enumerativo arg_t*/
 			i = i / 2;
 			return i;
 		}

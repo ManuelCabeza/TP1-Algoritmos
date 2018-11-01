@@ -45,7 +45,6 @@ procesar_t procesar_nmea(gga_t * ggaptr) {
 	 * habiendo verificado previamente que se cumple el formato */
 	ggaptr->latitud = (((int)latitud / 100) + ((latitud - 100 * ((int)latitud / 100)) / 60 )) * (c == CARACTER_SUR ? MULTIPLICADOR_SUR : MULTIPLICADOR_NORTE);
 	
-
 	if ((longitud = strtof(++str, &str)) < 0 || ((* (str++)) != CARACTER_SEPARACION_COMANDO)) {
 		return PR_ERR;
 	}
