@@ -65,7 +65,6 @@ void procesar_horario(horario_t * horario_str, float horario);
 */
 unsigned char nmea_verificar_suma(const char * sentencia);
 
-
 /* Procesa una línea de stdin (hasta \n) hasta MAX_LONG_SEN. Una vez que se 
  * verifica un dato y es correcto, se carga en la estructura gga_t, 
  * hasta que se acabe la sentencia o halla alguno incorrecto.
@@ -74,10 +73,8 @@ unsigned char nmea_verificar_suma(const char * sentencia);
  * 
  * La funcion devuelve:
  * PR_FIN si no hay nada mas que leer en el archivo
- * PR_ERR si el formato de cualquier argumento de una linea de datos no esta bien
+ * PR_ERR si el formato de cualquier argument de una linea de datos no esta bien
  * PR_OK si el dato de una linea fue procesado correctamente. */
 procesar_t procesar_nmea(gga_t * ggaptr);
 
 #endif 
-
-

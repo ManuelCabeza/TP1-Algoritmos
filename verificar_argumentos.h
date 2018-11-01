@@ -68,8 +68,11 @@ typedef enum estados {ST_OK, ST_PEDIR_AYUDA, ST_ERROR_PUNTERO_NULO,
 					  ST_ERROR_DIA_INVALIDO, ST_ERROR_MES_INVALIDO,
                       ST_ERROR_ANIO_INVALIDO, ST_ERROR_CANT_ARG_INVALIDO,
 					  ST_ERROR_ARG_INVALIDO} status_t;   
-
-
+/*
+  * Recibe una cadena que corresponde al argumento ingresado por línea de 
+  * comando. Si recibe un argumento válido, devuelve qué tipo de argumento es. 
+  * Caso contrario, devuelve un ARG_INVALIDO.
+  */
 arg_t validar_arg(char *arg);
 
 /* Verifica que los argumentos que se ingresan por linea de comando sean validos.

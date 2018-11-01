@@ -48,7 +48,6 @@ typedef enum {INICIAR, INICIAR_ENTER, FINAL, FINAL_ENTER} tipo_tag;
 
 void generar_gpx(gga_t * ggaptr, metadata_t * metptr);
 
-
 /* Imprime un tag con lo que contenga el puntero a char (que se asume que no es 
  * NULL) donde el tipo de tag define como se imprime de la forma:
  * INICIAR <"string">

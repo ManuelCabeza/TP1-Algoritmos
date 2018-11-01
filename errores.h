@@ -18,6 +18,4 @@
 /* Dependiendo del estado que reciba, imprime el correspondiente mensaje de error. */
 void imprimir_error(status_t estado);
 
-
-
 #endif
