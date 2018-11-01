@@ -2,12 +2,6 @@
 #include "verificar_argumentos.h"
 #include "main.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
-#include <time.h>
-
 void generar_gpx(gga_t * ggaptr, metadata_t * metptr) {
 
 	int i;

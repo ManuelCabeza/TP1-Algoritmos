@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "errores.h"
 #include "verificar_argumentos.h"
 
