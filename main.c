@@ -4,6 +4,12 @@
 #include "procesar_nmea.h"
 #include "generar_gpx.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include <time.h>
+
 int main(int argc, char *argv[]) {
 
 	gga_t estructura;
@@ -21,7 +27,7 @@ int main(int argc, char *argv[]) {
 		return EXIT_SUCCESS;
 	}
 
-	if (st != ST_OK && st != ST_PEDIR_AYUDA) {
+	if (st != ST_OK) {
 		imprimir_error(st);
 		return EXIT_FAILURE;
 	}

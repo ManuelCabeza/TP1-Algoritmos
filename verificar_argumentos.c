@@ -29,30 +29,30 @@ status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario
 				return ST_PEDIR_AYUDA;
 				break;
 			case ARG_NOMBRE:
-				i++;
+				++i;
 				estado = validar_argumento_nombre(argv[i], datos_usuario->nombre);
 				break;
 			case ARG_FECHA:
 				esta_fecha = true;
-				i++;
+				++i;
 				estado = validar_argumento_fecha(argv[i], &(datos_usuario->fecha));
 				break;
 			case ARG_ANIO:
-				i++;
+				++i;
 				if (esta_fecha) { 
 					break;
 				}
 				estado = validar_argumento_anio(argv[i], &(datos_usuario->fecha).anio);
 				break;
 			case ARG_MES:
-				i++;
+				++i;
 				if (esta_fecha) {
 					break;
 				}
 				estado = validar_argumento_mes(argv[i], &(datos_usuario->fecha).mes);
 				break;
 			case ARG_DIA:
-				i++;
+				++i;
 				if (esta_fecha) { 
 					break;
 				}

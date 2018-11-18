@@ -13,8 +13,7 @@
 #define MSJ_ERROR_MES_INVALIDO "El mes ingresado es invalido."
 #define MSJ_ERROR_ANIO_INVALIDA "El año ingresado es invalido."
 #define MSJ_ERROR_CANT_ARG_INVALIDO "La cantidad de argumentos ingresados no es valida."
-#define MSJ_ERROR_ARG_INVALIDO "El argumento ingresado es invalido, pruebe ingresando el comando -h para obtener ayuda."
-
+#define MSJ_ERROR_ARG_INVALIDO "El argumento ingresado es invalido, pruebe ingresando el comando -h para obtener ayuda." 
 
 /* Dependiendo del estado que reciba, imprime el correspondiente mensaje de error. */
 void imprimir_error(status_t estado);
