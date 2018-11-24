@@ -5,7 +5,7 @@
 
 #define LARGO_PAYLOAD_PVT 92
 
-procesar_ubx_status _procesar_ubx_pvt (FILE *pf_aux, FILE **pf);
+procesar_ubx_status _procesar_ubx_pvt (FILE **pf_in, gps_t * pvt_ptr);
 
 
 #endif

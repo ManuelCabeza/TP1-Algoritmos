@@ -8,7 +8,6 @@ typedef struct {
 	int mes;
 	int anio;
 } fecha_t;
-
  
 typedef struct {
 	int hora;

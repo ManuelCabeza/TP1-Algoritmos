@@ -2,7 +2,7 @@
 #include "verificar_argumentos.h"
 #include "main.h"
 
-void generar_gpx(gga_t * ggaptr, metadata_t * metptr) {
+void generar_gpx(gps_t * ggaptr, metadata_t * metptr) {
 
 	int i;
 	procesar_t nmea_aux;

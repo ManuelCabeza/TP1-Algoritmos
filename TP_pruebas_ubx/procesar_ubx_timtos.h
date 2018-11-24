@@ -3,8 +3,8 @@
 
 #include "procesar_ubx.h"
 
-#define LARGO_PAYLOAD_TIMTOS 8888
+#define LARGO_PAYLOAD_TIMTOS 56
 
-procesar_ubx_status _procesar_ubx_timtos (FILE *pf_aux, FILE **pf);
+procesar_ubx_status _procesar_ubx_timtos (FILE **pf_in, gps_t * timtos_ptr);
 
 #endif
