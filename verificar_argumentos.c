@@ -1,20 +1,15 @@
 #include "verificar_argumentos.h"
-#include "generar_gpx.h"
-#include "procesar_nmea.h"
 #include "main.h"
 #include "errores.h"
 
-#define MAX_CANT_ARG 10
-
-status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario) {
+status_t procesar_argumentos(int argc, char *argv[], FILE *entrada, FILE *salida, FILE *archivo_log/*, metadata_t *datos_usuario*/) {
 
 	int i;
 	status_t estado;
-	bool esta_fecha = false;  
-	/* Se usa como bandera indicadora para ver si esta el argumeto -f o --format */
+	protocolo_t protocolo = PROTOCOLO_NMEA; //Pongo por defecto eso VER SI ESTA BIEN
 	arg_t argumento;
 
-	if (!argv || !datos_usuario) { 
+	if (!argv) {  //Faltan los demas punteros
 		return ST_ERROR_PUNTERO_NULO;
 	}
 
@@ -30,33 +25,26 @@ status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario
 				break;
 			case ARG_NOMBRE:
 				++i;
-				estado = validar_argumento_nombre(argv[i], datos_usuario->nombre);
+				/*estado = validar_argumento_nombre(argv[i], datos_usuario->nombre);*/
 				break;
-			case ARG_FECHA:
-				esta_fecha = true;
+			case ARG_PROTOCOLO:
 				++i;
-				estado = validar_argumento_fecha(argv[i], &(datos_usuario->fecha));
+				estado = validar_argumento_protocolo(argv[i], &protocolo); 
 				break;
-			case ARG_ANIO:
+			case ARG_ARCHIVO_ENTRADA:
 				++i;
-				if (esta_fecha) { 
-					break;
-				}
-				estado = validar_argumento_anio(argv[i], &(datos_usuario->fecha).anio);
+				entrada = abrir_archivo_entrada(argv[i], &protocolo, &estado); 
 				break;
-			case ARG_MES:
+			case ARG_ARCHIVO_SALIDA:
 				++i;
-				if (esta_fecha) {
-					break;
-				}
-				estado = validar_argumento_mes(argv[i], &(datos_usuario->fecha).mes);
+				salida = abrir_archivo_salida(argv[i], &estado);
 				break;
-			case ARG_DIA:
+			case ARG_ARCHIVO_LOG:
 				++i;
-				if (esta_fecha) { 
-					break;
-				}
-				estado = validar_argumento_dia(argv[i], &(datos_usuario->fecha).dia);
+				archivo_log = abrir_archivo_log(argv[i], &estado);
+				break;
+			case ARG_CANT_MENSAJES:
+				++i;
 				break;
 			case ARG_INVALIDO: 
 				return ST_ERROR_ARG_INVALIDO;
@@ -74,13 +62,12 @@ status_t procesar_argumentos(int argc, char * argv[], metadata_t * datos_usuario
 
 arg_t validar_arg(char *arg) {
 
-	const char * arg_validos[] = { ARG_VALIDO_AYUDA, ARG_VALIDO_AYUDA_V ,
-								   ARG_VALIDO_NOMBRE, ARG_VALIDO_NOMBRE_V,
-								   ARG_VALIDO_FECHA, ARG_VALIDO_FECHA_V,
-								   ARG_VALIDO_ANIO, ARG_VALIDO_ANIO_V,
-								   ARG_VALIDO_MES, ARG_VALIDO_MES_V,
-								   ARG_VALIDO_DIA, ARG_VALIDO_DIA_V
-						          };
+	const char * arg_validos[] = { ARG_VALIDO_AYUDA, ARG_VALIDO_AYUDA_V, ARG_VALIDO_NOMBRE, ARG_VALIDO_NOMBRE_V,
+								   ARG_VALIDO_PROTOCOLO, ARG_VALIDO_PROTOCOLO_V, ARG_VALIDO_ARCHIVO_ENTRADA, 
+								   ARG_VALIDO_ARCHIVO_ENTRADA_V, ARG_VALIDO_ARCHIVO_SALIDA, 
+								   ARG_VALIDO_ARCHIVO_SALIDA_V, ARG_VALIDO_ARCHIVO_LOG,
+								   ARG_VALIDO_ARCHIVO_LOG_V, ARG_VALIDO_CANT_MENSAJE, ARG_VALIDO_CANT_MENSAJE_V 
+						         };
 
 	size_t i;
 	
@@ -95,20 +82,148 @@ arg_t validar_arg(char *arg) {
 	return ARG_INVALIDO;
 }
 
-bool convertir_a_numero_entero(char *cadena, int *resultado) {
 
-	char *perr = NULL;
+status_t validar_argumento_protocolo(char *argv_protocolo, protocolo_t *protocolo) {
 
-	if (!cadena|| !resultado) { 
-		return false;
-	}
-	*resultado = strtol(cadena, &perr, 10);
+	if (!argv_protocolo || !protocolo) {
+		return ST_ERROR_PUNTERO_NULO;
+	}	
 
-	if (*perr != '\0') { 
-		return false;
-	}
-	return true;
+    if (strcmp(argv_protocolo, ARG_PROTOCOLO_NMEA) == 0) {
+        *protocolo = PROTOCOLO_NMEA; 
+        return ST_OK;
+    }
+
+    else if (strcmp(argv_protocolo, ARG_PROTOCOLO_UBX) == 0) { 
+        *protocolo = PROTOCOLO_UBX;
+        return ST_OK;
+    }
+    //ADICIONAL
+    if (strcmp(argv_protocolo, ARG_PROTOCOLO_AUTO) == 0) { 
+        *protocolo = PROTOCOLO_AUTO;
+        return ST_OK;
+    }
+
+    return ST_ERROR_PROTOCOLO_INVALIDO;
 }
+
+
+status_t identificar_protocolo_auto(char *arg_archivo_entrada, protocolo_t *protocolo) { 
+
+    uchar aux[CANT_MAX_CARACTERES_SINCRONISMO]; //Creo un arrglo de dos uchar
+    //Abro por defecto en binario y comparo con los caracteres de sincronismo
+    // O CON EL caracter peso
+    FILE *p;
+
+	if (!arg_archivo_entrada || !protocolo) {
+		return ST_ERROR_PUNTERO_NULO;
+	}
+
+    p = fopen(arg_archivo_entrada, "rb");
+    if (p == NULL) {
+        return ST_ERROR_ARCHIVO_ENTRADA_INVALIDO; //NO SE PUEDO ABRIR ARCHIVO
+    }
+
+    if (fread(aux, sizeof(uchar), 2, p) != 2) { 
+        fclose(p);
+        return ST_ERROR_LECTURA;
+    }
+
+    if (aux[POS_INICIAL_CARACTER_SINCRONISMO] == B_SYNC1 && aux[POS_FINAL_CARACTER_SINCRONISMO] == B_SYNC2) {
+        *protocolo = PROTOCOLO_UBX;
+        fclose(p);
+        return ST_OK;
+    }
+    else {
+        //no es ubx, pero puede ser NMEA
+        if (aux[POS_INICIAL_CARACTER_SINCRONISMO] == CARACTER_PESO) { //PORQUE YA HABIA LEIDO EL PRIMER CARACTER
+            *protocolo = PROTOCOLO_NMEA;
+            fclose(p);
+            return ST_OK;
+        }
+    }
+
+    return ST_ERROR_PROTOCOLO_INVALIDO;
+
+}
+
+
+FILE * abrir_archivo_entrada(char *arg_archivo_entrada, protocolo_t *protocolo, status_t *estado) {
+//VER SU LA variable estado es pasada como argumento de la funcion.
+    
+	if (!arg_archivo_entrada || !protocolo || !estado) {
+		*estado = ST_ERROR_PUNTERO_NULO;
+		return NULL;
+	}
+	if (strcmp(arg_archivo_entrada, ARCHIVO_ENTRADA_STDIN) == 0) {
+		*estado = ST_OK;
+        return stdin;
+    }
+
+    if (*protocolo == PROTOCOLO_AUTO) {
+        *estado = identificar_protocolo_auto(arg_archivo_entrada, protocolo);
+        if (*estado != ST_OK) {
+            return NULL;
+        }
+    }
+//Si no me dice nada uso la aplicacion automatico 
+    if (*protocolo == PROTOCOLO_UBX) {
+		*estado = ST_OK;        
+		return fopen(arg_archivo_entrada,"rb");
+    }
+    if (*protocolo == PROTOCOLO_NMEA) {
+        *estado = ST_OK;
+		return fopen(arg_archivo_entrada,"rt");
+    }
+
+	*estado = ST_ERROR_ARCHIVO_ENTRADA_INVALIDO;
+    return NULL;
+}
+
+FILE * abrir_archivo_salida (char *arg_archivo_salida, status_t *estado) {
+
+	if (!arg_archivo_salida|| !estado) {
+		*estado = ST_ERROR_PUNTERO_NULO;
+		return NULL;
+	}
+
+	if(strcmp(arg_archivo_salida, ARCHIVO_SALIDA_STDOUT) == 0) {
+		*estado = ST_OK;
+		return stdout;
+	}
+
+	return fopen(arg_archivo_salida, "wt");
+}
+
+FILE * abrir_archivo_log (char *arg_archivo_log, status_t *estado) {
+
+	if (!arg_archivo_log) {
+		*estado = ST_ERROR_PUNTERO_NULO;
+		return NULL;
+	}
+	if (strcmp(arg_archivo_log, ARCHIVO_LOG_STDERR) == 0) {
+		*estado = ST_OK;
+		return stderr;
+	}
+
+	*estado = ST_OK; //VER!
+	return fopen(arg_archivo_log, "wt");
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 status_t validar_argumento_nombre(char *argv_nombre, char *nombre) {
 
@@ -125,108 +240,6 @@ status_t validar_argumento_nombre(char *argv_nombre, char *nombre) {
 	strcpy(nombre, argv_nombre);
 
 	return ST_OK;
-}
-
-status_t validar_argumento_fecha(char *argv_fecha, fecha_t *fecha) {
-
-	int fecha_por_comando;
-	
-	if(!argv_fecha || !fecha) {
-		return ST_ERROR_PUNTERO_NULO;
-	}
-	if (!convertir_a_numero_entero(argv_fecha, &fecha_por_comando)) {
-		return ST_ERROR_FECHA_INVALIDA;
-	}
-	if (fecha_por_comando < CANT_MIN_FECHA || fecha_por_comando > CANT_MAX_FECHA) {
-		return ST_ERROR_FECHA_INVALIDA;
-	}
-	partir_fecha(fecha_por_comando, fecha);
-
-	if (fecha->dia < CANT_MIN_DIA || fecha->dia > CANT_MAX_DIA) {
-		return ST_ERROR_DIA_INVALIDO;
-	}
-	if (fecha->mes < CANT_MIN_MES || fecha->mes > CANT_MAX_MES) {
-		return ST_ERROR_MES_INVALIDO;
-	}	
-	if (fecha->anio < CANT_MIN_ANIO || fecha->anio > CANT_MAX_ANIO) {
-		return ST_ERROR_ANIO_INVALIDO;
-	}
-	return ST_OK;
-}
-
-status_t validar_argumento_mes(char *argv_mes, int * mes) {
-
-	if(!argv_mes || !mes) {
-		return ST_ERROR_PUNTERO_NULO;
-	}
-	if (!convertir_a_numero_entero(argv_mes, mes)) {
-		return ST_ERROR_MES_INVALIDO;
-	}
-	if (*mes < CANT_MIN_MES || *mes > CANT_MAX_MES) {
-		return ST_ERROR_MES_INVALIDO;
-	}
-
-	return ST_OK;
-}
-
-status_t validar_argumento_anio(char *argv_anio, int *anio) {
-
-	if(!argv_anio || !anio) {
-		return ST_ERROR_PUNTERO_NULO;
-	}
-	if (!convertir_a_numero_entero(argv_anio, anio)) {
-		return ST_ERROR_ANIO_INVALIDO;
-	}
-	if (*anio < CANT_MIN_ANIO || *anio > CANT_MAX_ANIO) {
-		return ST_ERROR_ANIO_INVALIDO;
-	}
-
-	return ST_OK;
-}
-
-status_t validar_argumento_dia(char *argv_dia, int *dia) {
-	
-	if(!argv_dia || !dia) {
-		return ST_ERROR_PUNTERO_NULO;
-	}
-	if (!convertir_a_numero_entero(argv_dia, dia)) {
-		return ST_ERROR_DIA_INVALIDO;
-	}
-	if (*dia < CANT_MIN_DIA || *dia > CANT_MAX_DIA) {
-		return ST_ERROR_DIA_INVALIDO;
-	}
-
-	return ST_OK;
-}
-
-/*Recibe a fecha:aaaammdd y carga a la estructura año = aaaa, mes = mm y dia = dd */
-status_t partir_fecha(int fecha_actual, fecha_t *fecha) {
-
-	if (!fecha) {
-		return ST_ERROR_PUNTERO_NULO;
-	}
-	fecha->anio = fecha_actual / 10000;
-	fecha->mes = (fecha_actual % 10000) / 100;
-	fecha->dia = (fecha_actual % 10000) % 100;
-
-	return ST_OK;
-}
-
-bool cargar_fecha_por_omision(fecha_t *fecha) {
-
-    time_t tiempo;
-    struct tm * fecha_actual;
-    tiempo = time(NULL);
-    fecha_actual = localtime(&tiempo);
-
-	if(!fecha) {
-		return false;
-	}
-	fecha->dia  = fecha_actual->tm_mday;
-	fecha->mes  = (fecha_actual->tm_mon) + AJUSTE_DE_NUM;
-	fecha->anio = (fecha_actual->tm_year) + ANIO_DE_LINUX;
-
-	return true;
 }
 
 bool cargar_nombre_por_omision(char *nombre) {
@@ -246,24 +259,17 @@ bool cargar_nombre_por_omision(char *nombre) {
 	return true;
 }
 
-bool cargar_hora_por_omision (horario_t *horario) {
-
-	time_t tiempo;
-    struct tm *hora;
-    tiempo = time(NULL);
-    hora = localtime(&tiempo);
-
-	if(!horario) {
-		return false;
-	}
-	horario->segundos = (float)hora -> tm_sec;
-	horario->minuto = (hora -> tm_min) + AJUSTE_DE_NUM;
-	horario->hora = (hora ->tm_hour);
-
-	return true;
-}
-
-void imprimir_ayuda(void) {
+void imprimir_ayuda(void) { //La ayuda se puede imprimir por stdout.
 
 	printf("%s\n", MSJ_IMPRIMIR_AYUDA);
 }
+
+/*void imprimir_ayuda(FILE *salida) {
+
+	if (salida == "stdout") {
+		fprintf(stdout, "%s\n", MSJ_IMPRIMIR_AYUDA);
+	}
+
+	fprintf(salida, "%s\n", MSJ_IMPRIMIR_AYUDA);
+
+}*/
