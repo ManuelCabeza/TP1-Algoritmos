@@ -1,26 +1,24 @@
 #include "main.h"
-#include "errores.h"
 #include "verificar_argumentos.h"
-#include "procesar_nmea.h"
-#include "generar_gpx.h"
+#include "errores.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include <time.h>
 
 int main(int argc, char *argv[]) {
 
-	gga_t estructura;
-	metadata_t datos_usuario;
+	/*metadata_t datos_usuario;*/
 	status_t st;
+	 
+    FILE *entrada;
+    FILE *salida; //Abro como archivo de escritura
+    FILE *archivo_log; //idem aca
 
-	cargar_fecha_por_omision(&(datos_usuario.fecha));
-	cargar_nombre_por_omision(datos_usuario.nombre);
-	cargar_hora_por_omision(&(datos_usuario.horario));
+/*	cargar_nombre_por_omision(datos_usuario.nombre);*/
 
-	st = procesar_argumentos(argc, argv, &datos_usuario);
+	st = procesar_argumentos(argc, argv, entrada, salida, archivo_log/*, &datos_usuario*/);
 
 	if (st == ST_PEDIR_AYUDA) {
 		imprimir_ayuda();
@@ -28,11 +26,15 @@ int main(int argc, char *argv[]) {
 	}
 
 	if (st != ST_OK) {
-		imprimir_error(st);
+		imprimir_errores_log(&st,archivo_log);
 		return EXIT_FAILURE;
 	}
 
-	generar_gpx(&estructura, &datos_usuario);
+//Para cerrar cada archivo hacer de la misma forma. Ver si crear un funcion para eso. 
+	if (entrada != stdin) {
+		fclose(entrada);
+	}
+
 
 	return EXIT_SUCCESS;
 }
