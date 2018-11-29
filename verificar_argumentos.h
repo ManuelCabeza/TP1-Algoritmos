@@ -85,7 +85,9 @@ typedef enum estados {ST_OK, ST_PEDIR_AYUDA, ST_ERROR_PUNTERO_NULO,
                       ST_ERROR_CANT_MENSAJES_INVALIDOS, ST_ERROR_CANT_ARG_INVALIDO,
 					  ST_ERROR_ARG_INVALIDO, ST_ERROR_LECTURA} status_t;  
 
-typedef enum {PROTOCOLO_NMEA, PROTOCOLO_UBX, PROTOCOLO_AUTO} protocolo_t;
+
+//tengo que sacar de aca el protocolo invalido
+typedef enum {PROTOCOLO_NMEA, PROTOCOLO_UBX, PROTOCOLO_AUTO, PROTOCOLO_INVALIDO} protocolo_t;
 
 typedef unsigned char uchar;
 
@@ -107,7 +109,7 @@ arg_t validar_arg(char *arg);
  * ST_ERROR_* en caso que algun argumento no sea valido
  * ST_OK si todos los argumentos son validos y sus contenidos tambien 
  */
-status_t procesar_argumentos(int argc, char *argv[], FILE *entrada, FILE *salida, FILE *archivo_log/*, metadata_t *datos_usuario*/);
+status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **salida, FILE **archivo_log/*, metadata_t *datos_usuario*/);
 
 /* Convierte cualquier cadena que se le pase a un numero entero en base 10.
  * Si se puede convertir la cadena, lo guarda en resultado y devuelve true.
@@ -125,7 +127,7 @@ status_t validar_argumento_nombre(char *argv_nombre, char *nombre);
 
 
 /* Imprime la ayuda por stdout. */
-void imprimir_ayuda(void);
+void imprimir_ayuda(FILE **salida);
 
 /* Inicializa al campo nombre de la estructura con un nombre por defecto. 
  * Si recibe un puntero nulo, entonces devuelve false.
