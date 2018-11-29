@@ -21,7 +21,6 @@ status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **sali
 		argumento = validar_arg(argv[i]);
 		switch (argumento) { 
 			case ARG_AYUDA:
-
 				return ST_PEDIR_AYUDA;
 				break;
 			case ARG_NOMBRE:
@@ -45,16 +44,27 @@ status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **sali
 				++i;
 				printf("Encontre archivo de entrada\n");
 				*entrada = abrir_archivo_entrada(argv[i], &protocolo, &estado); 
+				if (*entrada == NULL) {
+					printf("llegue aca");
+					return ST_ERROR_ARCHIVO_ENTRADA_INVALIDO;
+				}
 				break;
 			case ARG_ARCHIVO_SALIDA:
 				++i;
 				printf("Encontre archivo de salida\n");
 				*salida = abrir_archivo_salida(argv[i], &estado);
+				if (*salida == NULL) {
+					return ST_ERROR_ARCHIVO_SALIDA_INVALIDO;
+				}
 				break;
 			case ARG_ARCHIVO_LOG:
 				++i;
 				printf("Encontre archivo log\n");
 				*archivo_log = abrir_archivo_log(argv[i], &estado);
+				if (*archivo_log == NULL) {
+					*archivo_log = stderr; //OJO! ES PARA INFORMAR EL ERROR
+					return ST_ERROR_ARCHIVO_LOGS_INVALIDO;
+				}
 				break;
 			case ARG_CANT_MENSAJES:
 				++i;
@@ -283,8 +293,8 @@ bool cargar_nombre_por_omision(char *nombre) {
 }
 
 
-void imprimir_ayuda(FILE **salida) {
+void imprimir_ayuda(FILE *salida) {
 
-	fprintf(*salida, "%s\n", MSJ_IMPRIMIR_AYUDA);
+	fprintf(salida, "%s\n", MSJ_IMPRIMIR_AYUDA);
 
 }

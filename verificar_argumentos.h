@@ -127,7 +127,7 @@ status_t validar_argumento_nombre(char *argv_nombre, char *nombre);
 
 
 /* Imprime la ayuda por stdout. */
-void imprimir_ayuda(FILE **salida);
+void imprimir_ayuda(FILE *salida);
 
 /* Inicializa al campo nombre de la estructura con un nombre por defecto. 
  * Si recibe un puntero nulo, entonces devuelve false.
