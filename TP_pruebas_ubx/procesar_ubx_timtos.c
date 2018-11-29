@@ -2,9 +2,12 @@
 
 procesar_ubx_status _procesar_ubx_timtos (FILE **pf_in, gps_t * timtos_ptr) {
 	size_t largo = 0;
-	uchar payload[B_MAX_CANT_SENT]
+	uchar payload[B_MAX_CANT_SENT];
 	uchar aux, ck_a, ck_b;
-	int i;
+		
+	if (!*pf_in || !pf_in || !timtos_ptr) 
+		return PUE_PTRNUL;
+	
 	
 	if (fread(&aux, U1, 1, *pf_in) != 1)
 		return PUE_LEC;
@@ -22,7 +25,7 @@ procesar_ubx_status _procesar_ubx_timtos (FILE **pf_in, gps_t * timtos_ptr) {
 	
 	// No se verifica nada, solo se cargan los datos.
 	
-	//Cargar año
+	timtos_ptr->fecha.anio = u1_to_u2(payload + 8);
 	timtos_ptr->fecha.mes = payload[10];
 	timtos_ptr->fecha.dia = payload[11];
 	

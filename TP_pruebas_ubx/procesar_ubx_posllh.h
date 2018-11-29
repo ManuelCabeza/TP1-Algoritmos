@@ -5,7 +5,7 @@
 
 #define LARGO_PAYLOAD_POSLLH 28
 
-procesar_ubx_status _procesar_ubx_posllh (FILE *pf_aux, FILE **pf);
+procesar_ubx_status _procesar_ubx_posllh (FILE **pf_in, gps_t * pos_ptr);
 
 
 #endif

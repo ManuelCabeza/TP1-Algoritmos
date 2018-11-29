@@ -3,9 +3,11 @@
 
 procesar_ubx_status _procesar_ubx_pvt (FILE **pf_in, gps_t * pvt_ptr)  {
 	size_t largo = 0;
-	uchar payload[B_MAX_CANT_SENT]
-	uchar aux, ck_a, ck_b;
-	int i;
+	uchar payload[B_MAX_CANT_SENT];
+	uchar  aux, ck_a, ck_b;
+	
+	if (!*pf_in || !pf_in || !pvt_ptr) 
+		return PUE_PTRNUL;
 	
 	if (fread(&aux, U1, 1, *pf_in) != 1)
 		return PUE_LEC;
@@ -23,7 +25,7 @@ procesar_ubx_status _procesar_ubx_pvt (FILE **pf_in, gps_t * pvt_ptr)  {
 	
 	// Se cargan los datos.
 	// Solo se verifican los flags 
-	// Cargar año
+	pvt_ptr->fecha.anio = u1_to_u2(payload + 4);
 	pvt_ptr->fecha.mes = payload[6];
 	pvt_ptr->fecha.dia = payload[7];
 	
@@ -44,9 +46,10 @@ procesar_ubx_status _procesar_ubx_pvt (FILE **pf_in, gps_t * pvt_ptr)  {
 	
 	pvt_ptr->cant_satelites = payload[23];
 	
-	//ME QUEDE ACA, HAY QUE SEGUIR CARGANDO LOS DATOS
-	
-	
+	pvt_ptr->longitud = (float) u1_to_i4(payload + 24);
+	pvt_ptr->latitud = (float) u1_to_i4(payload + 28);
+	pvt_ptr->sep_geo = (float) u1_to_i4(payload + 32);
+	pvt_ptr->elevacion = (float) u1_to_i4(payload + 36);
 	
 	check_sum(payload, LARGO_PAYLOAD_PVT, &ck_a, &ck_b);
 	
