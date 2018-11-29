@@ -7,13 +7,16 @@
 #include <string.h>
 #include <stdbool.h>
 
+void cerrar_archivos(FILE *entrada, FILE *salida, FILE *archivo_log);
+
+
 int main(int argc, char *argv[]) {
 
 	/*metadata_t datos_usuario;*/
 	status_t st;
 	 
-    FILE *entrada;
-    FILE *salida /*= stdout*/; //Abro como archivo de escritura
+    FILE *entrada = stdin;
+    FILE *salida = stdout; //Abro como archivo de escritura
     FILE *archivo_log = stderr; //idem aca
 
 /*	cargar_nombre_por_omision(datos_usuario.nombre);*/
@@ -21,38 +24,33 @@ int main(int argc, char *argv[]) {
 	st = procesar_argumentos(argc, argv, &entrada, &salida, &archivo_log/*, &datos_usuario*/);
 
 	if (st == ST_PEDIR_AYUDA) {
-		imprimir_ayuda(&salida); //ACA el argumento de salida no estaba inicializado. COMO SOLUCIONARLO?
+		imprimir_ayuda(salida); //ACA el argumento de salida no estaba inicializado. COMO SOLUCIONARLO?		
+		cerrar_archivos(entrada, salida, archivo_log);
 		return EXIT_SUCCESS;
 	}
 
 	if (st != ST_OK) {
-		imprimir_msj_log(st, &archivo_log);
+		imprimir_msj_log(st, archivo_log);
+		cerrar_archivos(entrada, salida, archivo_log);
 		return EXIT_FAILURE;
 	}
 
-//Para cerrar cada archivo hacer de la misma forma. Ver si crear un funcion para eso. 
-	if (entrada != stdin) {
-		fclose(entrada);
-	}
-	if (salida != stdout) {
-		fclose(salida);
-	}
-	if (archivo_log != stderr) {
-		fclose(salida);
-	}
+	cerrar_archivos(entrada, salida, archivo_log);
 
 	return EXIT_SUCCESS;
 }
 
-/*
-void cerrar_archivos(FILE **archivo) {
 
-	if (!entrada || !salida ||!archivo_log) {
+void cerrar_archivos(FILE *entrada, FILE *salida, FILE *archivo_log) {
 
+	if (entrada != stdin && entrada != NULL) {
+		fclose(entrada);
+	}
+	if (salida != stdout && salida != NULL) {
+		fclose(salida);
+	}
+	if (archivo_log != stderr && archivo_log != NULL) {
+		fclose(archivo_log);
 	}
 
-	if (*archivo != stdin || *archivo != stdout || *archivo != stderr) {
-		fclose(archivo);
-	}
 }
-*/
