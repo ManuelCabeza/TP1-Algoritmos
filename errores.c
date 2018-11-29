@@ -8,7 +8,7 @@ año-mes-dia horas:minutos:segundos [WARN] mensaje
 año-mes-dia horas:minutos:segundos [DEBUG] mensaje
 */
 
-void imprimir_msj_log (status_t estado, FILE **archivo_log/*, gps_t *datos_satelite*/) { //Pasa una estructura
+void imprimir_msj_log (status_t estado, FILE *archivo_log/*, gps_t *datos_satelite*/) { //Pasa una estructura
 
 	const char * msj_error[] = { MSJ_VACIO, MSJ_VACIO,
 								MSJ_ERROR_PUNTERO_NULO, MSJ_ERROR_NOMBRE_INVALIDO, 
@@ -27,7 +27,7 @@ void imprimir_msj_log (status_t estado, FILE **archivo_log/*, gps_t *datos_satel
 														 datos_satelite->horario.minuto,
 														 datos_satelite->horario.segundos,
 														 	)*/
-	fprintf(*archivo_log, "%s : %s\n", MSJ_ERROR_PREFIJO, msj_error[estado]);
+	fprintf(archivo_log, "%d %s : %s\n", estado, MSJ_ERROR_PREFIJO, msj_error[estado]);
 }
 
 

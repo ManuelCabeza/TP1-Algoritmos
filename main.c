@@ -13,20 +13,20 @@ int main(int argc, char *argv[]) {
 	status_t st;
 	 
     FILE *entrada;
-    FILE *salida; //Abro como archivo de escritura
-    FILE *archivo_log; //idem aca
+    FILE *salida /*= stdout*/; //Abro como archivo de escritura
+    FILE *archivo_log = stderr; //idem aca
 
 /*	cargar_nombre_por_omision(datos_usuario.nombre);*/
 
-	st = procesar_argumentos(argc, argv, entrada, salida, archivo_log/*, &datos_usuario*/);
+	st = procesar_argumentos(argc, argv, &entrada, &salida, &archivo_log/*, &datos_usuario*/);
 
 	if (st == ST_PEDIR_AYUDA) {
-		imprimir_ayuda();
+		imprimir_ayuda(&salida); //ACA el argumento de salida no estaba inicializado. COMO SOLUCIONARLO?
 		return EXIT_SUCCESS;
 	}
 
 	if (st != ST_OK) {
-		imprimir_errores_log(&st,archivo_log);
+		imprimir_msj_log(st, &archivo_log);
 		return EXIT_FAILURE;
 	}
 
@@ -34,7 +34,25 @@ int main(int argc, char *argv[]) {
 	if (entrada != stdin) {
 		fclose(entrada);
 	}
-
+	if (salida != stdout) {
+		fclose(salida);
+	}
+	if (archivo_log != stderr) {
+		fclose(salida);
+	}
 
 	return EXIT_SUCCESS;
 }
+
+/*
+void cerrar_archivos(FILE **archivo) {
+
+	if (!entrada || !salida ||!archivo_log) {
+
+	}
+
+	if (*archivo != stdin || *archivo != stdout || *archivo != stderr) {
+		fclose(archivo);
+	}
+}
+*/
