@@ -47,7 +47,10 @@ typedef struct {
 } gps_t;
 
 typedef enum {PR_OK, PR_FIN, PR_ERR_NO_CAR_INI, PR_ERR, PR_ERR_SENT, PR_ERR_SUM_VER,
-		      PR_ERR_CAR_STATUS } procesar_t;
+		      PR_ERR_CAR_STATUS, PR_ERR_HORARIO, PR_ERR_CAR_LATITUD, PR_ERR_LATITUD,
+		      PR_ERR_CAR_LONGITUD, PR_ERR_LONGITUD, PR_ERR_CAL_FIX, PR_ERR_CANT_SAT,
+		      PR_ERR_ELEVACION, PR_ERR_CAR_METRO, PR_ERR_HDOP, PR_ERR_SEP_GEO, PR_ERR_FECHA,
+		      PR_ERR_MES, PR_ERR_ANIO, PR_ERR_DIA, PR_ERR_ZONA_HORARIA } procesar_t;
 
 void procesar_fecha (fecha_t * fecha_ptr, long fecha);
 /* Carga la estructura con formato ddmmyy de la forma
