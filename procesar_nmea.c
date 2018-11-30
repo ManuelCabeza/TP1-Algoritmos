@@ -1,97 +1,35 @@
 #include "procesar_nmea.h"
-#include "main.h"
-#include "verificar_argumentos.h"
-#include "generar_gpx.h"
+#include "procesar_nmea_zda.c"
+#include "procesar_nmea_gga.c"
+#include "procesar_nmea_rmc.c"
 
-procesar_t procesar_nmea(gga_t * ggaptr) {
-
-	char c; /*Variable auxiliar para no usar tolower mas de 2 veces.*/
-	char string[MAX_LONG_SEN];
-	char * str;
-
-	long suma_verificacion;
-	float horario;
-	float longitud;
-	float latitud;
-	/* Se revisa que no se este al final del archivo */
-	if (fgets(string, MAX_LONG_SEN,stdin) == NULL) {
-		return PR_FIN;
-	}
-	str = string;
-	/* Con este puntero se recorre la cadena verificando cada argumento */
-	if (* str != CARACTER_INICIO_COMANDO) {
-		return PR_ERR;
-	}
-	/* Se verifica el formato del horario y se carga en la estructura con la proxima funcion*/
-	if ((str = strchr(string, CARACTER_SEPARACION_COMANDO)) != NULL) {
-		str++;
-		if ((horario = strtof(str, &str)) < 0 || ((* (str++)) != CARACTER_SEPARACION_COMANDO)) { 
-			return PR_ERR;
-		}
-	}
-
-	procesar_horario( &(ggaptr->horario), horario);
+procesar_t procesar_nmea (FILE ** pf, gps_t * gps_ptr) { //El archivo abierto en rt
+	char cadena[MAX_LONG_SENTENCIA];
+	char * ch_ptr;
 	
-	if ((latitud = strtof(str, &str)) < 0 || ((* (str++)) != CARACTER_SEPARACION_COMANDO)) { 
-		return PR_ERR;
+	if (!(fgets(cadena, MAX_LONG_SENTENCIA, *pf))) {
+		return PR_FIN; //Ver si esta bien esto
 	}
-
-	c = tolower( * (str++));
-	if ((c != CARACTER_NORTE) && (c != CARACTER_SUR)){ 
-		return PR_ERR;
-	}
-
-	/* Asigna valor de latitud a partir de formato ddmm.mmm
-	 * habiendo verificado previamente que se cumple el formato */
-	ggaptr->latitud = (((int)latitud / 100) + ((latitud - 100 * ((int)latitud / 100)) / 60 )) * (c == CARACTER_SUR ? MULTIPLICADOR_SUR : MULTIPLICADOR_NORTE);
+	ch_ptr = cadena;
 	
-	if ((longitud = strtof(++str, &str)) < 0 || ((* (str++)) != CARACTER_SEPARACION_COMANDO)) {
-		return PR_ERR;
+	if (* ch_ptr != CARACTER_INICIO_COMANDO) {
+		return PR_ERR_NO_CAR_INI;
 	}
-	c = tolower( * (str++));
-	if ((c != CARACTER_ESTE) && (c != CARACTER_OESTE)) {
-		return PR_ERR;
-	}
-	/* Asigna valor de longitud a partir de formato dddmm.mmm 
-	 * habiendo verificado previamente que se cumple el formato*/
-	ggaptr->longitud = (((int)longitud / 100) + ((longitud - 100 * ((int)longitud / 100)) / 60 )) * (c == CARACTER_OESTE ? MULTIPLICADOR_OESTE : MULTIPLICADOR_ESTE);
-
-	/*Los siguientes if verifican que los datos sean correctos (Que estén
-	 * en los rangos necesarios y los carga a la estructura ) */
-	if ((ggaptr->calidad_fix = strtol(++str, &str, 10)) < MIN_VALOR_FIX || ((* (str++)) != CARACTER_SEPARACION_COMANDO) || (ggaptr->calidad_fix) > MAX_VALOR_FIX) {
-		return PR_ERR;
-	}
-	if ((ggaptr->cant_satelites = strtof(++str, &str)) < MIN_VALOR_CANT_SATELITES || ((* (str++)) != CARACTER_SEPARACION_COMANDO) || (ggaptr->cant_satelites > MAX_VALOR_CANT_SATELITES)) {
-		return PR_ERR;
-	}
-	if ((ggaptr->hdop = strtof(++str, &str)) < 0 || ((* (str++)) != CARACTER_SEPARACION_COMANDO)) {
-		return PR_ERR;
-	}
-	if ((ggaptr->elevacion = strtof(str, &str)) < 0 || ((* (str++)) != CARACTER_SEPARACION_COMANDO)) {
-		return PR_ERR;
-	}
-	if (tolower(* str++) != CARACTER_UNIDAD) {
-		return PR_ERR;
-	}
-	if ((ggaptr->sep_geo = strtof(++str, &str)) < 0 || ((* (str++)) != CARACTER_SEPARACION_COMANDO)) {
-		return PR_ERR;
-	}
-	if (tolower(* str) != CARACTER_UNIDAD) {
-		return PR_ERR;
-	}
-	if ((str = strrchr(string, CARACTER_SUMA_VER)) == NULL) {
-		return PR_ERR;
-	}
-	/*Antes de asumir que la línea esta correcta realiza la suma de verificacion*/
-	suma_verificacion = strtol(++str, NULL, 16);
+	ch_ptr += 3; // Muevo el puntero para que apunte a la primer 'x' de "$GPxxx,"
 	
-	str = string + 1;
-
-	if (nmea_verificar_suma( str) != suma_verificacion) {
-		return PR_ERR;
+	// Verifico que tipo de sentencia es.
+	if (!strncmp(ch_ptr, SENT_GGA, LONG_SENT_GGA)) {
+		return procesar_nmea_gga(gps_ptr, ch_ptr, cadena);
 	}
-	return PR_OK;
+	else if (!strncmp(ch_ptr, SENT_ZDA, LONG_SENT_ZDA)) {
+		return procesar_nmea_zda(gps_ptr, ch_ptr, cadena);
+	}
+	else if (!strncmp(ch_ptr, SENT_RMC, LONG_SENT_RMC)) {
+		return procesar_nmea_rmc(gps_ptr, ch_ptr, cadena);
+	}
+	return PR_ERR_SENT;
 }
+
 
 unsigned char nmea_verificar_suma(const char * sentencia) {
 
@@ -103,9 +41,118 @@ unsigned char nmea_verificar_suma(const char * sentencia) {
 	return suma;
 }
 
-void procesar_horario(horario_t * horario_str, float horario) {
+void procesar_horario (horario_t * horario_ptr, float horario) {
 
-	horario_str->minuto = (horario - 10000 * (horario_str->hora = horario / 10000)) / 100;
-
-	horario_str->segundos = horario - 100 * ((int)horario / 100);
+	horario_ptr->minuto = (horario - 10000 * (horario_ptr->hora = horario / 10000)) / 100;
+	horario_ptr->segundos = horario - 100 * ((int)horario / 100);
 }
+
+void procesar_fecha (fecha_t * fecha_ptr, long fecha) {
+	
+	fecha_ptr->mes = fecha / 100 - 100 * (fecha_ptr->dia = fecha / 10000);
+	fecha_ptr->anio = (fecha & 0xFF); //NO SE SI FUNCIONA
+}
+
+void imprimir_estructura (gps_t gps_ptr) {
+	printf("Hora: %i, Minuto: %i, Segundo: %f\n", gps_ptr.horario.hora, gps_ptr.horario.minuto, gps_ptr.horario.segundos );
+	printf("Año: %i, Mes: %i, Día: %i\n", gps_ptr.fecha.anio, gps_ptr.fecha.mes, gps_ptr.fecha.dia);
+	printf("Latitud: %f\n", gps_ptr.latitud);
+	printf("Longitud: %f\n", gps_ptr.longitud);
+	printf("Elevacion: %f\n", gps_ptr.elevacion);
+	printf("SepGeo: %f\n", gps_ptr.sep_geo);
+	printf("HDop: %f\n", gps_ptr.hdop);
+	printf("Calidad Fix: %i\n", gps_ptr.calidad_fix);
+	printf("Cantidad satelites: %i\n", gps_ptr.cant_satelites);
+}
+
+
+int main(void) {
+	FILE * pf;
+	pf = fopen("prueba_zda.txt","rt");
+	gps_t estructura;
+	procesar_t pr;
+	
+	while ((pr = procesar_nmea( &pf, &estructura)) != PR_FIN) {
+		switch (pr) {
+			case PR_OK :
+				puts("OK");
+				imprimir_estructura(estructura);
+				break;
+			case PR_ERR_NO_CAR_INI :
+				puts("Error no caracter inicial");
+				break;
+			case PR_ERR :
+				puts("Error");
+				break;
+			case PR_ERR_SENT :
+				puts("Error, sentencia no válida");
+				break;
+			case PR_ERR_SUM_VER :
+				puts("Error suma de verificaión");
+				break;
+			case PR_ERR_CAR_STATUS :
+				puts("Error en caracter status");
+				break;
+			case PR_ERR_HORARIO :
+				puts("Error en horario");
+				break;
+			case PR_ERR_CAR_LATITUD :
+				puts("Error en caracter latitud");
+				break;
+			case PR_ERR_LATITUD :
+				puts("Error en latitud");
+				break;
+			case PR_ERR_CAR_LONGITUD :
+				puts("Error en caracter longitud");
+				break;
+			case PR_ERR_LONGITUD :
+				puts("Error en longitud");
+				break;
+			case PR_ERR_CAL_FIX :
+				puts("Error en calidad fix");
+				break;
+			case PR_ERR_CANT_SAT :
+				puts("Error en cantidad satelites");
+				break;
+			case PR_ERR_ELEVACION :
+				puts("Error elevacion");
+				break;
+			case PR_ERR_CAR_METRO :
+				puts("Error en caracter metro");
+				break;
+			case PR_ERR_HDOP :
+				puts("Error en Hdop");
+				break;
+			case PR_ERR_SEP_GEO :
+				puts("Error en SepGeo");
+				break;
+			case PR_ERR_FECHA :
+				puts("Error en fecha");
+				break;
+			case PR_ERR_DIA :
+				puts("Error en dia");
+				break;
+			case PR_ERR_MES :
+				puts("Error en mes");
+				break;
+			case PR_ERR_ANIO :
+				puts("Error en anio");
+				break;
+			case PR_ERR_ZONA_HORARIA :
+				puts("Error en zona horaria");
+				break;
+			default :
+				puts("default?");
+				break;
+		}
+	}
+	
+	fclose (pf);
+	return 0;
+}
+
+
+
+
+
+

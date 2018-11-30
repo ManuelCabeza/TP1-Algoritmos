@@ -22,4 +22,18 @@ typedef struct {
 	fecha_t fecha;
 } metadata_t;
 
+typedef enum {INVALIDO, GPS, DGPS, PPS, RTK, FRTK, ESTIMADA, MANUAL, SIMULACION} cal_fix;
+
+typedef struct {
+	fecha_t fecha;
+	horario_t horario;
+	float latitud;
+	float longitud;
+	cal_fix calidad_fix;
+	int cant_satelites;
+	float hdop;
+	float elevacion;
+	float sep_geo;
+} gps_t;
+
 #endif

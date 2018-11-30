@@ -4,20 +4,6 @@
 #include <stdio.h>
 #include <string.h>
 
-//BORRAR ESTO
-typedef struct {
-	int dia;
-	int mes;
-	int anio;
-} fecha_t;
- 
-typedef struct {
-	int hora;
-	int minuto;
-	float segundos;
-} horario_t;
-// HASTA ACA
-
 #define MAX_LONG_SENTENCIA 95
 
 #define SENT_GGA "GGA"
@@ -31,7 +17,7 @@ typedef struct {
 #define CARACTER_SEPARACION_COMANDO ','
 #define CARACTER_SUMA_VER '*'
 #define CARACTER_INICIO_COMANDO '$' 
-
+/*
 typedef enum {INVALIDO, GPS, DGPS, PPS, RTK, FRTK, ESTIMADA, MANUAL, SIMULACION} cal_fix;
 
 typedef struct {
@@ -45,7 +31,7 @@ typedef struct {
 	float elevacion;
 	float sep_geo;
 } gps_t;
-
+*/
 typedef enum {PR_OK, PR_FIN, PR_ERR_NO_CAR_INI, PR_ERR, PR_ERR_SENT, PR_ERR_SUM_VER,
 		      PR_ERR_CAR_STATUS, PR_ERR_HORARIO, PR_ERR_CAR_LATITUD, PR_ERR_LATITUD,
 		      PR_ERR_CAR_LONGITUD, PR_ERR_LONGITUD, PR_ERR_CAL_FIX, PR_ERR_CANT_SAT,
@@ -76,5 +62,6 @@ unsigned char nmea_verificar_suma(const char * sentencia);
  * Devuelve la suma XOR
 */
 
+procesar_t procesar_nmea(FILE ** pf, gps_t * gps_ptr);
 #endif
 

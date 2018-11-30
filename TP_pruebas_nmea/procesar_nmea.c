@@ -1,7 +1,7 @@
 #include "procesar_nmea.h"
-#include "procesar_nmea_zda.c"
-#include "procesar_nmea_gga.c"
-#include "procesar_nmea_rmc.c"
+#include "procesar_nmea_zda.h"
+#include "procesar_nmea_gga.h"
+#include "procesar_nmea_rmc.h"
 
 procesar_t procesar_nmea (FILE ** pf, gps_t * gps_ptr) { //El archivo abierto en rt
 	char cadena[MAX_LONG_SENTENCIA];
@@ -53,6 +53,7 @@ void procesar_fecha (fecha_t * fecha_ptr, long fecha) {
 	fecha_ptr->anio = (fecha & 0xFF); //NO SE SI FUNCIONA
 }
 
+/* Esta se puede usar ! 
 void imprimir_estructura (gps_t gps_ptr) {
 	printf("Hora: %i, Minuto: %i, Segundo: %f\n", gps_ptr.horario.hora, gps_ptr.horario.minuto, gps_ptr.horario.segundos );
 	printf("Año: %i, Mes: %i, Día: %i\n", gps_ptr.fecha.anio, gps_ptr.fecha.mes, gps_ptr.fecha.dia);
@@ -63,10 +64,9 @@ void imprimir_estructura (gps_t gps_ptr) {
 	printf("HDop: %f\n", gps_ptr.hdop);
 	printf("Calidad Fix: %i\n", gps_ptr.calidad_fix);
 	printf("Cantidad satelites: %i\n", gps_ptr.cant_satelites);
-}
-
-
-int main(void) {
+} */
+/*
+el viejo main para pruebas
 	FILE * pf;
 	pf = fopen("prueba_zda.txt","rt");
 	gps_t estructura;
@@ -149,9 +149,7 @@ int main(void) {
 	
 	fclose (pf);
 	return 0;
-}
-
-
+*/
 
 
 
