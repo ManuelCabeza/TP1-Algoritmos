@@ -36,6 +36,11 @@
 #define TAG_METADATA "metadata"
 #define TAG_NOMBRE "name"
 
+/*De las funciones cargar datos por omision */
+#define AJUSTE_DE_NUM 1
+#define ANIO_DE_LINUX 1900
+
+
 typedef enum {INICIAR, INICIAR_ENTER, FINAL, FINAL_ENTER} tipo_tag;
 
 /* Imprime el formato tipo GPX por stdout.
@@ -66,5 +71,9 @@ void generar_gpx(gps_t * gps_ptr, metadata_t * metptr, procesar_t (* procesar) (
  * No devuelve nada, ya que solamente imprime. */
 
 void tag(char * strptr, tipo_tag tipo, size_t indentacion);
+
+bool cargar_hora_por_omision (horario_t *horario);
+bool cargar_fecha_por_omision(fecha_t *fecha);
+
 
 #endif

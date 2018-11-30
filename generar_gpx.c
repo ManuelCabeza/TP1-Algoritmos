@@ -83,3 +83,39 @@ void tag(char * strptr, tipo_tag tipo, size_t indentacion) {
 		putchar('\n');
 	}
 }
+
+ 
+/*Por ahora aca, si lo queres cambiar hacelo sin problema.*/
+bool cargar_fecha_por_omision(fecha_t *fecha) {
+
+    time_t tiempo;
+    struct tm * fecha_actual;
+    tiempo = time(NULL);
+    fecha_actual = localtime(&tiempo);
+
+	if(!fecha) {
+		return false;
+	}
+	fecha->dia  = fecha_actual->tm_mday;
+	fecha->mes  = (fecha_actual->tm_mon) + AJUSTE_DE_NUM;
+	fecha->anio = (fecha_actual->tm_year) + ANIO_DE_LINUX;
+
+	return true;
+}
+
+bool cargar_hora_por_omision (horario_t *horario) {
+
+	time_t tiempo;
+    struct tm *hora;
+    tiempo = time(NULL);
+    hora = localtime(&tiempo);
+
+	if(!horario) {
+		return false;
+	}
+	horario->segundos = (float)hora -> tm_sec;
+	horario->minuto = (hora -> tm_min) + AJUSTE_DE_NUM;
+	horario->hora = (hora ->tm_hour);
+
+	return true;
+}
