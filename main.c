@@ -18,7 +18,9 @@ int main(int argc, char *argv[]) {
     FILE *entrada = stdin;
     FILE *salida = stdout; 
     FILE *archivo_log = stderr; 
-	
+
+	cargar_fecha_por_omision(&(datos_usuario.fecha));
+	cargar_hora_por_omision(&(datos_usuario.horario));
 	cargar_nombre_por_omision(datos_usuario.nombre);
 
 	st = procesar_argumentos(argc, argv, &entrada, &salida, &archivo_log,&datos_usuario);
@@ -56,3 +58,5 @@ void cerrar_archivos(FILE *entrada, FILE *salida, FILE *archivo_log) {
 	}
 
 }
+
+
