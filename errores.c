@@ -20,13 +20,13 @@ void imprimir_msj_log (status_t estado, FILE *archivo_log, gps_t *datos_satelite
 							   }; 
 /*Tiene que tener el mismo orden de status_t para que sea un diccionario*/
 
-	fprintf (archivo_log, "%d-%d-%d %d:%d:%f [ERROR] %s\n",datos_satelite->fecha.anio, 
-														   datos_satelite->fecha.mes,
-														   datos_satelite->fecha.dia,
-														   datos_satelite->horario.hora,
-														   datos_satelite->horario.minuto,
-														   datos_satelite->horario.segundos,
-														   msj_error[estado]
+	fprintf (archivo_log, "%d-%d-%d %d:%d:%f [ERROR] %s\n", datos_satelite->fecha.anio, 
+														    datos_satelite->fecha.mes,
+														    datos_satelite->fecha.dia,
+														    datos_satelite->horario.hora,
+														    datos_satelite->horario.minuto,
+														    datos_satelite->horario.segundos,
+														    msj_error[estado]
 														  );
 	
 }

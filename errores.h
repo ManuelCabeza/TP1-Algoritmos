@@ -16,13 +16,31 @@
 #define MSJ_ERROR_ARCHIVO_LOG "El archivo log es invalido."
 #define MSJ_ERROR_CANTIDAD_MSJ "La cantidad de mensajes no es valido."
 #define MSJ_ERROR_CANTIDAD_ARGUMENTOS_INVALIDOS "La cantidad de argumentos ingresados es invalido."
-
 #define MSJ_ERROR_ARG_INVALIDO "El argumento ingresado es invalido, pruebe ingresando el comando -h para obtener ayuda." 
-
 #define MSJ_ERROR_LECTURA "No se pudo leer el archivo"
+
+/*
+para los debug
+ #define MSJ_DEBUG_BUSCANDO_SINCRONISMO "buscando los 2 bytes de sincronismo" 
+ #define MSJ_DEBUG_ID "detecta un determinado ID"
+
+ recolectó un mensaje, 
+ cargó un mensaje en la lista, 
+ imprimió un mensaje, etc.
+
+
+*/
+
+/*
+ WARN : Son avisos que ocurren durante la ejecución.
+No se reconoce un ID 
+Un mensaje contiene un ﬁx inválido
+Se descarta un mensaje por lista llena, etc. 
+
+*/
+
+
 /* Dependiendo del estado que reciba, imprime el correspondiente mensaje de error. */
-
-
 void imprimir_msj_log(status_t estado, FILE *archivo_log, gps_t *datos_satelite);
 
 #endif
