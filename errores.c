@@ -18,6 +18,8 @@ void imprimir_msj_log (status_t estado, FILE *archivo_log, gps_t *datos_satelite
 								MSJ_ERROR_CANTIDAD_ARGUMENTOS_INVALIDOS,
 								MSJ_ERROR_ARG_INVALIDO, MSJ_ERROR_LECTURA
 							   }; 
+
+	/*Creo dos arreglos mas con los argumetnos para WARN y DEBUG*/
 /*Tiene que tener el mismo orden de status_t para que sea un diccionario*/
 
 	fprintf (archivo_log, "%d-%d-%d %d:%d:%f [ERROR] %s\n", datos_satelite->fecha.anio, 

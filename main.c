@@ -28,8 +28,8 @@ int main(int argc, char *argv[]) {
 	generar_gpx(&gps, &datos_usuario, &procesar_nmea, entrada, salida, archivo_log);
 	
 	if (st == ST_PEDIR_AYUDA) {
-		imprimir_ayuda(salida); 		
-		cerrar_archivos( entrada, stdout, stderr);
+		imprimir_ayuda(stdout); // ver si tambien lo quiere por salida 		
+		cerrar_archivos(entrada, stdout, stderr);
 		return EXIT_SUCCESS;
 	}
 	
@@ -44,7 +44,6 @@ int main(int argc, char *argv[]) {
 	return EXIT_SUCCESS;
 }
 
-
 void cerrar_archivos(FILE *entrada, FILE *salida, FILE *archivo_log) {
 
 	if (entrada != stdin && entrada != NULL) {
@@ -58,5 +57,3 @@ void cerrar_archivos(FILE *entrada, FILE *salida, FILE *archivo_log) {
 	}
 
 }
-
-

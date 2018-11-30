@@ -160,9 +160,7 @@ status_t identificar_protocolo_auto(char *arg_archivo_entrada, protocolo_t *prot
         fclose(p);
         return ST_ERROR_LECTURA;
     }
-	printf("Ya lei los dos uchar\n");
-	printf("%u\n", aux[0]);
-	printf("%u\n", aux[1]);
+	
     if (aux[POS_INICIAL_CARACTER_SINCRONISMO] == B_SYNC1 && aux[POS_FINAL_CARACTER_SINCRONISMO] == B_SYNC2) {
         *protocolo = PROTOCOLO_UBX;
 		printf("Protocolo  ubx en identificar protocolo auto\n");
@@ -250,7 +248,6 @@ FILE * abrir_archivo_log (char *arg_archivo_log, status_t *estado) {
 	return fopen(arg_archivo_log, "wt");
 }
 
-
 status_t validar_argumento_nombre(char *argv_nombre, char *nombre) {
 
 	size_t largo;
@@ -317,7 +314,6 @@ bool convertir_a_numero_entero(char *cadena, int *resultado) {
 	}
 	return true;
 }
-
 
 void imprimir_ayuda(FILE *salida) {
 
