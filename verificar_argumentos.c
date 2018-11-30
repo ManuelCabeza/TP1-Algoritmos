@@ -9,7 +9,9 @@ status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **sali
 	protocolo_t protocolo = PROTOCOLO_AUTO; 	
 	arg_t argumento;
 
-	if (!argv) {  //Faltan los demas punteros
+	int cant_msj; //PROPENSO A CAMBIO, DEPENDE DE LO QUE NECESITE MANU
+
+	if (!argv || !entrada || !salida || !archivo_log || !datos_usuario) {  
 		return ST_ERROR_PUNTERO_NULO;
 	}
 
@@ -31,7 +33,7 @@ status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **sali
 				++i;
 				printf("Encontre protocolo\n");
 				estado = validar_argumento_protocolo(argv[i], &protocolo); 
-				if (protocolo == PROTOCOLO_NMEA)
+				/*if (protocolo == PROTOCOLO_NMEA)
 					printf("Protoclo nmea\n" );
 				if (protocolo == PROTOCOLO_UBX)
 					printf("Protoclo ubx\n" );
@@ -39,6 +41,7 @@ status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **sali
 					printf("Protoclo auto\n" );
 				if (protocolo == PROTOCOLO_INVALIDO) 
 					printf("Protocolo invalido\n");
+				*/
 				break;
 			case ARG_ARCHIVO_ENTRADA:
 				++i;
@@ -68,6 +71,7 @@ status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **sali
 				break;
 			case ARG_CANT_MENSAJES:
 				++i;
+				estado = validar_argumento_cant_msj(argv[i],&cant_msj);
 				break;
 			case ARG_INVALIDO: 
 				return ST_ERROR_ARG_INVALIDO;
@@ -179,7 +183,6 @@ status_t identificar_protocolo_auto(char *arg_archivo_entrada, protocolo_t *prot
 
 }
 
-
 FILE * abrir_archivo_entrada(char *arg_archivo_entrada, protocolo_t *protocolo, status_t *estado) {
 //VER SU LA variable estado es pasada como argumento de la funcion.
     
@@ -248,16 +251,6 @@ FILE * abrir_archivo_log (char *arg_archivo_log, status_t *estado) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
 status_t validar_argumento_nombre(char *argv_nombre, char *nombre) {
 
 	size_t largo;
@@ -275,20 +268,53 @@ status_t validar_argumento_nombre(char *argv_nombre, char *nombre) {
 	return ST_OK;
 }
 
+/*
+Todo lo que comente en cargar_nombre_por_omision lo saque porque valgrind
+me tiraba un error como que no podia hacer un strlen a algo que no estaba
+inicializado
+*/
 bool cargar_nombre_por_omision(char *nombre) {
 
-	size_t largo;
+	//size_t largo;
 
 	if (!nombre) {
 		return false;
 	}
-	largo = (strlen(nombre) + 1); /* Mas el '\0' */
+/*	largo = (strlen(nombre) + 1); 
 
 	if (largo > CANT_MAX) {
 		return ST_ERROR_NOMBRE_INVALIDO;
 	}
+*/
 	strcpy(nombre, NOMBRE_POR_OMISION);
 
+	return true;
+}
+
+status_t validar_argumento_cant_msj(char *arg_cant_msj, int *cant_msj) {
+
+	if (!arg_cant_msj || !cant_msj) {
+		return ST_ERROR_PUNTERO_NULO;
+	}
+	if(!convertir_a_numero_entero(arg_cant_msj, cant_msj)) {
+		return ST_ERROR_CANT_MENSAJES_INVALIDOS;
+	}
+
+	return ST_OK;
+}
+
+bool convertir_a_numero_entero(char *cadena, int *resultado) {
+
+	char *perr = NULL;
+
+	if (!cadena|| !resultado) { 
+		return false;
+	}
+	*resultado = strtol(cadena, &perr, 10);
+
+	if (*perr != '\0') { 
+		return false;
+	}
 	return true;
 }
 

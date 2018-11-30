@@ -28,7 +28,6 @@
 
 #define MAX_CANT_ARG 14 /*que puedo ingresar por argumento de linea de comando-*/
 
-/*Idea general, hay que ver si ejecutamos lo que se propone*/
 #define MSJ_IMPRIMIR_AYUDA "Argumentos que tiene que recibir el programa:\n\n" \
 							"-h , --help\n" \
 							"		Muestra la ayuda\n" \
@@ -86,7 +85,7 @@ typedef enum estados {ST_OK, ST_PEDIR_AYUDA, ST_ERROR_PUNTERO_NULO,
 					  ST_ERROR_ARG_INVALIDO, ST_ERROR_LECTURA} status_t;  
 
 
-//tengo que sacar de aca el protocolo invalido
+
 typedef enum {PROTOCOLO_NMEA, PROTOCOLO_UBX, PROTOCOLO_AUTO, PROTOCOLO_INVALIDO} protocolo_t;
 
 typedef unsigned char uchar;
@@ -124,8 +123,6 @@ bool convertir_a_numero_entero(char *cadena, int *resultado);
  */
 status_t validar_argumento_nombre(char *argv_nombre, char *nombre);
 
-
-
 /* Imprime la ayuda por stdout. */
 void imprimir_ayuda(FILE *salida);
 
@@ -151,5 +148,8 @@ FILE * abrir_archivo_salida (char *arg_archivo_salida, status_t *estado);
 
 FILE * abrir_archivo_log (char *arg_archivo_log, status_t *estado);
 
+status_t validar_argumento_cant_msj(char *arg_cant_msj, int *cant_msj);
+
+bool convertir_a_numero_entero(char *cadena, int *resultado);
 
 #endif 
