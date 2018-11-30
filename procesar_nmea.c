@@ -1,7 +1,8 @@
 #include "procesar_nmea.h"
-#include "procesar_nmea_zda.c"
-#include "procesar_nmea_gga.c"
-#include "procesar_nmea_rmc.c"
+
+#include "procesar_nmea_zda.h"
+#include "procesar_nmea_gga.h"
+#include "procesar_nmea_rmc.h"
 
 procesar_t procesar_nmea (FILE ** pf, gps_t * gps_ptr) { //El archivo abierto en rt
 	char cadena[MAX_LONG_SENTENCIA];
@@ -65,7 +66,7 @@ void imprimir_estructura (gps_t gps_ptr) {
 	printf("Cantidad satelites: %i\n", gps_ptr.cant_satelites);
 }
 
-
+/*
 int main(void) {
 	FILE * pf;
 	pf = fopen("prueba_zda.txt","rt");
@@ -153,6 +154,6 @@ int main(void) {
 
 
 
-
+*/
 
 

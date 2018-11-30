@@ -1,6 +1,7 @@
 #include "generar_gpx.h"
-#include "verificar_argumentos.h"
 #include "main.h"
+#include "verificar_argumentos.h"
+
 /* Esto hay que ver si se puede perto estaria bueno si se puede hacer algo asi
 * Que solo se incluya el .c que se va a usar y no el otro, pero no se si se puede
 * creo que no*/

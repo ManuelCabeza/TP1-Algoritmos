@@ -1,10 +1,14 @@
 #include "procesar_nmea_rmc.h"
+#include "procesar_nmea_gga.h"
+
+
+
 /* $GPRMC,hhmmss.sss,A,ddmm.mmm,S,dddmmm.mmm,E,dddddd.d,ddd.d,ddmmyy,ddd.d,W*cc
  * _variaciones_   V   lat    N    long    W 
  * 
 */
 
-procesar_t procesar_nmea_rmc(gps_t * zda_ptr, char * ch_ptr, char * cadena) {
+procesar_t procesar_nmea_rmc(gps_t *zda_ptr, char * ch_ptr, char * cadena) {
 	
 	long suma_verificacion;
 	long fecha;

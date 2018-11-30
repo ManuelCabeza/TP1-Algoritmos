@@ -1,6 +1,12 @@
 #ifndef PROCESAR_NMEA_GGA_H
 #define PROCESAR_NMEA_GGA_H
 
+
+//estaba en el -.h
+#include "procesar_nmea.h"
+
+
+#include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>

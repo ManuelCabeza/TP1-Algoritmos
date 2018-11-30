@@ -6,6 +6,10 @@
 #include <ctype.h>
 #include <stdlib.h>
 
+//estaba en el .h
+#include "main.h"
+#include "procesar_nmea.h"
+
 #define CARACTER_STATUS_ACTIVO 'a'
 #define CARACTER_STATUS_VOID 'v'
 #define CARACTER_ESTE 'e'

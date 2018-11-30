@@ -4,6 +4,11 @@
 #include <stdio.h>
 #include <string.h>
 
+
+//estaba en el .c
+#include "main.h"
+
+
 #define MAX_LONG_SENTENCIA 95
 
 #define SENT_GGA "GGA"
@@ -38,7 +43,7 @@ typedef enum {PR_OK, PR_FIN, PR_ERR_NO_CAR_INI, PR_ERR, PR_ERR_SENT, PR_ERR_SUM_
 		      PR_ERR_ELEVACION, PR_ERR_CAR_METRO, PR_ERR_HDOP, PR_ERR_SEP_GEO, PR_ERR_FECHA,
 		      PR_ERR_MES, PR_ERR_ANIO, PR_ERR_DIA, PR_ERR_ZONA_HORARIA } procesar_t;
 
-void procesar_fecha (fecha_t * fecha_ptr, long fecha);
+void procesar_fecha (fecha_t *fecha_ptr, long fecha);
 /* Carga la estructura con formato ddmmyy de la forma
  * fecha.dia dd
  * fecha.mes mm
@@ -61,6 +66,12 @@ unsigned char nmea_verificar_suma(const char * sentencia);
  * Recibe un puntero al comienzo de la sentencia a calcular
  * Devuelve la suma XOR
 */
+
+
+//MANUU te falto los prototipos de muchas funcones ajjja
+void imprimir_estructura (gps_t gps_ptr);
+
+procesar_t procesar_nmea (FILE ** pf, gps_t * gps_ptr);
 
 #endif
 

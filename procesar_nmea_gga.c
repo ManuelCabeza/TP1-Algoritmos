@@ -1,4 +1,7 @@
+
+#include "main.h"
 #include "procesar_nmea_gga.h"
+
 
 procesar_t procesar_nmea_gga (gps_t * gga_ptr, char * ch_ptr, char * cadena) {
 
