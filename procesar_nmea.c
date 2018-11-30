@@ -4,11 +4,11 @@
 #include "procesar_nmea_gga.h"
 #include "procesar_nmea_rmc.h"
 
-procesar_t procesar_nmea (FILE ** pf, gps_t * gps_ptr) { //El archivo abierto en rt
+procesar_t procesar_nmea (FILE **pf, gps_t *gps_ptr) { //El archivo abierto en rt
 	char cadena[MAX_LONG_SENTENCIA];
 	char * ch_ptr;
 	
-	if (!(fgets(cadena, MAX_LONG_SENTENCIA, *pf))) {
+	if (!(fgets(cadena, MAX_LONG_SENTENCIA, *pf))) { 
 		return PR_FIN; //Ver si esta bien esto
 	}
 	ch_ptr = cadena;
@@ -32,7 +32,7 @@ procesar_t procesar_nmea (FILE ** pf, gps_t * gps_ptr) { //El archivo abierto en
 }
 
 
-unsigned char nmea_verificar_suma(const char * sentencia) {
+unsigned char nmea_verificar_suma(const char *sentencia) {
 
 	unsigned char suma = 0;
 
@@ -42,13 +42,13 @@ unsigned char nmea_verificar_suma(const char * sentencia) {
 	return suma;
 }
 
-void procesar_horario (horario_t * horario_ptr, float horario) {
+void procesar_horario (horario_t *horario_ptr, float horario) {
 
 	horario_ptr->minuto = (horario - 10000 * (horario_ptr->hora = horario / 10000)) / 100;
 	horario_ptr->segundos = horario - 100 * ((int)horario / 100);
 }
 
-void procesar_fecha (fecha_t * fecha_ptr, long fecha) {
+void procesar_fecha (fecha_t *fecha_ptr, long fecha) {
 	
 	fecha_ptr->mes = fecha / 100 - 100 * (fecha_ptr->dia = fecha / 10000);
 	fecha_ptr->anio = (fecha & 0xFF); //NO SE SI FUNCIONA
@@ -152,8 +152,4 @@ int main(void) {
 	return 0;
 }
 
-
-
 */
-
-

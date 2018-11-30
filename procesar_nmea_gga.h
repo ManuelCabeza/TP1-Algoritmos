@@ -1,10 +1,7 @@
 #ifndef PROCESAR_NMEA_GGA_H
 #define PROCESAR_NMEA_GGA_H
 
-
-//estaba en el -.h
 #include "procesar_nmea.h"
-
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -27,7 +24,7 @@
 #define MULTIPLICADOR_SUR  -1
 #define MULTIPLICADOR_NORTE  1
 
-procesar_t procesar_nmea_gga(gps_t * ggaptr, char * str, char * cadena);
+procesar_t procesar_nmea_gga(gps_t *ggaptr, char *str, char *cadena);
 //Esta definicion esta vieja
 /* Procesa una línea de stdin (hasta \n) hasta MAX_LONG_SEN. Una vez que se 
  * verifica un dato y es correcto, se carga en la estructura gga_t, 

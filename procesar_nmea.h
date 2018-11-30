@@ -4,10 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 
-
-//estaba en el .c
 #include "main.h"
-
 
 #define MAX_LONG_SENTENCIA 95
 
@@ -22,21 +19,7 @@
 #define CARACTER_SEPARACION_COMANDO ','
 #define CARACTER_SUMA_VER '*'
 #define CARACTER_INICIO_COMANDO '$' 
-/*
-typedef enum {INVALIDO, GPS, DGPS, PPS, RTK, FRTK, ESTIMADA, MANUAL, SIMULACION} cal_fix;
 
-typedef struct {
-	fecha_t fecha;
-	horario_t horario;
-	float latitud;
-	float longitud;
-	cal_fix calidad_fix;
-	int cant_satelites;
-	float hdop;
-	float elevacion;
-	float sep_geo;
-} gps_t;
-*/
 typedef enum {PR_OK, PR_FIN, PR_ERR_NO_CAR_INI, PR_ERR, PR_ERR_SENT, PR_ERR_SUM_VER,
 		      PR_ERR_CAR_STATUS, PR_ERR_HORARIO, PR_ERR_CAR_LATITUD, PR_ERR_LATITUD,
 		      PR_ERR_CAR_LONGITUD, PR_ERR_LONGITUD, PR_ERR_CAL_FIX, PR_ERR_CANT_SAT,
