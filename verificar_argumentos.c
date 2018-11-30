@@ -2,7 +2,7 @@
 #include "main.h"
 #include "errores.h"
 
-status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **salida, FILE **archivo_log/*, metadata_t *datos_usuario*/) {
+status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **salida, FILE **archivo_log, metadata_t *datos_usuario ) {
 
 	int i;
 	status_t estado;
@@ -25,7 +25,7 @@ status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **sali
 				break;
 			case ARG_NOMBRE:
 				++i;
-				/*estado = validar_argumento_nombre(argv[i], datos_usuario->nombre);*/
+				estado = validar_argumento_nombre(argv[i], datos_usuario->nombre);
 				break;
 			case ARG_PROTOCOLO:
 				++i;

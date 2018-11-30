@@ -23,6 +23,6 @@
 /* Dependiendo del estado que reciba, imprime el correspondiente mensaje de error. */
 
 
-void imprimir_msj_log(status_t estado, FILE *archivo_log);
+void imprimir_msj_log(status_t estado, FILE *archivo_log, gps_t *datos_satelite);
 
 #endif

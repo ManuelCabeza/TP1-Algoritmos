@@ -109,7 +109,7 @@ arg_t validar_arg(char *arg);
  * ST_ERROR_* en caso que algun argumento no sea valido
  * ST_OK si todos los argumentos son validos y sus contenidos tambien 
  */
-status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **salida, FILE **archivo_log/*, metadata_t *datos_usuario*/);
+status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **salida, FILE **archivo_log, metadata_t *datos_usuario);
 
 /* Convierte cualquier cadena que se le pase a un numero entero en base 10.
  * Si se puede convertir la cadena, lo guarda en resultado y devuelve true.
@@ -150,10 +150,6 @@ FILE * abrir_archivo_entrada(char *arg_archivo_entrada, protocolo_t *protocolo, 
 FILE * abrir_archivo_salida (char *arg_archivo_salida, status_t *estado);
 
 FILE * abrir_archivo_log (char *arg_archivo_log, status_t *estado);
-
-
-
-
 
 
 #endif 

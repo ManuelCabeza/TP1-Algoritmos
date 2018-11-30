@@ -3,13 +3,15 @@
 
 #define MAX_LONG_NOMBRE 100
 
+#include <stdio.h>
+#include <stdlib.h>
+
 typedef struct {
 	int dia;
 	int mes;
 	int anio;
 } fecha_t;
 
- 
 typedef struct {
 	int hora;
 	int minuto;
@@ -35,5 +37,8 @@ typedef struct {
 	float elevacion;
 	float sep_geo;
 } gps_t;
+
+
+void cerrar_archivos(FILE *entrada, FILE *salida, FILE *archivo_log); 
 
 #endif
