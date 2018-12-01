@@ -40,5 +40,5 @@ typedef struct {
 
 
 void cerrar_archivos(FILE *entrada, FILE *salida, FILE *archivo_log); 
-
+/* */
 #endif

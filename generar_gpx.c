@@ -32,6 +32,7 @@ void generar_gpx(gps_t * gps_ptr, metadata_t * metptr, procesar_t (* procesar) (
 	/*A partir de aca se empieza a imprimir cada uno de los trkpt*/
 	while ((aux_p = (* procesar)(&pf_in, gps_ptr)) != PR_FIN) {
 		// Si se procesar bien se imprimie y se carga en la lista
+		
 		if (aux_p == PR_OK) {
 
 			for (i = 0; i < INDENTACION_3 * CANT_CARACTERES_INDENTACION; i++)	{

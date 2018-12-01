@@ -32,7 +32,7 @@ para los debug
 */
 
 /*
- WARN : Son avisos que ocurren durante la ejecución.
+WARN
 No se reconoce un ID 
 Un mensaje contiene un ﬁx inválido
 Se descarta un mensaje por lista llena, etc. 
@@ -40,7 +40,13 @@ Se descarta un mensaje por lista llena, etc.
 */
 
 
-/* Dependiendo del estado que reciba, imprime el correspondiente mensaje de error. */
+
 void imprimir_msj_log(status_t estado, FILE *archivo_log, gps_t *datos_satelite);
+/* Dependiendo del estado que reciba, imprime el correspondiente mensaje en el
+archivo log. Los mensajes pueden ser: 
+ERROR: Son errores graves que ocurren durante la ejecució
+DEBUG: Son mensajes de información sobre lo que está haciendo el programa. 
+WARN: Son avisos que ocurren durante la ejecucion 
+Por defecto, la impresion sale por stderr. */
 
 #endif
