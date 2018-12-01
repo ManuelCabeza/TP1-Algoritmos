@@ -5,6 +5,6 @@
 
 #define LARGO_PAYLOAD_TIMTOS 56
 
-procesar_ubx_status _procesar_ubx_timtos (FILE **pf_in, gps_t * timtos_ptr);
+procesar_t _procesar_ubx_timtos (FILE **pf_in, gps_t * timtos_ptr);
 
 #endif

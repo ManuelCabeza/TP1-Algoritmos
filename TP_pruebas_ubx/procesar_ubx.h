@@ -6,7 +6,9 @@
 #define B_MAX_CANT_SENT 100 
 #define B_SYNC1 0xB5
 #define B_SYNC2 0x62
-#define B_CLASE 0x01
+#define CLASE_PVT 0x01
+#define CLASE_POSLLH 0x01
+#define CLASE_TIMTOS 0x0D
 #define ID_TIMTOS 0x12
 #define ID_POSLLH 0x02
 #define ID_PVT 0x07
@@ -50,10 +52,16 @@ typedef struct {
 
 
 //HASTA ACA HAY QUE SACARLO CUANDO COMPLEMOS TODO
-
+/*
+typedef enum {PR_OK, PR_FIN, PR_ERR_NO_CAR_INI, PR_ERR, PR_ERR_SENT, PR_ERR_SUM_VER,
+		      PR_ERR_CAR_STATUS, PR_ERR_HORARIO, PR_ERR_CAR_LATITUD, PR_ERR_LATITUD,
+		      PR_ERR_CAR_LONGITUD, PR_ERR_LONGITUD, PR_ERR_CAL_FIX, PR_ERR_CANT_SAT,
+		      PR_ERR_ELEVACION, PR_ERR_CAR_METRO, PR_ERR_HDOP, PR_ERR_SEP_GEO, PR_ERR_FECHA,
+		      PR_ERR_MES, PR_ERR_ANIO, PR_ERR_DIA, PR_ERR_ZONA_HORARIA } procesar_t;
+*/
 // PUE == Procesar Ubx Error, El error PUE_LEC equivale a error de archivo corrupto
-typedef enum {PU_OK, PU_FIN, PUE_LEC, PUE_PTRNUL, PUE_CLASE, PUE_ID, PUE_LARGO, PUE_CKSUM_B, PUE_CKSUM_A,
-	          PUE_VALID_FLAGS, PUE_VALID_FIX, PUE_NOT } procesar_ubx_status;
+typedef enum {PR_OK, PR_FIN, PR_ERR_ARCHIVO, PR_ERR_PTR_NULL, PR_ERR_CLASE, PR_ERR_ID, PR_ERR_LARGO, PR_ERR_SUM_VER,
+	          PR_ERR_VALID_FLAGS, PR_ERR_VALID_FIX, PUE_NOT } procesar_t;
 
 typedef unsigned char uchar;
 
@@ -61,9 +69,9 @@ signed long u1_to_i4 (uchar *u1);
 
 unsigned short u1_to_u2 (uchar *u1);
 
-procesar_ubx_status procesar_ubx (FILE **pf_in, gps_t * ubx_ptr);
+procesar_t procesar_ubx (FILE **pf_in, gps_t * ubx_ptr);
 
-procesar_ubx_status _procesar_ubx (FILE **pf_in, gps_t * ubx_ptr);
+procesar_t _procesar_ubx (FILE **pf_in, gps_t * ubx_ptr);
 
 void check_sum (uchar payload[], size_t long_payload, uchar * ck_a, uchar * ck_b);
 
