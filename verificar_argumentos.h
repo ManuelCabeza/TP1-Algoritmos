@@ -85,10 +85,7 @@ typedef enum estados {ST_OK, ST_PEDIR_AYUDA, ST_ERROR_PUNTERO_NULO,
 					  ST_ERROR_CANT_ARG_INVALIDO, ST_ERROR_ARG_INVALIDO, 
 					  ST_ERROR_LECTURA} status_t;  
 
-
-
 typedef enum {PROTOCOLO_NMEA, PROTOCOLO_UBX, PROTOCOLO_AUTO, PROTOCOLO_INVALIDO} protocolo_t;
-
 
 
 arg_t validar_arg(char *arg);
@@ -96,7 +93,6 @@ arg_t validar_arg(char *arg);
  * comando. Si recibe un argumento válido, devuelve qué tipo de argumento es. 
  * Caso contrario, devuelve un ARG_INVALIDO.
  */
-
 
 status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **salida, FILE **archivo_log, metadata_t *datos_usuario);
 /* Verifica que los argumentos que se ingresan por linea de comando sean validos.
@@ -114,12 +110,6 @@ status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **sali
  * ST_OK si todos los argumentos son validos y sus contenidos tambien. 
  */
 
-bool convertir_a_numero_entero(char *cadena, int *resultado); 
-/* Convierte cualquier cadena que se le pase a un numero entero en base 10.
- * Si se puede convertir la cadena, lo guarda en resultado y devuelve true.
- * Caso contrario, devuelve un false y la funcion no hace nada. 
- */
-
 status_t validar_argumento_nombre(char *argv_nombre, char *nombre);
 /* Verifica que el argumento ingresado por linea de comando argv_nombre sea 
  * valido. Si el argumento es valido, se guarda en el campo nombre de la 
@@ -132,51 +122,69 @@ void imprimir_ayuda(FILE *salida);
 
 bool cargar_nombre_por_omision(char *nombre);
 /* Inicializa al campo nombre de la estructura con un nombre por defecto. 
- * Si recibe un puntero nulo, entonces devuelve false.
- * Caso contrario, devuelve true. 
+ * Si recibe un puntero nulo, devuelve false. Caso contrario, devuelve true.
  */
 
 status_t validar_argumento_protocolo(char *argv_protocolo, protocolo_t *protocolo);
 /* Verifica que el argumento ingresado por linea de comando argv_protocolo sea
- * valido. 
+ * valido (Puede ser: nmea, ubx, auto: Lo define el programa). 
  * Recibe como primer parametro un puntero a una cadena donde se indica el 
- * protocolo y un puntero a protocolo_t 
+ * protocolo y un puntero a protocolo_t donde guarda el protocolo encontrado.
+ * Devuelve ST_OK si encontro alguno de los protocolo validos, 
+ * ST_ERROR_PROTOCOLO_INVALIDO si no encontro ningun protocolo, y 
+ * ST_ERROR_PUNTERO_NULO si se ingresa como parametro de funcion un pntero nulo.
  */
 
 status_t identificar_protocolo_auto(char *arg_archivo_entrada, protocolo_t *protocolo);
-/* 
- * 
- *
+/* Verifica que el argumento ingresado por linea de comando sea auto, entonces
+ * el programa se encarga de determinar que protocolo es. 
+ * Recibe un puntero al nombre del archivo de entrada y un puntero al protocolo.
+ * Devuelve ST_ERROR_PUNTERO_NULO si se ingresa un puntero nulo como parametro
+ * de la funcion, ST_ERROR_PROTOCOLO_INVALIDO cuando se pasa un protocolo invalido,
+ * ST_ERROR_ARCHIVO_ENTRADA_INVALIDO cuando no se puede abrir el archivo, 
+ * ST_ERROR_LECTURA cuando no se puede leer el archivo de entrada y ST_OK
+ * cuando identifico un protocolo valido.
  */
 
 FILE * abrir_archivo_entrada(char *arg_archivo_entrada, protocolo_t *protocolo, status_t *estado);
-/* 
- * 
- *
+/* Abre el archivo de entrada que se pasa por argumento de linea de comando. 
+ * Dependiendo de que protocolo, lo abre en diferentes modos. Si se pasa el 
+ * argumento "-" se reciben los datos por stdin.
+ * Recibe un puntero al nombre del archivo de entrada, un puntero indicando
+ * el protocolo, un puntero a un estado para informar las validaciones.
+ * Devuelve NULL en caso de algun error o el archivo abierto en modo "rt" si
+ * el protocolo es NMEA, "rb" si el protocolo es UBX.
  */
 
 FILE * abrir_archivo_salida (char *arg_archivo_salida, status_t *estado);
-/* 
- * 
- *
+/* Abre el archivo de salida que se pasa por argumento de linea de comando. 
+ * Si se pasa el argumento "-", se imprimen los datos en formato gpx por stdout.
+ * Recibe un puntero al nombre del archivo de salida y un puntero indicando
+ * un estado para informar las validaciones.
+ * Devuelve NULL en caso de algun error o el archivo abierto en modo "rw". 
  */
 
 FILE * abrir_archivo_log (char *arg_archivo_log, status_t *estado);
-/* 
- * 
- *
+/* Abre el archivo log que se pasa por argumento de linea de comando. 
+ * Si se pasa el argumento "-", se imprimen los mensajes por stderr.
+ * Recibe un puntero al nombre del archivo log y un puntero indicando
+ * un estado para informar las validaciones.
+ * Devuelve NULL en caso de algun error o el archivo abierto en modo "rw".
+ * Donde se imprimen los mensajes de errores, warning y debug. 
+ */
+
+bool convertir_a_numero_entero(char *cadena, int *resultado); 
+/* Convierte cualquier cadena que se le pase a un numero entero en base 10.
+ * Si se puede convertir la cadena, lo guarda en resultado y devuelve true.
+ * Caso contrario, devuelve un false y la funcion no hace nada. 
  */
 
 status_t validar_argumento_cant_msj(char *arg_cant_msj, int *cant_msj);
-/* 
- * 
- *
- */
-
-bool convertir_a_numero_entero(char *cadena, int *resultado);
-/* 
- * 
- *
+/* Verifica que el argumento cantidad de mensajes sea valido.
+ * Recibe un puntero al argumento y un puntero al numero de cant_msj.
+ * Devuelve ST_OK cuando el argumento sea valido, 
+ * ST_ERROR_CANT_MENSAJES_INVALIDO cuando es invalido, 
+ * ST_ERROR_PUNTERO_NULO cuando algun parametro de la funcion es un puntero nulo.
  */
 
 #endif 

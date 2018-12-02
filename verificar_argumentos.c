@@ -1,6 +1,6 @@
 #include "verificar_argumentos.h"
 #include "main.h"
-#include "errores.h"
+#include "log.h"
 
 status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **salida, FILE **archivo_log, metadata_t *datos_usuario ) {
 
@@ -65,13 +65,13 @@ status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **sali
 				printf("Encontre archivo log\n");
 				*archivo_log = abrir_archivo_log(argv[i], &estado);
 				if (*archivo_log == NULL) {
-					*archivo_log = stderr; //OJO! ES PARA INFORMAR EL ERROR
+					*archivo_log = stderr; /*Para informar que error se cometio*/
 					return ST_ERROR_ARCHIVO_LOGS_INVALIDO;
 				}
 				break;
 			case ARG_CANT_MENSAJES:
 				++i;
-				estado = validar_argumento_cant_msj(argv[i],&cant_msj);
+				estado = validar_argumento_cant_msj(argv[i], &cant_msj);
 				break;
 			case ARG_INVALIDO: 
 				return ST_ERROR_ARG_INVALIDO;
@@ -178,7 +178,6 @@ status_t identificar_protocolo_auto(char *arg_archivo_entrada, protocolo_t *prot
     }
 
     return ST_ERROR_PROTOCOLO_INVALIDO;
-
 }
 
 FILE * abrir_archivo_entrada(char *arg_archivo_entrada, protocolo_t *protocolo, status_t *estado) {
@@ -188,7 +187,7 @@ FILE * abrir_archivo_entrada(char *arg_archivo_entrada, protocolo_t *protocolo, 
 		*estado = ST_ERROR_PUNTERO_NULO;
 		return NULL;
 	}
-	if (*protocolo == PROTOCOLO_INVALIDO) { //ver si ahce falta esta validacion
+	if (*protocolo == PROTOCOLO_INVALIDO) { 
 		*estado = ST_ERROR_PROTOCOLO_INVALIDO;
 		return NULL;
 	}
@@ -203,7 +202,7 @@ FILE * abrir_archivo_entrada(char *arg_archivo_entrada, protocolo_t *protocolo, 
             return NULL;
         }
     }
-/*Si no me dice nada uso la aplicacion automatico */ 
+	/*Si no me dice nada uso la aplicacion automatico */ 
     if (*protocolo == PROTOCOLO_UBX) {
 		*estado = ST_OK;        
 		return fopen(arg_archivo_entrada,"rb");
@@ -234,7 +233,7 @@ FILE * abrir_archivo_salida (char *arg_archivo_salida, status_t *estado) {
 
 FILE * abrir_archivo_log (char *arg_archivo_log, status_t *estado) {
 
-	if (!arg_archivo_log) {
+	if (!arg_archivo_log || !estado) {
 		*estado = ST_ERROR_PUNTERO_NULO;
 		return NULL;
 	}
@@ -294,6 +293,9 @@ status_t validar_argumento_cant_msj(char *arg_cant_msj, int *cant_msj) {
 		return ST_ERROR_PUNTERO_NULO;
 	}
 	if(!convertir_a_numero_entero(arg_cant_msj, cant_msj)) {
+		return ST_ERROR_CANT_MENSAJES_INVALIDOS;
+	}
+	if (*cant_msj < 0) {
 		return ST_ERROR_CANT_MENSAJES_INVALIDOS;
 	}
 

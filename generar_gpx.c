@@ -30,7 +30,7 @@ void generar_gpx(gps_t *gps_ptr, metadata_t *metptr, procesar_t (*procesar) (FIL
 	tag(TAG_TRK, INICIAR_ENTER, INDENTACION_1);
 	tag(TAG_TRKSEG, INICIAR_ENTER, INDENTACION_2);
 	/*A partir de aca se empieza a imprimir cada uno de los trkpt*/
-	while ((aux_p = (*procesar)(&pf_in, gps_ptr)) != PR_FIN) {
+	while ((aux_p = (*procesar)(&pf_in, gps_ptr)) != PR_FIN) { //Me salta error valgrind
 		// Si se procesar bien se imprimie y se carga en la lista
 		
 		if (aux_p == PR_OK) {

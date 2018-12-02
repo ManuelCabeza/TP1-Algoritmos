@@ -1,7 +1,7 @@
 #include "main.h"
 #include "procesar_nmea.h"
 #include "verificar_argumentos.h"
-#include "errores.h"
+#include "log.h"
 #include "generar_gpx.h"
 //#include "lista.h"
 
