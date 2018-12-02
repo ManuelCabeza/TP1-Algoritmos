@@ -7,85 +7,142 @@
 * creo que no*/
 #include "procesar_nmea.h"
 //#include "procesar_ubx.c"
+#include "lista.h"
 
-
-void generar_gpx(gps_t *gps_ptr, metadata_t *metptr, procesar_t (*procesar) (FILE **, gps_t *), FILE *pf_in, FILE *pf_out, FILE *pf_log) {
-
-	int i;
+void generar_gpx(gps_t *gps_ptr, metadata_t *metptr, procesar_t (*procesar) (FILE **, gps_t *), FILE *pf_in, FILE *pf_out, FILE *pf_log, int cant_datos) {
+	
 	procesar_t aux_p;
-	/*Imprime las dos líneas por stdout, siempre las mismas*/
-	tag(MSJ_GPX_1, INICIAR_ENTER, INDENTACION_0);
-	tag(MSJ_GPX_2, INICIAR_ENTER, INDENTACION_0);
-
-	/*Esta sección se ocupa de imprimir todo lo contenido en metadata*/
-	tag(TAG_METADATA, INICIAR_ENTER, INDENTACION_1);
-	tag(TAG_NOMBRE, INICIAR, INDENTACION_2);
-	printf("%s", metptr->nombre);
-	tag(TAG_NOMBRE, FINAL_ENTER, INDENTACION_0);
-	tag(TAG_TIEMPO, INICIAR, INDENTACION_2);
-	printf("%04d-%02d-%02dT%02d:%02d:%02.0fZ", metptr->fecha.anio, metptr->fecha.mes, metptr->fecha.dia, metptr->horario.hora, metptr->horario.minuto, metptr->horario.segundos);
-	tag(TAG_TIEMPO, FINAL_ENTER, INDENTACION_0);
-	tag(TAG_METADATA, FINAL_ENTER, INDENTACION_1);
-
-	tag(TAG_TRK, INICIAR_ENTER, INDENTACION_1);
-	tag(TAG_TRKSEG, INICIAR_ENTER, INDENTACION_2);
+	Lista lista;
+	size_t i;
+	
+	if (!lista_crear(&lista)) {
+		// Imprimir por log que no se pudo hacer la lista
+		return;
+	}
+	if (!tag(MSJ_GPX_1, INICIAR_ENTER, INDENTACION_0, pf_out)) {
+		imprimir_error_pf_out(pf_log);
+		return;
+	}
+	if (!tag(MSJ_GPX_2, INICIAR_ENTER, INDENTACION_0, pf_out)) {
+		imprimir_error_pf_out(pf_log);
+		return;
+	}
+	//Esta sección se ocupa de imprimir todo lo contenido en metadata
+	if (!tag(TAG_METADATA, INICIAR_ENTER, INDENTACION_1, pf_out)) {
+		imprimir_error_pf_out(pf_log);
+		return;
+	}	
+	if (!tag(TAG_NOMBRE, INICIAR, INDENTACION_2, pf_out)) {
+		imprimir_error_pf_out(pf_log);
+		return;
+	}
+	if (fprintf(*pf_out, "%s", metptr->nombre) < 0) {
+		imprimir_error_pf_out(pf_log);
+		return;
+	}
+	if (!tag(TAG_NOMBRE, FINAL_ENTER, INDENTACION_0, pf_out)) {
+		imprimir_error_pf_out(pf_log);
+		return;
+	}
+	if (!tag(TAG_TIEMPO, INICIAR, INDENTACION_2, pf_out)) {
+		imprimir_error_pf_out(pf_log);
+		return;
+	}
+	
+	if (fprintf("%04d-%02d-%02dT%02d:%02d:%02.0fZ", metptr->fecha.anio, metptr->fecha.mes, metptr->fecha.dia,
+		metptr->horario.hora, metptr->horario.minuto, metptr->horario.segundos) < 0) {
+		imprimir_error_pf_out(pf_log);
+		return;
+	}
+	
+	if (!tag(TAG_TIEMPO, FINAL_ENTER, INDENTACION_0, pf_out)) {
+		imprimir_error_pf_out(pf_log);
+		return;
+	}
+	if (!tag(TAG_METADATA, FINAL_ENTER, INDENTACION_1, pf_out)) {
+		imprimir_error_pf_out(pf_log);
+		return;
+	}
+	if (!tag(TAG_TRK, INICIAR_ENTER, INDENTACION_1, pf_out)) {
+		imprimir_error_pf_out(pf_log);
+		return;
+	}
+	if (!tag(TAG_TRKSEG, INICIAR_ENTER, INDENTACION_2, pf_out)) {
+		imprimir_error_pf_out(pf_log);
+		return;
+	}
 	/*A partir de aca se empieza a imprimir cada uno de los trkpt*/
-	while ((aux_p = (*procesar)(&pf_in, gps_ptr)) != PR_FIN) { //Me salta error valgrind
-		// Si se procesar bien se imprimie y se carga en la lista
-		
+	
+	while (((aux_p = (*procesar)(&pf_in, gps_ptr)) != PR_FIN) && (i < cant_datos)) { //Me salta error valgrind DE QUE ?
+		// Si se procesar bien se carga en la lista
 		if (aux_p == PR_OK) {
-
-			for (i = 0; i < INDENTACION_3 * CANT_CARACTERES_INDENTACION; i++)	{
-				putchar(CARACTER_INDENTACION);
-			}
-			putchar(CARACTER_TAG_INICIO);
-			printf("%s %s\"%f\" %s\"%f\"", TAG_TRKPT, TAG_LATITUD, gps_ptr->latitud, TAG_LONGITUD, gps_ptr->longitud);
-			putchar(CARACTER_TAG_FINAL);
-			putchar('\n');
-
-			tag(TAG_ELEVACION, INICIAR, INDENTACION_4);
-			printf("%f", gps_ptr->elevacion);
-			tag(TAG_ELEVACION, FINAL_ENTER, INDENTACION_0);
-
-			tag(TAG_TIEMPO, INICIAR, INDENTACION_4);
-			printf("%04d-%02d-%02dT%2i:%2i:%3.3fZ", metptr->fecha.anio, metptr->fecha.mes, metptr->fecha.dia, gps_ptr->horario.hora, gps_ptr->horario.minuto, gps_ptr->horario.segundos);
-
-			tag(TAG_TIEMPO, FINAL_ENTER, INDENTACION_0);
-
-			tag(TAG_TRKPT, FINAL_ENTER, INDENTACION_3);
-			// CARGAR EN LA LISTA
-		} else { // Si no esat bien se imprime el error por el archivo de log o stderr
-			
-		}		
-		
+			if (!lista_insertar_ultimo(&lista, gps_ptr, &clonar_gps)) {
+				// Imprimr error de poner en la lista y hacer free etc (termina el programa no ?)
+				return;
+			}		
+		} else { 
+			// Imprmir el error por log o stderr
+		}
+		i++;		
+	}
+	/* Si es PR_FIN es por que la cantidad de datos a leer es mayor o igual a la 
+	 * cantidad de datos reales */
+	if (aux_p == PR_FIN) {
+		cant_datos = cantidad_datos(&lista); 
+	}
+	i = 0;
+	while (i < cant_datos) {
+		gps_ptr = retornar_dato(&lista, i);
+		if (!imprimir_gps_formato_gpx(gps_ptr, &pf_out)) {
+			imprimir_error_pf_out(pf_log);
+			return;
+		}
 	}
 	/*Se cierran las tags que se abrieron al comienzo*/
-	tag(TAG_TRKSEG, FINAL_ENTER, INDENTACION_2);
-	tag(TAG_TRK, FINAL_ENTER, INDENTACION_1);
-	tag(TAG_GPX, FINAL_ENTER, INDENTACION_0);
-
+	if (!tag(TAG_TRKSEG, FINAL_ENTER, INDENTACION_2, pf_out)) {
+		imprimir_error_pf_out(pf_log);
+		return;
+	}
+	if (!tag(TAG_TRK, FINAL_ENTER, INDENTACION_1, pf_out)) {
+		imprimir_error_pf_out(pf_log);
+		return;
+	}
+	if (!tag(TAG_GPX, FINAL_ENTER, INDENTACION_0, pf_out)) {
+		imprimir_error_pf_out(pf_log);
+		return;
+	}
+	liberar_lista(&lista, &liberar_estructura_gps);
+	
 }
 
-void tag(char *strptr, tipo_tag tipo, size_t indentacion) {
+bool tag(char *strptr, tipo_tag tipo, size_t indentacion, FILE ** pf_out) {
 
 	size_t i;
 	for (i = 0; i < (INDENTACION_INICIAL + indentacion) * CANT_CARACTERES_INDENTACION; i++) { 
-			putchar(CARACTER_INDENTACION);
+		if (fputc(CARACTER_INDENTACION, *pf_out) != CARACTER_INDENTACION)
+			return false;
 	}
-	putchar(CARACTER_TAG_INICIO);
-
+	if (fputc(CARACTER_TAG_INICIO, *pf_out) != CARACTER_TAG_INICIO)
+			return false;
+	
 	if ((tipo != INICIAR) && (tipo != INICIAR_ENTER)) { 
-		putchar(CARACTER_TAG_FINALIZAR);
+		if (fputc(CARACTER_TAG_FINALIZAR, *pf_out) != CARACTER_TAG_FINALIZAR)
+			return false;
 	}
-	printf("%s", strptr);
-	putchar(CARACTER_TAG_FINAL);
+	
+	if (fprintf(*pf_out, "%s", strptr) < 0)
+		return false;
+	
+	if (fputc(CARACTER_TAG_FINAL, *pf_out) != CARACTER_TAG_FINAL)
+		return false;
 
 	if ((tipo != INICIAR) && (tipo != FINAL)) { 
-		putchar('\n');
+		if (fputc('\n', *pf_out) != '\n')
+			return false;
 	}
+	return true;
 }
 
- 
 /*Por ahora aca, si lo queres cambiar hacelo sin problema.*/
 bool cargar_fecha_por_omision(fecha_t *fecha) {
 
@@ -120,3 +177,96 @@ bool cargar_hora_por_omision (horario_t *horario) {
 
 	return true;
 }
+
+void * clonar_gps(void *llegada) {
+    gps_t *aux;
+
+    if (!llegada) {
+        return NULL;
+    }
+
+    aux = (gps_t *)calloc(1, sizeof(gps_t)); // Podria directamente crear el arreglo de estructuras.
+    if (aux == NULL) {
+        return NULL;
+    }
+    *aux = *((gps_t *)llegada); //COPIA LAS ESTRUCTURAS ES MAGICO!
+
+    return aux;
+}
+
+void liberar_estructura_gps (void *gps_ptr) { 
+	//Si solo queda con una estructura, entonces hacer directamente free
+	// ??? 
+    /*if (!gps_ptr) {
+        return NULL;
+    }*/ //Esta demas esa vaidacidon me parece se puede free(NULL)
+    free(gps_ptr);
+}
+// 0 si mal, !0 si bien
+bool imprimir_gps_formato_gpx(gps_t *gps_ptr, FILE **pf_out) {
+	int i;
+	
+	for (i = 0; i < INDENTACION_3 * CANT_CARACTERES_INDENTACION; i++)	{
+		if (fputc(CARACTER_INDENTACION, *pf_out) != CARACTER_INDENTACION)
+			return false;
+	}
+	if (fputc(CARACTER_TAG_INICIO, *pf_out) != CARACTER_TAG_INICIO)
+			return false;
+	
+	if (fprintf(*pf_out, "%s %s\"%f\" %s\"%f\"", TAG_TRKPT, TAG_LATITUD, gps_ptr->latitud, TAG_LONGITUD, gps_ptr->longitud) < 0)
+		return flase;
+	
+	if (fputc(CARACTER_TAG_FINAL, *pf_out) != CARACTER_TAG_FINAL)
+			return false;
+	if (fputc('\n', *pf_out) != '\n')
+			return false;
+
+	if (!tag(TAG_ELEVACION, INICIAR, INDENTACION_4, pf_out))
+		return false;
+	
+	if (fprintf(*pf_out, "%f", gps_ptr->elevacion) < 0)
+		return false;
+	
+	if (!tag(TAG_ELEVACION, FINAL_ENTER, INDENTACION_0, pf_out))
+		return false;
+
+	if (!tag(TAG_TIEMPO, INICIAR, INDENTACION_4, pf_out))
+		return false;
+	
+	if (fprintf(*pf_out, "%04d-%02d-%02dT%2i:%2i:%3.3fZ", metptr->fecha.anio, metptr->fecha.mes, metptr->fecha.dia,
+		gps_ptr->horario.hora, gps_ptr->horario.minuto, gps_ptr->horario.segundos) < 0)
+			return false;
+	
+	if (!tag(TAG_TIEMPO, FINAL_ENTER, INDENTACION_0, pf_out))
+		return false;
+		
+	if (!tag(TAG_TRKPT, FINAL_ENTER, INDENTACION_3, pf_out))	
+		return false;
+	return true;
+}
+
+/*
+void imprimir_estructura (gps_t gps) {
+	printf("°°\nHora: %i, Minuto: %i, Segundo: %f\n", gps.horario.hora, gps.horario.minuto, gps.horario.segundos );
+	printf("Año: %i, Mes: %i, Día: %i\n", gps.fecha.anio, gps.fecha.mes, gps.fecha.dia);
+	printf("Latitud: %f\n", gps.latitud);
+	printf("Longitud: %f\n", gps.longitud);
+	printf("Elevacion: %f\n", gps.elevacion);
+	printf("SepGeo: %f\n", gps.sep_geo);
+	printf("HDop: %f\n", gps.hdop);
+	printf("Calidad Fix: %i\n", gps.calidad_fix);
+	printf("Cantidad satelites: %i\n°°\n", gps.cant_satelites);
+}
+
+void inicializar_estructura (gps_t *gps_ptr) {
+	gps_ptr->horario.hora = gps_ptr->horario.minuto = gps_ptr->horario.segundos = 10;
+	gps_ptr->fecha.anio = gps_ptr->fecha.mes = gps_ptr->fecha.dia = 10;
+	gps_ptr->latitud = 10;
+	gps_ptr->longitud = 10;
+	gps_ptr->sep_geo = 10;
+	gps_ptr->hdop = 10;
+	gps_ptr->elevacion = 10;
+	gps_ptr->calidad_fix = 10;
+	gps_ptr->cant_satelites = 10;
+}
+*/

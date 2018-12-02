@@ -15,6 +15,7 @@ int main(int argc, char *argv[]) {
 	metadata_t datos_usuario;
 	status_t st;
 	gps_t gps;
+	int numero_random = 10;
 	
     FILE *entrada = stdin;
     FILE *salida = stdout; 
@@ -26,7 +27,7 @@ int main(int argc, char *argv[]) {
 
 	st = procesar_argumentos(argc, argv, &entrada, &salida, &archivo_log, &datos_usuario);
 	
-	generar_gpx(&gps, &datos_usuario, &procesar_nmea, entrada, salida, archivo_log);
+	generar_gpx(&gps, &datos_usuario, &procesar_nmea, entrada, salida, archivo_log, numero_random);
 	
 	if (st == ST_PEDIR_AYUDA) {
 		imprimir_ayuda(stdout); // ver si tambien lo quiere por salida 		

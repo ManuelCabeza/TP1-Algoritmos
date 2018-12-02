@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 #include "verificar_argumentos.h"
-
+/*
 #define MSJ_ERROR_PREFIJO "Error"
 #define MSJ_VACIO ""
 #define MSJ_ERROR_PUNTERO_NULO "Puntero nulo."
@@ -18,7 +18,7 @@
 #define MSJ_ERROR_CANTIDAD_ARGUMENTOS_INVALIDOS "La cantidad de argumentos ingresados es invalido."
 #define MSJ_ERROR_ARG_INVALIDO "El argumento ingresado es invalido, pruebe ingresando el comando -h para obtener ayuda." 
 #define MSJ_ERROR_LECTURA "No se pudo leer el archivo"
-
+*/
 /*
 para los debug
  #define MSJ_DEBUG_BUSCANDO_SINCRONISMO "buscando los 2 bytes de sincronismo" 
@@ -40,8 +40,9 @@ Se descarta un mensaje por lista llena, etc.
 */
 
 
-
+/*
 void imprimir_msj_log(status_t estado, FILE *archivo_log, gps_t *datos_satelite);
+*/
 /* Dependiendo del estado que reciba, imprime el correspondiente mensaje en el
 archivo log. Los mensajes pueden ser: 
 ERROR: Son errores graves que ocurren durante la ejecució

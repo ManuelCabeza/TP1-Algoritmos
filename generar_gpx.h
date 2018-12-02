@@ -49,8 +49,8 @@ typedef enum {INICIAR, INICIAR_ENTER, FINAL, FINAL_ENTER} tipo_tag;
  * 
  * Recibe un puntero a la estructura metadata_t y otro a gga_t.
  * No devuelve nada, solamente imprime. */
-
-void generar_gpx(gps_t *gps_ptr, metadata_t *metptr, procesar_t (*procesar)(FILE **, gps_t *), FILE *pf_in, FILE *pf_out, FILE *pf_log);
+ 
+void generar_gpx(gps_t *gps_ptr, metadata_t *metptr, procesar_t (*procesar) (FILE **, gps_t *), FILE *pf_in, FILE *pf_out, FILE *pf_log, int cant_datos);
 
 /* Imprime un tag con lo que contenga el puntero a char (que se asume que no es 
  * NULL) donde el tipo de tag define como se imprime de la forma:
@@ -70,7 +70,7 @@ void generar_gpx(gps_t *gps_ptr, metadata_t *metptr, procesar_t (*procesar)(FILE
  * a char que contiene una cadena a imprimir en el tag.
  * No devuelve nada, ya que solamente imprime. */
 
-void tag(char *strptr, tipo_tag tipo, size_t indentacion);
+bool tag(char *strptr, tipo_tag tipo, size_t indentacion, FILE ** pf_out);
 
 bool cargar_hora_por_omision (horario_t *horario);
 /*
@@ -83,5 +83,15 @@ bool cargar_fecha_por_omision(fecha_t *fecha);
  *
  *
  */
+ 
+void * clonar_gps(void *llegada);
 
+void liberar_estructura_gps (void *gps_ptr);
+
+bool imprimir_gps_formato_gpx(gps_t *gps_ptr, FILE **pf_out
+/*
+void imprimir_estructura (gps_t gps);
+
+void inicializar_estructura (gps_t *gps_ptr);
+*/
 #endif
