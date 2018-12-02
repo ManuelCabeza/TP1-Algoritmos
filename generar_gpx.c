@@ -9,7 +9,7 @@
 //#include "procesar_ubx.c"
 
 
-void generar_gpx(gps_t * gps_ptr, metadata_t * metptr, procesar_t (* procesar) (FILE **, gps_t *), FILE * pf_in, FILE * pf_out, FILE * pf_log ) {
+void generar_gpx(gps_t *gps_ptr, metadata_t *metptr, procesar_t (*procesar) (FILE **, gps_t *), FILE *pf_in, FILE *pf_out, FILE *pf_log) {
 
 	int i;
 	procesar_t aux_p;
@@ -30,7 +30,7 @@ void generar_gpx(gps_t * gps_ptr, metadata_t * metptr, procesar_t (* procesar) (
 	tag(TAG_TRK, INICIAR_ENTER, INDENTACION_1);
 	tag(TAG_TRKSEG, INICIAR_ENTER, INDENTACION_2);
 	/*A partir de aca se empieza a imprimir cada uno de los trkpt*/
-	while ((aux_p = (* procesar)(&pf_in, gps_ptr)) != PR_FIN) {
+	while ((aux_p = (*procesar)(&pf_in, gps_ptr)) != PR_FIN) {
 		// Si se procesar bien se imprimie y se carga en la lista
 		
 		if (aux_p == PR_OK) {
@@ -66,7 +66,7 @@ void generar_gpx(gps_t * gps_ptr, metadata_t * metptr, procesar_t (* procesar) (
 
 }
 
-void tag(char * strptr, tipo_tag tipo, size_t indentacion) {
+void tag(char *strptr, tipo_tag tipo, size_t indentacion) {
 
 	size_t i;
 	for (i = 0; i < (INDENTACION_INICIAL + indentacion) * CANT_CARACTERES_INDENTACION; i++) { 

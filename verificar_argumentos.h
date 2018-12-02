@@ -8,6 +8,7 @@
 #include <time.h>
 
 #include "main.h"
+#include "procesar_ubx.h"
 
 #define ARG_VALIDO_AYUDA "-h"
 #define ARG_VALIDO_AYUDA_V "--help"
@@ -26,7 +27,7 @@
 
 #define MAX_CANT_ARG_VALIDOS 14 
 
-#define MAX_CANT_ARG 14 /*que puedo ingresar por argumento de linea de comando-*/
+#define MAX_CANT_ARG 14 
 
 #define MSJ_IMPRIMIR_AYUDA "Argumentos que tiene que recibir el programa:\n\n" \
 							"-h , --help\n" \
@@ -53,8 +54,8 @@
 							"		almacenar en una lista.\n\n" \
 
 
-#define B_SYNC1 0xB5 //ESTAN DEFINIDOS EN EL ARCHIVO PROCESAR_UBX.H
-#define B_SYNC2 0x62 //QUE ES DE MANU
+#define B_SYNC1 0xB5 
+#define B_SYNC2 0x62 
 
 #define CANT_MAX 100
 #define NOMBRE_POR_OMISION "ARSAT-15"
@@ -67,7 +68,7 @@
 #define POS_INICIAL_CARACTER_SINCRONISMO 0
 #define POS_FINAL_CARACTER_SINCRONISMO 1
 
-#define CARACTER_PESO '$' //0x24, que prefiere que ponga? 
+#define CARACTER_PESO '$' 
 
 #define ARCHIVO_ENTRADA_STDIN "-"
 #define ARCHIVO_SALIDA_STDOUT "-"
@@ -78,78 +79,104 @@ typedef enum {ARG_AYUDA = 0, ARG_NOMBRE, ARG_PROTOCOLO, ARG_ARCHIVO_ENTRADA,
 			  ARG_INVALIDO} arg_t;
 
 typedef enum estados {ST_OK, ST_PEDIR_AYUDA, ST_ERROR_PUNTERO_NULO,  
-					  ST_ERROR_NOMBRE_INVALIDO,
-					  ST_ERROR_PROTOCOLO_INVALIDO, ST_ERROR_ARCHIVO_ENTRADA_INVALIDO, 
-					  ST_ERROR_ARCHIVO_SALIDA_INVALIDO, ST_ERROR_ARCHIVO_LOGS_INVALIDO,
-                      ST_ERROR_CANT_MENSAJES_INVALIDOS, ST_ERROR_CANT_ARG_INVALIDO,
-					  ST_ERROR_ARG_INVALIDO, ST_ERROR_LECTURA} status_t;  
+					  ST_ERROR_NOMBRE_INVALIDO, ST_ERROR_PROTOCOLO_INVALIDO,
+					  ST_ERROR_ARCHIVO_ENTRADA_INVALIDO, ST_ERROR_ARCHIVO_SALIDA_INVALIDO,
+					  ST_ERROR_ARCHIVO_LOGS_INVALIDO, ST_ERROR_CANT_MENSAJES_INVALIDOS,
+					  ST_ERROR_CANT_ARG_INVALIDO, ST_ERROR_ARG_INVALIDO, 
+					  ST_ERROR_LECTURA} status_t;  
 
 
 
 typedef enum {PROTOCOLO_NMEA, PROTOCOLO_UBX, PROTOCOLO_AUTO, PROTOCOLO_INVALIDO} protocolo_t;
 
-typedef unsigned char uchar;
 
-/*
-  * Recibe una cadena que corresponde al argumento ingresado por línea de 
-  * comando. Si recibe un argumento válido, devuelve qué tipo de argumento es. 
-  * Caso contrario, devuelve un ARG_INVALIDO.
-  */
+
 arg_t validar_arg(char *arg);
+/* Recibe una cadena que corresponde al argumento ingresado por línea de 
+ * comando. Si recibe un argumento válido, devuelve qué tipo de argumento es. 
+ * Caso contrario, devuelve un ARG_INVALIDO.
+ */
 
+
+status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **salida, FILE **archivo_log, metadata_t *datos_usuario);
 /* Verifica que los argumentos que se ingresan por linea de comando sean validos.
  * En caso de que sean validos, los almacena en la estructura datos_usuario.
  * Caso contrario, devuelve un estado de error que corresponda.  
  * 
- * Recibe un arreglo de cadenas argv, la cantidad de cadenas que haya en argv es argc,
+ * Recibe la cantidad, argc, de cadenas que haya en argv, un arreglo de cadenas
+ * argv, puntero al archivo de entrada donde se van leyendo los datos, y unos 
+ * puntero a los archivos de salida e archivo_log donde se van imprimiendo el
+ * formato gpx e imprimeindo los mensajes de errores, warn o debug en el log,
  * y un puntero a una estructura datos_usuario donde se guardaran los resultados.
  * 
  * Devuelve un ST_AYUDA en caso de que se haya ingresado el argumento -h o --help
  * ST_ERROR_* en caso que algun argumento no sea valido
- * ST_OK si todos los argumentos son validos y sus contenidos tambien 
+ * ST_OK si todos los argumentos son validos y sus contenidos tambien. 
  */
-status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **salida, FILE **archivo_log, metadata_t *datos_usuario);
 
+bool convertir_a_numero_entero(char *cadena, int *resultado); 
 /* Convierte cualquier cadena que se le pase a un numero entero en base 10.
  * Si se puede convertir la cadena, lo guarda en resultado y devuelve true.
  * Caso contrario, devuelve un false y la funcion no hace nada. 
  */
-bool convertir_a_numero_entero(char *cadena, int *resultado); 
 
+status_t validar_argumento_nombre(char *argv_nombre, char *nombre);
 /* Verifica que el argumento ingresado por linea de comando argv_nombre sea 
  * valido. Si el argumento es valido, se guarda en el campo nombre de la 
  * estructura. 
  * Caso contrario, devuelve un estado de error, y la funcion no hace nada.
  */
-status_t validar_argumento_nombre(char *argv_nombre, char *nombre);
 
-/* Imprime la ayuda por stdout. */
 void imprimir_ayuda(FILE *salida);
+/* Imprime la ayuda por stdout. */
 
+bool cargar_nombre_por_omision(char *nombre);
 /* Inicializa al campo nombre de la estructura con un nombre por defecto. 
  * Si recibe un puntero nulo, entonces devuelve false.
  * Caso contrario, devuelve true. 
  */
-bool cargar_nombre_por_omision(char *nombre);
 
+status_t validar_argumento_protocolo(char *argv_protocolo, protocolo_t *protocolo);
+/* Verifica que el argumento ingresado por linea de comando argv_protocolo sea
+ * valido. 
+ * Recibe como primer parametro un puntero a una cadena donde se indica el 
+ * protocolo y un puntero a protocolo_t 
+ */
 
+status_t identificar_protocolo_auto(char *arg_archivo_entrada, protocolo_t *protocolo);
 /* 
  * 
  *
  */
 
-status_t validar_argumento_protocolo(char *argv_protocolo, protocolo_t *protocolo);
-
-status_t identificar_protocolo_auto(char *arg_archivo_entrada, protocolo_t *protocolo);
-
 FILE * abrir_archivo_entrada(char *arg_archivo_entrada, protocolo_t *protocolo, status_t *estado);
+/* 
+ * 
+ *
+ */
 
 FILE * abrir_archivo_salida (char *arg_archivo_salida, status_t *estado);
+/* 
+ * 
+ *
+ */
 
 FILE * abrir_archivo_log (char *arg_archivo_log, status_t *estado);
+/* 
+ * 
+ *
+ */
 
 status_t validar_argumento_cant_msj(char *arg_cant_msj, int *cant_msj);
+/* 
+ * 
+ *
+ */
 
 bool convertir_a_numero_entero(char *cadena, int *resultado);
+/* 
+ * 
+ *
+ */
 
 #endif 

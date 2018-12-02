@@ -3,6 +3,7 @@
 #include "verificar_argumentos.h"
 #include "errores.h"
 #include "generar_gpx.h"
+//#include "lista.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,7 +24,7 @@ int main(int argc, char *argv[]) {
 	cargar_hora_por_omision(&(datos_usuario.horario));
 	cargar_nombre_por_omision(datos_usuario.nombre);
 
-	st = procesar_argumentos(argc, argv, &entrada, &salida, &archivo_log,&datos_usuario);
+	st = procesar_argumentos(argc, argv, &entrada, &salida, &archivo_log, &datos_usuario);
 	
 	generar_gpx(&gps, &datos_usuario, &procesar_nmea, entrada, salida, archivo_log);
 	

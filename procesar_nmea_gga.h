@@ -35,6 +35,7 @@ procesar_t procesar_nmea_gga(gps_t *ggaptr, char *str, char *cadena);
  * La funcion devuelve:
  * PR_FIN si no hay nada mas que leer en el archivo
  * PR_ERR si el formato de cualquier argument de una linea de datos no esta bien
- * PR_OK si el dato de una linea fue procesado correctamente. */
+ * PR_OK si el dato de una linea fue procesado correctamente. 
+ */
 
 #endif 

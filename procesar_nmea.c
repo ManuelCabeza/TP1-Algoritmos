@@ -54,6 +54,7 @@ void procesar_fecha (fecha_t *fecha_ptr, long fecha) {
 	fecha_ptr->anio = (fecha & 0xFF); //NO SE SI FUNCIONA
 }
 
+/*
 void imprimir_estructura (gps_t gps_ptr) {
 	printf("Hora: %i, Minuto: %i, Segundo: %f\n", gps_ptr.horario.hora, gps_ptr.horario.minuto, gps_ptr.horario.segundos );
 	printf("Año: %i, Mes: %i, Día: %i\n", gps_ptr.fecha.anio, gps_ptr.fecha.mes, gps_ptr.fecha.dia);
@@ -65,6 +66,7 @@ void imprimir_estructura (gps_t gps_ptr) {
 	printf("Calidad Fix: %i\n", gps_ptr.calidad_fix);
 	printf("Cantidad satelites: %i\n", gps_ptr.cant_satelites);
 }
+*/
 
 /*
 int main(void) {

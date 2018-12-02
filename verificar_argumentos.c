@@ -125,7 +125,7 @@ status_t validar_argumento_protocolo(char *argv_protocolo, protocolo_t *protocol
         *protocolo = PROTOCOLO_UBX;
         return ST_OK;
     }
-    //ADICIONAL
+ 
     if (strcmp(argv_protocolo, ARG_PROTOCOLO_AUTO) == 0) { 
         *protocolo = PROTOCOLO_AUTO;
         return ST_OK;
@@ -203,7 +203,7 @@ FILE * abrir_archivo_entrada(char *arg_archivo_entrada, protocolo_t *protocolo, 
             return NULL;
         }
     }
-//Si no me dice nada uso la aplicacion automatico 
+/*Si no me dice nada uso la aplicacion automatico */ 
     if (*protocolo == PROTOCOLO_UBX) {
 		*estado = ST_OK;        
 		return fopen(arg_archivo_entrada,"rb");
@@ -243,7 +243,7 @@ FILE * abrir_archivo_log (char *arg_archivo_log, status_t *estado) {
 		return stderr;
 	}
 
-	*estado = ST_OK; //VER!
+	*estado = ST_OK; 
 
 	return fopen(arg_archivo_log, "wt");
 }

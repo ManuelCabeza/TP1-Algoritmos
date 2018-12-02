@@ -40,5 +40,7 @@ typedef struct {
 
 
 void cerrar_archivos(FILE *entrada, FILE *salida, FILE *archivo_log); 
-/* */
+/* Recibe los archivos de entrada, salida y log para poder cerrarlos. 
+ * En caso que sean: stdin, stdout, stderr respectivamente, no hace nada. 
+ */
 #endif
