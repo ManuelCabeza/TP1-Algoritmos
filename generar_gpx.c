@@ -215,7 +215,7 @@ bool imprimir_gps_formato_gpx(gps_t *gps_ptr, FILE **pf_out) {
 			return false;
 	
 	if (fprintf(*pf_out, "%s %s\"%f\" %s\"%f\"", TAG_TRKPT, TAG_LATITUD, gps_ptr->latitud, TAG_LONGITUD, gps_ptr->longitud) < 0)
-		return flase;
+		return false;
 	
 	if (fputc(CARACTER_TAG_FINAL, *pf_out) != CARACTER_TAG_FINAL)
 			return false;
