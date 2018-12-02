@@ -19,20 +19,21 @@ void generar_gpx(gps_t *gps_ptr, metadata_t *metptr, procesar_t (*procesar) (FIL
 		// Imprimir por log que no se pudo hacer la lista
 		return;
 	}
-	if (!tag(MSJ_GPX_1, INICIAR_ENTER, INDENTACION_0, pf_out)) {
+	if (!tag(MSJ_GPX_1, INICIAR_ENTER, INDENTACION_0, &pf_out)) { //NO SE, LE AGREGUE EL & PORQUE HABIA PROBLEMA 
+	//CON LOS NIVELES DE PUNTERO. NO SE SI ESTA BIEN ESO. O HAY QUE SACARLE UN NIVEL AL PROTOTIPO
 		imprimir_error_pf_out(pf_log);
 		return;
 	}
-	if (!tag(MSJ_GPX_2, INICIAR_ENTER, INDENTACION_0, pf_out)) {
+	if (!tag(MSJ_GPX_2, INICIAR_ENTER, INDENTACION_0, &pf_out)) {
 		imprimir_error_pf_out(pf_log);
 		return;
 	}
 	//Esta sección se ocupa de imprimir todo lo contenido en metadata
-	if (!tag(TAG_METADATA, INICIAR_ENTER, INDENTACION_1, pf_out)) {
+	if (!tag(TAG_METADATA, INICIAR_ENTER, INDENTACION_1, &pf_out)) {
 		imprimir_error_pf_out(pf_log);
 		return;
 	}	
-	if (!tag(TAG_NOMBRE, INICIAR, INDENTACION_2, pf_out)) {
+	if (!tag(TAG_NOMBRE, INICIAR, INDENTACION_2, &pf_out)) {
 		imprimir_error_pf_out(pf_log);
 		return;
 	}
@@ -40,11 +41,11 @@ void generar_gpx(gps_t *gps_ptr, metadata_t *metptr, procesar_t (*procesar) (FIL
 		imprimir_error_pf_out(pf_log);
 		return;
 	}
-	if (!tag(TAG_NOMBRE, FINAL_ENTER, INDENTACION_0, pf_out)) {
+	if (!tag(TAG_NOMBRE, FINAL_ENTER, INDENTACION_0, &pf_out)) {
 		imprimir_error_pf_out(pf_log);
 		return;
 	}
-	if (!tag(TAG_TIEMPO, INICIAR, INDENTACION_2, pf_out)) {
+	if (!tag(TAG_TIEMPO, INICIAR, INDENTACION_2, &pf_out)) {
 		imprimir_error_pf_out(pf_log);
 		return;
 	}
@@ -55,19 +56,19 @@ void generar_gpx(gps_t *gps_ptr, metadata_t *metptr, procesar_t (*procesar) (FIL
 		return;
 	}
 	
-	if (!tag(TAG_TIEMPO, FINAL_ENTER, INDENTACION_0, pf_out)) {
+	if (!tag(TAG_TIEMPO, FINAL_ENTER, INDENTACION_0, &pf_out)) {
 		imprimir_error_pf_out(pf_log);
 		return;
 	}
-	if (!tag(TAG_METADATA, FINAL_ENTER, INDENTACION_1, pf_out)) {
+	if (!tag(TAG_METADATA, FINAL_ENTER, INDENTACION_1, &pf_out)) {
 		imprimir_error_pf_out(pf_log);
 		return;
 	}
-	if (!tag(TAG_TRK, INICIAR_ENTER, INDENTACION_1, pf_out)) {
+	if (!tag(TAG_TRK, INICIAR_ENTER, INDENTACION_1, &pf_out)) {
 		imprimir_error_pf_out(pf_log);
 		return;
 	}
-	if (!tag(TAG_TRKSEG, INICIAR_ENTER, INDENTACION_2, pf_out)) {
+	if (!tag(TAG_TRKSEG, INICIAR_ENTER, INDENTACION_2, &pf_out)) {
 		imprimir_error_pf_out(pf_log);
 		return;
 	}
@@ -99,15 +100,15 @@ void generar_gpx(gps_t *gps_ptr, metadata_t *metptr, procesar_t (*procesar) (FIL
 		}
 	}
 	/*Se cierran las tags que se abrieron al comienzo*/
-	if (!tag(TAG_TRKSEG, FINAL_ENTER, INDENTACION_2, pf_out)) {
+	if (!tag(TAG_TRKSEG, FINAL_ENTER, INDENTACION_2, &pf_out)) {
 		imprimir_error_pf_out(pf_log);
 		return;
 	}
-	if (!tag(TAG_TRK, FINAL_ENTER, INDENTACION_1, pf_out)) {
+	if (!tag(TAG_TRK, FINAL_ENTER, INDENTACION_1, &pf_out)) {
 		imprimir_error_pf_out(pf_log);
 		return;
 	}
-	if (!tag(TAG_GPX, FINAL_ENTER, INDENTACION_0, pf_out)) {
+	if (!tag(TAG_GPX, FINAL_ENTER, INDENTACION_0, &pf_out)) {
 		imprimir_error_pf_out(pf_log);
 		return;
 	}
