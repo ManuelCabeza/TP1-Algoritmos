@@ -2,26 +2,22 @@
 #include "main.h"
 #include "verificar_argumentos.h"
 
-/* Esto hay que ver si se puede perto estaria bueno si se puede hacer algo asi
-* Que solo se incluya el .c que se va a usar y no el otro, pero no se si se puede
-* creo que no*/
 #include "procesar_nmea.h"
 #include "procesar_ubx.h"
-//#include "procesar_ubx.c"
+#include "log.h"
 #include "lista.h"
 
-void generar_gpx(gps_t *gps_ptr, metadata_t *metadata_ptr, procesar_t (*procesar) (FILE **, gps_t *), FILE *pf_in, FILE *pf_out, FILE *pf_log, int cant_datos) {
+void generar_gpx(gps_t *gps_ptr, metadata_t *metadata_ptr, procesar_t (*procesar) (FILE **, gps_t *), FILE *pf_in, FILE *pf_out, FILE *pf_log, int cant_datos, procesar_t *proceso) {
 	
-	procesar_t aux_p;
 	Lista lista;
 	size_t i = 0;
 	
 	if (!lista_crear(&lista)) {
 		// Imprimir por log que no se pudo hacer la lista
+		//imprimir_msj_log(proceso, pf_log, gps_ptr);
 		return;
 	}
-	if (!tag(MSJ_GPX_1, INICIAR_ENTER, INDENTACION_0, &pf_out)) { //NO SE, LE AGREGUE EL & PORQUE HABIA PROBLEMA 
-	//CON LOS NIVELES DE PUNTERO. NO SE SI ESTA BIEN ESO. O HAY QUE SACARLE UN NIVEL AL PROTOTIPO
+	if (!tag(MSJ_GPX_1, INICIAR_ENTER, INDENTACION_0, &pf_out)) { 
 		imprimir_error_pf_out(&pf_log);
 		return;
 	}
@@ -74,15 +70,17 @@ void generar_gpx(gps_t *gps_ptr, metadata_t *metadata_ptr, procesar_t (*procesar
 		return;
 	}
 	/*A partir de aca se empieza a imprimir cada uno de los trkpt*/
-	while (((aux_p = (*procesar)(&pf_in, gps_ptr)) != PR_FIN) && (i < cant_datos)) { //Me salta error valgrind DE QUE ?
+	while (((*proceso = (*procesar)(&pf_in, gps_ptr)) != PR_FIN) && (i < cant_datos)) { //Me salta error valgrind DE QUE ?
 		// Si se procesar bien se carga en la lista
-		if (aux_p == PR_OK) {
+		if (*proceso == PR_OK) {
 			puts("Esta bien");
 			if (!lista_insertar_ultimo(&lista, gps_ptr, &clonar_gps)) {
 				// Imprimr error de poner en la lista y hacer free etc (termina el programa no ?)
 				return;
 			}		
 		} else { 
+			printf ("El valor de procesar_t %d\n", *proceso);
+			imprimir_msj_warn_log(proceso, pf_log, gps_ptr);
 			puts("Imprimir error por log");
 			// Imprmir el error por log o stderr
 		}
@@ -90,7 +88,7 @@ void generar_gpx(gps_t *gps_ptr, metadata_t *metadata_ptr, procesar_t (*procesar
 	}
 	/* Si es PR_FIN es por que la cantidad de datos a leer es mayor o igual a la 
 	 * cantidad de datos reales */
-	if (aux_p == PR_FIN) {
+	if (*proceso == PR_FIN) {
 		cant_datos = cantidad_datos(&lista); 
 	}
 	i = 0;

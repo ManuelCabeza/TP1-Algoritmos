@@ -50,7 +50,7 @@ typedef enum {INICIAR, INICIAR_ENTER, FINAL, FINAL_ENTER} tipo_tag;
  * Recibe un puntero a la estructura metadata_t y otro a gga_t.
  * No devuelve nada, solamente imprime. */
  
-void generar_gpx(gps_t *gps_ptr, metadata_t *metptr, procesar_t (*procesar) (FILE **, gps_t *), FILE *pf_in, FILE *pf_out, FILE *pf_log, int cant_datos);
+void generar_gpx(gps_t *gps_ptr, metadata_t *metptr, procesar_t (*procesar) (FILE **, gps_t *), FILE *pf_in, FILE *pf_out, FILE *pf_log, int cant_datos, procesar_t *proceso);
 
 /* Imprime un tag con lo que contenga el puntero a char (que se asume que no es 
  * NULL) donde el tipo de tag define como se imprime de la forma:
