@@ -35,7 +35,7 @@ typedef enum {PR_OK, PR_FIN, PR_ERR_NO_CAR_INI, PR_ERR, PR_ERR_SENT, PR_ERR_SUM_
 
 /*Fijate si me olvide alguno, porque no los vi uno por uno*/
 // PUE == Procesar Ubx Error, El error PUE_LEC equivale a error de archivo corrupto
-typedef enum { PR_OK, PR_FIN, PR_ERR_NO_CAR_INI, PR_ERR, PR_ERR_SENT, 
+typedef enum { PR_OK = 0, PR_FIN, PR_ERR_NO_CAR_INI, PR_ERR, PR_ERR_SENT, 
 			   PR_ERR_CAR_STATUS, PR_ERR_HORARIO, PR_ERR_CAR_LATITUD, 
 			   PR_ERR_LATITUD, PR_ERR_CAR_LONGITUD, PR_ERR_LONGITUD, 
 			   PR_ERR_CAL_FIX, PR_ERR_CANT_SAT, PR_ERR_ELEVACION, 
