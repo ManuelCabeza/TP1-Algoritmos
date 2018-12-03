@@ -27,16 +27,45 @@ para los debug
 #define MSJ_DEBUG_IMPRIMIO_MSJ "Se imprimió un mensaje."
 etc.
 */
-
-/*
-WARN
-#define MSJ_WARN_ID "No se reconoce un ID"
-#define MSJ_WARN_FIX_INVALIDO "Un mensaje contiene un ﬁx inválido"
 #define MSJ_WARN_LISTA_LLENA "Se descarta un mensaje por lista llena."
-etc. 
-*/
 
-void imprimir_msj_log(status_t estado, FILE *archivo_log, gps_t *datos_satelite);
+
+#define MSJ_WARN_CARACTER_NO_INICIAL "El caracter no es el inicial"
+#define MSJ_WARN_SENTENCIA_INVALIDA "La sentencia no es valida"         
+#define MSJ_WARN_CARACTER_ESTADO "El caracter estatus no es correcto" 
+#define MSJ_WARN_HORARIO "El horario no es correcto."
+#define MSJ_WARN_CARACTER_LATITUD "El caracter latitud no es correcto."
+#define MSJ_WARN_LATITUD "La latitud no es correcta" 
+#define MSJ_WARN_CARACTER_LONGITUD "El caracter longitud no es correcto."
+#define MSJ_WARN_LONGITUD "La longitud no es correcta" 
+#define MSJ_WARN_FIX_INVALIDO "Un mensaje contiene un ﬁx inválido"
+#define MSJ_WARN_CANT_SATELITES "La cantidad de satelites no es correcta"
+#define MSJ_WARN_ELEVACION "La elevacion no es correcta"
+#define MSJ_WARN_CARACTER_METRO "El caracter metro es incorrecto"
+#define MSJ_WARN_HDOP "El HDOP no es correcto"
+#define MSJ_WARN_SEPARACION_GEOGRAFICA "La separacion geografica no es correcta" 
+#define MSJ_WARN_FECHA "La hora no es la correcta."
+#define MSJ_WARN_MES "El mes no es correcto."
+#define MSJ_WARN_ANIO "El anio no es correcto."
+#define MSJ_WARN_DIA "El dia no es correcto."
+#define MSJ_WARN_ZONA_HORARIA "La zona horaria no es correcta."
+//Archivo invalido
+//Puntero nulo
+//Error clase
+#define MSJ_WARN_ID "No se reconoce un ID"
+//Largo
+#define MSJ_WARN_SUMA_VERIFICACION " Suma de verificacion invalida"
+#define MSJ_WARN_VAL_FLAGS "Validacion del flag incorrecta"//PR_ERR_VALID_FLAGS, 
+#define MSJ_WARN_VAL_FIX "Validacion incorrecta del fix"//PR_ERR_VALID_FIX
+//PUE_NOT
+//PR_DEBUG 
+
+#define MSJ_FIN "FIN" //Corresponde a pf_fin
+#define MSJ_ERROR "error" //Corresponde a pf_err
+
+
+
+void imprimir_msj_errores_log(status_t *mensaje, FILE *archivo_log, gps_t *datos_satelite);
 /* Dependiendo del estado que reciba, imprime el correspondiente mensaje en el
  * archivo log. Los mensajes pueden ser: 
  * ERROR: Son errores graves que ocurren durante la ejecució
@@ -46,5 +75,7 @@ void imprimir_msj_log(status_t estado, FILE *archivo_log, gps_t *datos_satelite)
  * Recibe un estado, un puntero al archivo log y la estrustura datos_satelite,
  * donde se imprime la hora y fecha de cuando ocurren los mensajes.
 */
+
+void imprimir_msj_warn_log (procesar_t *mensaje, FILE *archivo_log, gps_t *datos_satelite);
 
 #endif
