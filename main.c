@@ -15,6 +15,7 @@ int main(int argc, char *argv[]) {
 	metadata_t datos_usuario;
 	status_t st;
 	gps_t gps;
+	procesar_t proceso;
 	int numero_random = 10;
 	
     FILE *entrada = stdin;
@@ -27,16 +28,19 @@ int main(int argc, char *argv[]) {
 
 	st = procesar_argumentos(argc, argv, &entrada, &salida, &archivo_log, &datos_usuario);
 	
-	generar_gpx(&gps, &datos_usuario, &procesar_nmea, entrada, salida, archivo_log, numero_random);
+	generar_gpx(&gps, &datos_usuario, &procesar_nmea, entrada, salida, archivo_log, numero_random, &proceso);
 	
+
 	if (st == ST_PEDIR_AYUDA) {
 		imprimir_ayuda(stdout); // ver si tambien lo quiere por salida 		
 		cerrar_archivos(entrada, stdout, stderr);
 		return EXIT_SUCCESS;
 	}
-	
+//	if (proceso != PR_OK) {
+//		imprimir_msj_warn_log(&proceso, archivo_log, &gps);
+//	}
 	if (st != ST_OK) {
-		imprimir_msj_log(st, archivo_log, &gps);
+		imprimir_msj_errores_log(&st, archivo_log, &gps);
 		cerrar_archivos(entrada, salida, archivo_log);
 		return EXIT_FAILURE;
 	}
