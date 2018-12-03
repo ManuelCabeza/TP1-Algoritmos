@@ -6,14 +6,15 @@
 * Que solo se incluya el .c que se va a usar y no el otro, pero no se si se puede
 * creo que no*/
 #include "procesar_nmea.h"
+#include "procesar_ubx.h"
 //#include "procesar_ubx.c"
 #include "lista.h"
 
-void generar_gpx(gps_t *gps_ptr, metadata_t *metptr, procesar_t (*procesar) (FILE **, gps_t *), FILE *pf_in, FILE *pf_out, FILE *pf_log, int cant_datos) {
+void generar_gpx(gps_t *gps_ptr, metadata_t *metadata_ptr, procesar_t (*procesar) (FILE **, gps_t *), FILE *pf_in, FILE *pf_out, FILE *pf_log, int cant_datos) {
 	
 	procesar_t aux_p;
 	Lista lista;
-	size_t i;
+	size_t i = 0;
 	
 	if (!lista_crear(&lista)) {
 		// Imprimir por log que no se pudo hacer la lista
@@ -21,67 +22,68 @@ void generar_gpx(gps_t *gps_ptr, metadata_t *metptr, procesar_t (*procesar) (FIL
 	}
 	if (!tag(MSJ_GPX_1, INICIAR_ENTER, INDENTACION_0, &pf_out)) { //NO SE, LE AGREGUE EL & PORQUE HABIA PROBLEMA 
 	//CON LOS NIVELES DE PUNTERO. NO SE SI ESTA BIEN ESO. O HAY QUE SACARLE UN NIVEL AL PROTOTIPO
-		imprimir_error_pf_out(pf_log);
+		imprimir_error_pf_out(&pf_log);
 		return;
 	}
 	if (!tag(MSJ_GPX_2, INICIAR_ENTER, INDENTACION_0, &pf_out)) {
-		imprimir_error_pf_out(pf_log);
+		imprimir_error_pf_out(&pf_log);
 		return;
 	}
 	//Esta sección se ocupa de imprimir todo lo contenido en metadata
 	if (!tag(TAG_METADATA, INICIAR_ENTER, INDENTACION_1, &pf_out)) {
-		imprimir_error_pf_out(pf_log);
+		imprimir_error_pf_out(&pf_log);
 		return;
 	}	
 	if (!tag(TAG_NOMBRE, INICIAR, INDENTACION_2, &pf_out)) {
-		imprimir_error_pf_out(pf_log);
+		imprimir_error_pf_out(&pf_log);
 		return;
 	}
-	if (fprintf(*pf_out, "%s", metptr->nombre) < 0) {
-		imprimir_error_pf_out(pf_log);
+	if (fprintf(pf_out, "%s", metadata_ptr->nombre) < 0) {
+		imprimir_error_pf_out(&pf_log);
 		return;
 	}
 	if (!tag(TAG_NOMBRE, FINAL_ENTER, INDENTACION_0, &pf_out)) {
-		imprimir_error_pf_out(pf_log);
+		imprimir_error_pf_out(&pf_log);
 		return;
 	}
 	if (!tag(TAG_TIEMPO, INICIAR, INDENTACION_2, &pf_out)) {
-		imprimir_error_pf_out(pf_log);
+		imprimir_error_pf_out(&pf_log);
 		return;
 	}
 	
-	if (fprintf("%04d-%02d-%02dT%02d:%02d:%02.0fZ", metptr->fecha.anio, metptr->fecha.mes, metptr->fecha.dia,
-		metptr->horario.hora, metptr->horario.minuto, metptr->horario.segundos) < 0) {
-		imprimir_error_pf_out(pf_log);
+	if (fprintf( pf_out, "%04d-%02d-%02dT%02d:%02d:%02.0fZ", metadata_ptr->fecha.anio, metadata_ptr->fecha.mes, metadata_ptr->fecha.dia,
+		metadata_ptr->horario.hora, metadata_ptr->horario.minuto, metadata_ptr->horario.segundos) < 0) {
+		imprimir_error_pf_out(&pf_log);
 		return;
 	}
 	
 	if (!tag(TAG_TIEMPO, FINAL_ENTER, INDENTACION_0, &pf_out)) {
-		imprimir_error_pf_out(pf_log);
+		imprimir_error_pf_out(&pf_log);
 		return;
 	}
 	if (!tag(TAG_METADATA, FINAL_ENTER, INDENTACION_1, &pf_out)) {
-		imprimir_error_pf_out(pf_log);
+		imprimir_error_pf_out(&pf_log);
 		return;
 	}
 	if (!tag(TAG_TRK, INICIAR_ENTER, INDENTACION_1, &pf_out)) {
-		imprimir_error_pf_out(pf_log);
+		imprimir_error_pf_out(&pf_log);
 		return;
 	}
 	if (!tag(TAG_TRKSEG, INICIAR_ENTER, INDENTACION_2, &pf_out)) {
-		imprimir_error_pf_out(pf_log);
+		imprimir_error_pf_out(&pf_log);
 		return;
 	}
 	/*A partir de aca se empieza a imprimir cada uno de los trkpt*/
-	
 	while (((aux_p = (*procesar)(&pf_in, gps_ptr)) != PR_FIN) && (i < cant_datos)) { //Me salta error valgrind DE QUE ?
 		// Si se procesar bien se carga en la lista
 		if (aux_p == PR_OK) {
+			puts("Esta bien");
 			if (!lista_insertar_ultimo(&lista, gps_ptr, &clonar_gps)) {
 				// Imprimr error de poner en la lista y hacer free etc (termina el programa no ?)
 				return;
 			}		
 		} else { 
+			puts("Imprimir error por log");
 			// Imprmir el error por log o stderr
 		}
 		i++;		
@@ -95,21 +97,21 @@ void generar_gpx(gps_t *gps_ptr, metadata_t *metptr, procesar_t (*procesar) (FIL
 	while (i < cant_datos) {
 		gps_ptr = retornar_dato(&lista, i);
 		if (!imprimir_gps_formato_gpx(gps_ptr, &pf_out)) {
-			imprimir_error_pf_out(pf_log);
+			imprimir_error_pf_out(&pf_log);
 			return;
 		}
 	}
 	/*Se cierran las tags que se abrieron al comienzo*/
 	if (!tag(TAG_TRKSEG, FINAL_ENTER, INDENTACION_2, &pf_out)) {
-		imprimir_error_pf_out(pf_log);
+		imprimir_error_pf_out(&pf_log);
 		return;
 	}
 	if (!tag(TAG_TRK, FINAL_ENTER, INDENTACION_1, &pf_out)) {
-		imprimir_error_pf_out(pf_log);
+		imprimir_error_pf_out(&pf_log);
 		return;
 	}
 	if (!tag(TAG_GPX, FINAL_ENTER, INDENTACION_0, &pf_out)) {
-		imprimir_error_pf_out(pf_log);
+		imprimir_error_pf_out(&pf_log);
 		return;
 	}
 	liberar_lista(&lista, &liberar_estructura_gps);
@@ -117,7 +119,6 @@ void generar_gpx(gps_t *gps_ptr, metadata_t *metptr, procesar_t (*procesar) (FIL
 }
 
 bool tag(char *strptr, tipo_tag tipo, size_t indentacion, FILE ** pf_out) {
-
 	size_t i;
 	for (i = 0; i < (INDENTACION_INICIAL + indentacion) * CANT_CARACTERES_INDENTACION; i++) { 
 		if (fputc(CARACTER_INDENTACION, *pf_out) != CARACTER_INDENTACION)
@@ -234,7 +235,7 @@ bool imprimir_gps_formato_gpx(gps_t *gps_ptr, FILE **pf_out) {
 	if (!tag(TAG_TIEMPO, INICIAR, INDENTACION_4, pf_out))
 		return false;
 	
-	if (fprintf(*pf_out, "%04d-%02d-%02dT%2i:%2i:%3.3fZ", metptr->fecha.anio, metptr->fecha.mes, metptr->fecha.dia,
+	if (fprintf(*pf_out, "%04d-%02d-%02dT%2i:%2i:%3.3fZ", gps_ptr->fecha.anio, gps_ptr->fecha.mes, gps_ptr->fecha.dia,
 		gps_ptr->horario.hora, gps_ptr->horario.minuto, gps_ptr->horario.segundos) < 0)
 			return false;
 	
@@ -246,6 +247,11 @@ bool imprimir_gps_formato_gpx(gps_t *gps_ptr, FILE **pf_out) {
 	return true;
 }
 
+void imprimir_error_pf_out(FILE **pf_log) {
+	
+	fprintf (*pf_log, "[%s] %s\n", "ERROR", "No se pudo escribir en la salida");
+	return;
+}
 /*
 void imprimir_estructura (gps_t gps) {
 	printf("°°\nHora: %i, Minuto: %i, Segundo: %f\n", gps.horario.hora, gps.horario.minuto, gps.horario.segundos );

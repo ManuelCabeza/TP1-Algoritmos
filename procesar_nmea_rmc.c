@@ -57,30 +57,30 @@ procesar_t procesar_nmea_rmc(gps_t *zda_ptr, char * ch_ptr, char * cadena) {
 	}
 	
 	zda_ptr->longitud = (((int)longitud / 100) + ((longitud - 100 * ((int)longitud / 100)) / 60 )) * (c == CARACTER_OESTE ? MULTIPLICADOR_OESTE : MULTIPLICADOR_ESTE);
-	printf("|%c %c %c|\n", *(ch_ptr-1), *(ch_ptr), *(ch_ptr+1));
+	
 	strtof(++ch_ptr, &ch_ptr); // La velocidad no se verifica o se carga
 	if ((*ch_ptr) != CARACTER_SEPARACION_COMANDO) { 
 		return PR_ERR;
 	}
-	printf("|%c %c %c|\n", *(ch_ptr-1), *(ch_ptr), *(ch_ptr+1));
+	
 	strtof(++ch_ptr, &ch_ptr); // La velocidad no se verifica o se carga
 	if (*(ch_ptr) != CARACTER_SEPARACION_COMANDO) { 
 		return PR_ERR;
 	}
-	printf("|%c %c %c|\n", *(ch_ptr-1), *(ch_ptr), *(ch_ptr+1));
+	
 	fecha = strtol(++ch_ptr, &ch_ptr, 10);
 	procesar_fecha(&(zda_ptr->fecha), fecha);
-	printf("|%c %c %c|\n", *(ch_ptr-1), *(ch_ptr), *(ch_ptr+1));
+	
 	if (*(ch_ptr) != CARACTER_SEPARACION_COMANDO) { 
 		return PR_ERR_FECHA;
 	}
 	
 	strtof(++ch_ptr, &ch_ptr); // La desviación magnetica no se verifica
-	printf("|%c %c %c|\n", *(ch_ptr-1), *(ch_ptr), *(ch_ptr+1));
+	
 	if (*(ch_ptr) != CARACTER_SEPARACION_COMANDO) { 
 		return PR_ERR;
 	}
-	printf("|%c %c %c|\n", *(ch_ptr-1), *(ch_ptr), *(ch_ptr+1));
+	
 	
 	// Solo se verfica que la unidad magnetica sea 'w'
 	c = tolower(*(++ch_ptr)); 
