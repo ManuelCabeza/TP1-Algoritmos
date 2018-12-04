@@ -24,17 +24,7 @@
 #define I4 sizeof(signed long)
 //#define X1 sizeof(unsigned char)
 
-/*
-typedef enum {PR_OK, PR_FIN, PR_ERR_NO_CAR_INI, PR_ERR, PR_ERR_SENT, PR_ERR_SUM_VER,
-		      PR_ERR_CAR_STATUS, PR_ERR_HORARIO, PR_ERR_CAR_LATITUD, PR_ERR_LATITUD,
-		      PR_ERR_CAR_LONGITUD, PR_ERR_LONGITUD, PR_ERR_CAL_FIX, PR_ERR_CANT_SAT,
-		      PR_ERR_ELEVACION, PR_ERR_CAR_METRO, PR_ERR_HDOP, PR_ERR_SEP_GEO, PR_ERR_FECHA,
-		      PR_ERR_MES, PR_ERR_ANIO, PR_ERR_DIA, PR_ERR_ZONA_HORARIA } procesar_t;
-*/
 
-
-/*Fijate si me olvide alguno, porque no los vi uno por uno*/
-// PUE == Procesar Ubx Error, El error PUE_LEC equivale a error de archivo corrupto
 typedef enum { PR_OK = 0, PR_FIN, PR_ERR_NO_CAR_INI, PR_ERR, PR_ERR_SENT, 
 			   PR_ERR_CAR_STATUS, PR_ERR_HORARIO, PR_ERR_CAR_LATITUD, 
 			   PR_ERR_LATITUD, PR_ERR_CAR_LONGITUD, PR_ERR_LONGITUD, 

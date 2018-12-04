@@ -122,7 +122,7 @@ void * retornar_dato(Lista *lista, size_t i) {
 size_t cantidad_datos(Lista *lista) {
 	size_t contador = 0;
 	
-	while (lista != NULL) {
+	while (*lista != NULL) {
 		contador++;
 		lista = &((*lista)->sig);
 	}	

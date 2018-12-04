@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
 	metadata_t datos_usuario;
 	status_t st;
 	gps_t gps;
-	procesar_t proceso;
+	procesar_t proceso = PR_OK;
 	int numero_random = 10;
 	
     FILE *entrada = stdin;
@@ -28,7 +28,8 @@ int main(int argc, char *argv[]) {
 
 	st = procesar_argumentos(argc, argv, &entrada, &salida, &archivo_log, &datos_usuario);
 	
-	generar_gpx(&gps, &datos_usuario, &procesar_nmea, entrada, salida, archivo_log, numero_random, &proceso);
+	
+	generar_gpx(&gps, &datos_usuario, &procesar_ubx, entrada, salida, archivo_log, numero_random, &proceso);
 	
 
 	if (st == ST_PEDIR_AYUDA) {

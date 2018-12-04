@@ -10,8 +10,8 @@
 procesar_t procesar_ubx (FILE **pf_in, gps_t *ubx_ptr) {
 	uchar aux;
 	
+	puts("En procesar_ubx");
 	if (!(*pf_in) || !pf_in || !ubx_ptr) {
-		puts("Aca");
 		return PR_ERR_PTR_NULL;
 	}
 	while (fread(&aux, U1, 1, *pf_in) == 1) {

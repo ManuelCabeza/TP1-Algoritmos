@@ -70,10 +70,10 @@ void generar_gpx(gps_t *gps_ptr, metadata_t *metadata_ptr, procesar_t (*procesar
 		return;
 	}
 	/*A partir de aca se empieza a imprimir cada uno de los trkpt*/
-	while (((*proceso = (*procesar)(&pf_in, gps_ptr)) != PR_FIN) && (i < cant_datos)) { //Me salta error valgrind DE QUE ?
+	while (((*proceso = (*procesar)(&pf_in, gps_ptr)) != PR_FIN) && (i < cant_datos)) { //Me salta error valgrind SIGUE SALTANDO TAMI ??
 		// Si se procesar bien se carga en la lista
+		
 		if (*proceso == PR_OK) {
-			puts("Esta bien");
 			if (!lista_insertar_ultimo(&lista, gps_ptr, &clonar_gps)) {
 				// Imprimr error de poner en la lista y hacer free etc (termina el programa no ?)
 				return;
@@ -88,16 +88,19 @@ void generar_gpx(gps_t *gps_ptr, metadata_t *metadata_ptr, procesar_t (*procesar
 	}
 	/* Si es PR_FIN es por que la cantidad de datos a leer es mayor o igual a la 
 	 * cantidad de datos reales */
+	printf("Cantidad de elementos en la lista: %u\n", cantidad_datos(&lista));
 	if (*proceso == PR_FIN) {
 		cant_datos = cantidad_datos(&lista); 
 	}
 	i = 0;
 	while (i < cant_datos) {
 		gps_ptr = retornar_dato(&lista, i);
+		//imprimir_estructura(*gps_ptr);
 		if (!imprimir_gps_formato_gpx(gps_ptr, &pf_out)) {
 			imprimir_error_pf_out(&pf_log);
 			return;
 		}
+		i++;
 	}
 	/*Se cierran las tags que se abrieron al comienzo*/
 	if (!tag(TAG_TRKSEG, FINAL_ENTER, INDENTACION_2, &pf_out)) {
@@ -262,7 +265,8 @@ void imprimir_estructura (gps_t gps) {
 	printf("Calidad Fix: %i\n", gps.calidad_fix);
 	printf("Cantidad satelites: %i\n°°\n", gps.cant_satelites);
 }
-
+*/
+/*
 void inicializar_estructura (gps_t *gps_ptr) {
 	gps_ptr->horario.hora = gps_ptr->horario.minuto = gps_ptr->horario.segundos = 10;
 	gps_ptr->fecha.anio = gps_ptr->fecha.mes = gps_ptr->fecha.dia = 10;

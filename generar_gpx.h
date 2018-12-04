@@ -40,7 +40,6 @@
 #define AJUSTE_DE_NUM 1
 #define ANIO_DE_LINUX 1900
 
-
 typedef enum {INICIAR, INICIAR_ENTER, FINAL, FINAL_ENTER} tipo_tag;
 
 /* Imprime el formato tipo GPX por stdout.

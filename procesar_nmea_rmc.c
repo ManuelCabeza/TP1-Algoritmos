@@ -8,7 +8,7 @@
  * 
 */
 
-procesar_t procesar_nmea_rmc(gps_t *zda_ptr, char * ch_ptr, char * cadena) {
+procesar_t procesar_nmea_rmc(gps_t *rmc_ptr, char * ch_ptr, char * cadena) {
 	
 	long suma_verificacion;
 	long fecha;
@@ -23,7 +23,7 @@ procesar_t procesar_nmea_rmc(gps_t *zda_ptr, char * ch_ptr, char * cadena) {
 			return PR_ERR_HORARIO;
 		}
 	}
-	procesar_horario(&(zda_ptr->horario), horario);
+	procesar_horario(&(rmc_ptr->horario), horario);
 	
 	c = tolower( *(ch_ptr++));
 	if ((c != CARACTER_STATUS_VOID) && (c != CARACTER_STATUS_ACTIVO))
@@ -42,7 +42,7 @@ procesar_t procesar_nmea_rmc(gps_t *zda_ptr, char * ch_ptr, char * cadena) {
 		return PR_ERR_CAR_LATITUD;
 	}
 	
-	zda_ptr->latitud = (((int)latitud / 100) + ((latitud - 100 * ((int)latitud / 100)) / 60 )) * (c == CARACTER_SUR ? MULTIPLICADOR_SUR : MULTIPLICADOR_NORTE);
+	rmc_ptr->latitud = (((int)latitud / 100) + ((latitud - 100 * ((int)latitud / 100)) / 60 )) * (c == CARACTER_SUR ? MULTIPLICADOR_SUR : MULTIPLICADOR_NORTE);
 
 	// Longitud dddmm.mmm
 	//printf("|%c %c %c|\n", *(ch_ptr-1), *(ch_ptr), *(ch_ptr+1));
@@ -56,7 +56,7 @@ procesar_t procesar_nmea_rmc(gps_t *zda_ptr, char * ch_ptr, char * cadena) {
 		return PR_ERR_CAR_LONGITUD;
 	}
 	
-	zda_ptr->longitud = (((int)longitud / 100) + ((longitud - 100 * ((int)longitud / 100)) / 60 )) * (c == CARACTER_OESTE ? MULTIPLICADOR_OESTE : MULTIPLICADOR_ESTE);
+	rmc_ptr->longitud = (((int)longitud / 100) + ((longitud - 100 * ((int)longitud / 100)) / 60 )) * (c == CARACTER_OESTE ? MULTIPLICADOR_OESTE : MULTIPLICADOR_ESTE);
 	
 	strtof(++ch_ptr, &ch_ptr); // La velocidad no se verifica o se carga
 	if ((*ch_ptr) != CARACTER_SEPARACION_COMANDO) { 
@@ -69,7 +69,7 @@ procesar_t procesar_nmea_rmc(gps_t *zda_ptr, char * ch_ptr, char * cadena) {
 	}
 	
 	fecha = strtol(++ch_ptr, &ch_ptr, 10);
-	procesar_fecha(&(zda_ptr->fecha), fecha);
+	procesar_fecha(&(rmc_ptr->fecha), fecha);
 	
 	if (*(ch_ptr) != CARACTER_SEPARACION_COMANDO) { 
 		return PR_ERR_FECHA;
@@ -96,7 +96,7 @@ procesar_t procesar_nmea_rmc(gps_t *zda_ptr, char * ch_ptr, char * cadena) {
 	
 	ch_ptr = cadena + 1; // Posiciono el puntero para hacer la suma de verificacion.
 	
-	if (nmea_verificar_suma(ch_ptr) != suma_verificacion) {
+	if (nmea_verificar_suma(ch_ptr) != suma_verificacion) {	
 		return PR_ERR_SUM_VER;
 	}
 	return PR_OK;	

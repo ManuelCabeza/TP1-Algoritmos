@@ -53,6 +53,6 @@ void procesar_horario (horario_t *horario_ptr, float horario) {
 void procesar_fecha (fecha_t *fecha_ptr, long fecha) {
 	
 	fecha_ptr->mes = fecha / 100 - 100 * (fecha_ptr->dia = fecha / 10000);
-	fecha_ptr->anio = (fecha & 0xFF); //NO SE SI FUNCIONA
+	fecha_ptr->anio = 2000 + (fecha % 100);
 }
 
