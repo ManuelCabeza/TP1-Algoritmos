@@ -47,4 +47,11 @@ procesar_t _procesar_ubx (FILE **pf_in, gps_t *ubx_ptr);
 
 void check_sum (uchar payload[], size_t long_payload, uchar *ck_a, uchar *ck_b);
 
+
+
+void imprimir_estructura (gps_t gps);
+
+void inicializar_estructura (gps_t *gps_ptr); //Esta deberia ir en main
+
+
 #endif
