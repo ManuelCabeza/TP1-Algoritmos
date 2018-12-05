@@ -69,7 +69,9 @@ void generar_gpx(gps_t *gps_ptr, metadata_t *metptr, procesar_t (*procesar) (FIL
  * a char que contiene una cadena a imprimir en el tag.
  * No devuelve nada, ya que solamente imprime. */
 
-bool tag(char *strptr, tipo_tag tipo, size_t indentacion, FILE **pf_out);
+
+//Saque un nivel de puntero a po_out
+bool tag(char *strptr, tipo_tag tipo, size_t indentacion, FILE *pf_out);
 
 bool cargar_hora_por_omision (horario_t *horario);
 /*
