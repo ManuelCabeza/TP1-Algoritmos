@@ -7,6 +7,8 @@
 #include "verificar_argumentos.h"
 
 #define MSJ_VACIO ""
+
+#define MSJ_ERROR_TIPO "ERROR"
 #define MSJ_ERROR_PUNTERO_NULO "Puntero nulo."
 #define MSJ_ERROR_NOMBRE_INVALIDO "El nombre ingresado es invalido." //lo voy a eliminar!
 #define MSJ_ERROR_PROTOCOLO "El protocolo ingresado es invalido."
@@ -27,8 +29,8 @@ para los debug
 #define MSJ_DEBUG_IMPRIMIO_MSJ "Se imprimió un mensaje."
 etc.
 */
+#define MSJ_WARN_TIPO "WARN"
 #define MSJ_WARN_LISTA_LLENA "Se descarta un mensaje por lista llena."
-
 
 #define MSJ_WARN_CARACTER_NO_INICIAL "El caracter no es el inicial"
 #define MSJ_WARN_SENTENCIA_INVALIDA "La sentencia no es valida"         
@@ -49,19 +51,19 @@ etc.
 #define MSJ_WARN_ANIO "El anio no es correcto."
 #define MSJ_WARN_DIA "El dia no es correcto."
 #define MSJ_WARN_ZONA_HORARIA "La zona horaria no es correcta."
-//Archivo invalido
-//Puntero nulo
-//Error clase
-#define MSJ_WARN_ID "No se reconoce un ID"
-//Largo
+#define MSJ_WARN_ARCHIVO "Archivo corrupto."
+#define MSJ_WARN_PTR_NULL "Puntero nulo."
+#define MSJ_WARN_CLASE "Clase inválida."
+#define MSJ_WARN_ID "No se reconoce un ID."
+#define MSJ_WARN_LARGO "Largo inválido."
 #define MSJ_WARN_SUMA_VERIFICACION " Suma de verificacion invalida"
-#define MSJ_WARN_VAL_FLAGS "Validacion del flag incorrecta"//PR_ERR_VALID_FLAGS, 
-#define MSJ_WARN_VAL_FIX "Validacion incorrecta del fix"//PR_ERR_VALID_FIX
-//PUE_NOT
-//PR_DEBUG 
+#define MSJ_WARN_VAL_FLAGS "Byte de flag incorrecto"
+#define MSJ_WARN_VAL_FIX "Byte incorrecto del fix"
+#define MSJ_WARN_SEGUNDO "Los segundos no se encuentran en el rango"
+#define MSJ_WARN_MINUTO "Los minutos no se encuentran en el rango"
 
-#define MSJ_FIN "FIN" //Corresponde a pf_fin
-#define MSJ_ERROR "error" //Corresponde a pf_err
+#define MSJ_FIN "FIN" //Corresponde a pr_fin
+#define MSJ_ERROR "Error" //Corresponde a pr_err
 
 
 

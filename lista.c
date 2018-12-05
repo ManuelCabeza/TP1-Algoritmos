@@ -1,20 +1,5 @@
 #include "lista.h"
-/*
-void imprimir_Lista(Lista * lista, int i ) {
-	Nodo * aux;
-	if (!lista) {
-		puts("La lista está vacía");
-	} else {
-		puts("La lista es: ");
-		aux = lista;
-		do {
-			printf("%i -> ", i++);
-			aux = aux->sig;
-		} while (aux != NULL);
-		putchar('\n');
-	}
-}
-*/
+
 bool lista_crear (Lista *lista) {
     
     if (!lista) {
@@ -98,7 +83,7 @@ void destruir_nodo(Nodo **ptr_nodo, void (*destructor)(void *)) {
     (*ptr_nodo) = NULL;
 
 }
-// Tiene que ser ptr por q sino da error de ISO-C
+
 void * liberar_lista (Lista *lista, void (*destructor)(void *)) {
 	Nodo *siguiente;
 

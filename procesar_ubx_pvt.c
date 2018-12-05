@@ -39,24 +39,32 @@ procesar_t _procesar_ubx_pvt (FILE **pf_in, gps_t *pvt_ptr)  {
 	
 	// Se cargan los datos. Solo se verifican losbyte valid y flags
 	pvt_ptr->fecha.anio = u1_to_u2(payload + 4);
-	pvt_ptr->fecha.mes = payload[6];
-	pvt_ptr->fecha.dia = payload[7];
 	
-	pvt_ptr->horario.hora = payload[8];
-	pvt_ptr->horario.minuto = payload[9];
-	pvt_ptr->horario.segundos = payload[10];
+	if (((pvt_ptr->fecha.mes = payload[6]) < RANGO_MES_MIN) &&  (pvt_ptr->fecha.mes > RANGO_MES_MAX))
+		return PR_ERR_MES;
+		
+	if (((pvt_ptr->fecha.dia = payload[7]) < RANGO_DIA_MIN) && (pvt_ptr->fecha.dia > RANGO_DIA_MAX))
+		return PR_ERR_DIA;
+	
+	if (((pvt_ptr->horario.hora = payload[8]) < RANGO_HORA_MIN) && (pvt_ptr->horario.hora > RANGO_HORA_MAX))
+		return PR_ERR_DIA;
+		
+	if (((pvt_ptr->horario.minuto = payload[9]) < RANGO_MES_MIN) && (pvt_ptr->horario.minuto > RANGO_MES_MAX))
+		return PR_ERR_MIN;
+		
+	if (((pvt_ptr->horario.segundos = payload[10]) < RANGO_SEGUNDO_MIN) && (pvt_ptr->horario.segundos > RANGO_SEGUNDO_MAX))
+		return PR_ERR_SEG;
 	
 	// Aux = validity flags;
 	aux = payload[11];
 	// Se verifica que esten las ultimas 4 en 1,
-	if (aux != MASCARA_VALID)
+	if (!(aux & MASCARA_VALID))
 		return PR_ERR_VALID_FLAGS;
 	
 	aux = payload[21];
-	/* /// NO ESTOY VERIFICANDO EL FIX, HAY Q TERMINANR
- 	if (aux != MASCARA_FLAGS)
+ 	if (aux & MASCARA_FLAGS)
 		return PR_ERR_VALID_FIX;
-	*/
+	
 	pvt_ptr->cant_satelites = payload[23];
 	
 	pvt_ptr->longitud = (float) u1_to_i4(payload + 24);

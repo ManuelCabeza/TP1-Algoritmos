@@ -55,6 +55,7 @@ status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **sali
 				++i;
 				printf("Encontre archivo de salida\n");
 				*salida = abrir_archivo_salida(argv[i], &estado);
+				puts("AAAAAAAAAAAAAAAAAAAAAAAA");
 				if (*salida == NULL) {
 					return ST_ERROR_ARCHIVO_SALIDA_INVALIDO;
 				}

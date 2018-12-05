@@ -37,7 +37,7 @@
 #define TAG_NOMBRE "name"
 
 /*De las funciones cargar datos por omision */
-#define AJUSTE_DE_NUM 1
+#define AJUSTE_MES 1
 #define ANIO_DE_LINUX 1900
 
 typedef enum {INICIAR, INICIAR_ENTER, FINAL, FINAL_ENTER} tipo_tag;
@@ -71,7 +71,7 @@ void generar_gpx(gps_t *gps_ptr, metadata_t *metptr, procesar_t (*procesar) (FIL
 
 
 //Saque un nivel de puntero a po_out
-bool tag(char *strptr, tipo_tag tipo, size_t indentacion, FILE *pf_out);
+void tag(char *strptr, tipo_tag tipo, size_t indentacion, FILE *pf_out);
 
 bool cargar_hora_por_omision (horario_t *horario);
 /*
@@ -89,9 +89,8 @@ void * clonar_gps(void *llegada);
 
 void liberar_estructura_gps (void *gps_ptr);
 
-bool imprimir_gps_formato_gpx(gps_t *gps_ptr, FILE *pf_out);//Tamara saco un nivel de puntero
+void imprimir_gps_formato_gpx(gps_t *gps_ptr, FILE *pf_out);//Tamara saco un nivel de puntero
 
-void imprimir_error_pf_out(FILE *pf_log); //Tamara saco un nivel de puntero
 /*
 void imprimir_estructura (gps_t gps);
 

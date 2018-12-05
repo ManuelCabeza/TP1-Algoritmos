@@ -14,6 +14,5 @@
 
 procesar_t _procesar_ubx_pvt (FILE **pf_in, gps_t *pvt_ptr);
 
-
 #endif
 

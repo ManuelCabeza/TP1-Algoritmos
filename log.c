@@ -16,13 +16,14 @@ void imprimir_msj_errores_log (status_t *mensaje, FILE *archivo_log, metadata_t 
 							   }; 
 	/*Tiene que tener el mismo orden de status_t para que sea un diccionario*/
 
-	fprintf (archivo_log, "%04d-%02d-%02d %02d:%02d:%f [ERROR] %s\n", 
+	fprintf (archivo_log, "%04d-%02d-%02d %02d:%02d:%.0f [%s] %s\n", 
 													datos_usuario->fecha.anio, 
 													datos_usuario->fecha.mes,
 													datos_usuario->fecha.dia,
 													datos_usuario->horario.hora,
 													datos_usuario->horario.minuto,
 													datos_usuario->horario.segundos,
+													MSJ_ERROR_TIPO,
 													msj_error[*mensaje]
 													);
 }
@@ -37,23 +38,26 @@ void imprimir_msj_warn_log (procesar_t *mensaje, FILE *archivo_log, metadata_t *
 								MSJ_WARN_ELEVACION, MSJ_WARN_CARACTER_METRO,
 								MSJ_WARN_HDOP, MSJ_WARN_SEPARACION_GEOGRAFICA, MSJ_WARN_FECHA,
 								MSJ_WARN_MES, MSJ_WARN_ANIO, MSJ_WARN_DIA, MSJ_WARN_ZONA_HORARIA,
-								"aRCHIVO INVALIDO", "Puntero nulo", "eRROR CLASE", 
-								MSJ_WARN_ID, "Largo", MSJ_WARN_SUMA_VERIFICACION, MSJ_WARN_VAL_FLAGS,
-								MSJ_WARN_VAL_FIX, MSJ_VACIO, MSJ_VACIO
+								MSJ_WARN_ARCHIVO, MSJ_WARN_PTR_NULL, MSJ_WARN_CLASE, 
+								MSJ_WARN_ID, MSJ_WARN_LARGO, MSJ_WARN_SUMA_VERIFICACION, MSJ_WARN_VAL_FLAGS,
+								MSJ_WARN_VAL_FIX, MSJ_VACIO, MSJ_VACIO, MSJ_WARN_SEGUNDO, MSJ_WARN_MINUTO
 							   };
 
 	printf ("El numero de mensaje correspondiente es %d\n", *mensaje);
 
 
-	fprintf (archivo_log, "%04d-%02d-%02d %02d:%02d:%f [WARN] %s\n", 
+	fprintf (archivo_log, "%04d-%02d-%02d %02d:%02d:%.0f [%s] %s\n", 
 													datos_usuario->fecha.anio, 
 													datos_usuario->fecha.mes,
 													datos_usuario->fecha.dia,
 													datos_usuario->horario.hora,
 													datos_usuario->horario.minuto,
 													datos_usuario->horario.segundos,
+													MSJ_WARN_TIPO,
 													msj_warn[*mensaje]
 													);
+}
+
 
 /*	
 void imprimir_msj_debug_log (status_t *mensaje, FILE *archivo_log, metadata_t *datos_usuario) { 
@@ -70,6 +74,6 @@ void imprimir_msj_debug_log (status_t *mensaje, FILE *archivo_log, metadata_t *d
 														    msj_debug[estado]
 														  );
 */	
-}
+
 
 

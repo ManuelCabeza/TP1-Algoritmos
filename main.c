@@ -43,15 +43,15 @@ int main(int argc, char *argv[]) {
 		cerrar_archivos(entrada, salida, archivo_log);
 		return EXIT_FAILURE;
 	}
+	numero_random = 1000;
 	if (protocolo == PROTOCOLO_NMEA) { 
+		puts("Para procesar nmea");
 		generar_gpx(&gps, &datos_usuario, &procesar_nmea, entrada, salida, archivo_log, numero_random, &proceso);
 	}
 	if (protocolo == PROTOCOLO_UBX) {
+		puts("Para procesar Ubx");
 		generar_gpx(&gps, &datos_usuario, &procesar_ubx, entrada, salida, archivo_log, numero_random, &proceso);
 	}
-//	if (proceso != PR_OK) {
-//		imprimir_msj_warn_log(&proceso, archivo_log, &gps);
-//	}
 
 
 	cerrar_archivos(entrada, salida, archivo_log);

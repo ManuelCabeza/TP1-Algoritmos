@@ -24,6 +24,18 @@
 #define I4 sizeof(signed long)
 //#define X1 sizeof(unsigned char)
 
+#define RANGO_DIA_MIN 1
+#define RANGO_DIA_MAX 31
+#define RANGO_MES_MIN 1
+#define RANGO_MES_MAX 12
+
+#define RANGO_HORA_MIN 1
+#define RANGO_HORA_MAX 24
+#define RANGO_MINUTO_MIN 0
+#define RANGO_MINUTO_MAX 60
+#define RANGO_SEGUNDO_MIN 0
+#define RANGO_SEGUNDO_MAX 60
+
 
 typedef enum { PR_OK = 0, PR_FIN, PR_ERR_NO_CAR_INI, PR_ERR, PR_ERR_SENT, 
 			   PR_ERR_CAR_STATUS, PR_ERR_HORARIO, PR_ERR_CAR_LATITUD, 
@@ -33,7 +45,7 @@ typedef enum { PR_OK = 0, PR_FIN, PR_ERR_NO_CAR_INI, PR_ERR, PR_ERR_SENT,
 		       PR_ERR_MES, PR_ERR_ANIO, PR_ERR_DIA, PR_ERR_ZONA_HORARIA,
 			   PR_ERR_ARCHIVO, PR_ERR_PTR_NULL, PR_ERR_CLASE, 
 			   PR_ERR_ID, PR_ERR_LARGO, PR_ERR_SUM_VER, PR_ERR_VALID_FLAGS, 
-			   PR_ERR_VALID_FIX, PUE_NOT, PR_DEBUG /* Lo agregue por un warnign que habia*/ } procesar_t;
+			   PR_ERR_VALID_FIX, PUE_NOT, PR_DEBUG, PR_ERR_SEG, PR_ERR_MIN /* Lo agregue por un warnign que habia*/ } procesar_t;
 
 typedef unsigned char uchar;
 
