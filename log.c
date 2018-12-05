@@ -56,17 +56,17 @@ void imprimir_msj_warn_log (procesar_t *mensaje, FILE *archivo_log, metadata_t *
 													);
 
 /*	
-void imprimir_msj_debug_log (status_t *mensaje, FILE *archivo_log, gps_t *datos_satelite) { 
+void imprimir_msj_debug_log (status_t *mensaje, FILE *archivo_log, metadata_t *datos_usuario) { 
 
 	const char * msj_debug[] = { MSJ_VACIO, 
 							   };
 	
-	fprintf (archivo_log, "%04d-%02d-%02d %02d:%02d:%f [DEBUG] %s\n", datos_satelite->fecha.anio, 
-														    datos_satelite->fecha.mes,
-														    datos_satelite->fecha.dia,
-														    datos_satelite->horario.hora,
-														    datos_satelite->horario.minuto,
-														    datos_satelite->horario.segundos,
+	fprintf (archivo_log, "%04d-%02d-%02d %02d:%02d:%f [DEBUG] %s\n", datos_usuario->fecha.anio, 
+														    datos_usuario->fecha.mes,
+														    datos_usuario->fecha.dia,
+														    datos_usuario->horario.hora,
+														    datos_usuario->horario.minuto,
+														    datos_usuario->horario.segundos,
 														    msj_debug[estado]
 														  );
 */	
