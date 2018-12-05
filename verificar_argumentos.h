@@ -94,7 +94,7 @@ arg_t validar_arg(char *arg);
  * Caso contrario, devuelve un ARG_INVALIDO.
  */
 
-status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **salida, FILE **archivo_log, metadata_t *datos_usuario);
+status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **salida, FILE **archivo_log, metadata_t *datos_usuario, protocolo_t *protocolo);
 /* Verifica que los argumentos que se ingresan por linea de comando sean validos.
  * En caso de que sean validos, los almacena en la estructura datos_usuario.
  * Caso contrario, devuelve un estado de error que corresponda.  
@@ -103,8 +103,8 @@ status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **sali
  * argv, puntero al archivo de entrada donde se van leyendo los datos, y unos 
  * puntero a los archivos de salida e archivo_log donde se van imprimiendo el
  * formato gpx e imprimeindo los mensajes de errores, warn o debug en el log,
- * y un puntero a una estructura datos_usuario donde se guardaran los resultados.
- * 
+ * un puntero a una estructura datos_usuario donde se guardaran los resultados
+ * y un puntero a protocolo_t, donde aclara que tipo de protocolo es.
  * Devuelve un ST_AYUDA en caso de que se haya ingresado el argumento -h o --help
  * ST_ERROR_* en caso que algun argumento no sea valido
  * ST_OK si todos los argumentos son validos y sus contenidos tambien. 

@@ -2,11 +2,10 @@
 #include "main.h"
 #include "log.h"
 
-status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **salida, FILE **archivo_log, metadata_t *datos_usuario ) {
+status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **salida, FILE **archivo_log, metadata_t *datos_usuario, protocolo_t *protocolo ) {
 
 	int i;
 	status_t estado;
-	protocolo_t protocolo = PROTOCOLO_AUTO; 	
 	arg_t argumento;
 
 	int cant_msj; //PROPENSO A CAMBIO, DEPENDE DE LO QUE NECESITE MANU
@@ -32,7 +31,7 @@ status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **sali
 			case ARG_PROTOCOLO:
 				++i;
 				printf("Encontre protocolo\n");
-				estado = validar_argumento_protocolo(argv[i], &protocolo); 
+				estado = validar_argumento_protocolo(argv[i], protocolo); 
 				/*if (protocolo == PROTOCOLO_NMEA)
 					printf("Protoclo nmea\n" );
 				if (protocolo == PROTOCOLO_UBX)
@@ -46,7 +45,7 @@ status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **sali
 			case ARG_ARCHIVO_ENTRADA:
 				++i;
 				printf("Encontre archivo de entrada\n");
-				*entrada = abrir_archivo_entrada(argv[i], &protocolo, &estado); 
+				*entrada = abrir_archivo_entrada(argv[i], protocolo, &estado); 
 				if (*entrada == NULL) {
 					printf("llegue aca");
 					return ST_ERROR_ARCHIVO_ENTRADA_INVALIDO;
@@ -177,11 +176,11 @@ status_t identificar_protocolo_auto(char *arg_archivo_entrada, protocolo_t *prot
         }
     }
 
+	fclose(p);
     return ST_ERROR_PROTOCOLO_INVALIDO;
 }
 
 FILE * abrir_archivo_entrada(char *arg_archivo_entrada, protocolo_t *protocolo, status_t *estado) {
-//VER SU LA variable estado es pasada como argumento de la funcion.
     
 	if (!arg_archivo_entrada || !protocolo || !estado) {
 		*estado = ST_ERROR_PUNTERO_NULO;
