@@ -66,16 +66,29 @@ etc.
 
 
 void imprimir_msj_errores_log(status_t *mensaje, FILE *archivo_log, metadata_t *datos_usuario);
-/* Dependiendo del estado que reciba, imprime el correspondiente mensaje en el
- * archivo log. Los mensajes pueden ser: 
- * ERROR: Son errores graves que ocurren durante la ejecució
- * DEBUG: Son mensajes de información sobre lo que está haciendo el programa. 
- * WARN: Son avisos que ocurren durante la ejecucion 
+/* Dependiendo del estado que reciba, imprime el correspondiente mensaje 
+ * de error grave que ocurre durante la ejecucion del programa en el
+ * archivo log
  * Por defecto, la impresion sale por stderr. 
  * Recibe un estado, un puntero al archivo log y la estrustura datos_usuario,
  * donde se imprime la hora y fecha de cuando ocurren los mensajes.
 */
 
 void imprimir_msj_warn_log (procesar_t *mensaje, FILE *archivo_log, metadata_t *datos_usuario);
+/* Dependiendo del estado que reciba, imprime el correspondiente mensaje
+ * de warn en el archivo log. Los mensajes son los avisos que ocurren 
+ * durante la ejecucion del programa.  
+ * Por defecto, la impresion sale por stderr. 
+ * Recibe un estado, un puntero al archivo log y la estrustura datos_usuario,
+ * donde se imprime la hora y fecha de cuando ocurren los mensajes.
+*/
+
+//void imprimir_msj_debug_log (debug_t *mensaje, FILE *archivo_log, metadata_t *datos_usuario);
+/* Dependiendo del estado que reciba, imprime el correspondiente mensaje
+ * de informacion sobre lo que esta haciendo el programa en el archivo log.
+ * Por defecto, la impresion sale por stderr. 
+ * Recibe un estado, un puntero al archivo log y la estrustura datos_usuario,
+ * donde se imprime la hora y fecha de cuando ocurren los mensajes.
+*/
 
 #endif
