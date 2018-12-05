@@ -2,6 +2,7 @@
 #include "procesar_nmea.h"
 #include "verificar_argumentos.h"
 #include "log.h"
+#include "procesar_ubx.h"
 #include "generar_gpx.h"
 //#include "lista.h"
 
@@ -16,7 +17,8 @@ int main(int argc, char *argv[]) {
 	status_t st;
 	gps_t gps;
 	procesar_t proceso = PR_OK;
-	int numero_random = 10;
+	protocolo_t protocolo = PROTOCOLO_AUTO; //VER ESTO
+	int numero_random = rand();
 	
     FILE *entrada = stdin;
     FILE *salida = stdout; 
@@ -26,7 +28,9 @@ int main(int argc, char *argv[]) {
 	cargar_hora_por_omision(&(datos_usuario.horario));
 	cargar_nombre_por_omision(datos_usuario.nombre);
 
-	st = procesar_argumentos(argc, argv, &entrada, &salida, &archivo_log, &datos_usuario);
+	inicializar_estructura(&gps); //Agrego tamara
+
+	st = procesar_argumentos(argc, argv, &entrada, &salida, &archivo_log, &datos_usuario, &protocolo);
 
 	if (st == ST_PEDIR_AYUDA) {
 		imprimir_ayuda(stdout); // ver si tambien lo quiere por salida 		
@@ -39,8 +43,12 @@ int main(int argc, char *argv[]) {
 		cerrar_archivos(entrada, salida, archivo_log);
 		return EXIT_FAILURE;
 	}
-
-	generar_gpx(&gps, &datos_usuario, &procesar_ubx, entrada, salida, archivo_log, numero_random, &proceso);
+	if (protocolo == PROTOCOLO_NMEA) { 
+		generar_gpx(&gps, &datos_usuario, &procesar_nmea, entrada, salida, archivo_log, numero_random, &proceso);
+	}
+	if (protocolo == PROTOCOLO_UBX) {
+		generar_gpx(&gps, &datos_usuario, &procesar_ubx, entrada, salida, archivo_log, numero_random, &proceso);
+	}
 //	if (proceso != PR_OK) {
 //		imprimir_msj_warn_log(&proceso, archivo_log, &gps);
 //	}
