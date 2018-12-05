@@ -89,9 +89,9 @@ void * clonar_gps(void *llegada);
 
 void liberar_estructura_gps (void *gps_ptr);
 
-bool imprimir_gps_formato_gpx(gps_t *gps_ptr, FILE **pf_out);
+bool imprimir_gps_formato_gpx(gps_t *gps_ptr, FILE *pf_out);//Tamara saco un nivel de puntero
 
-void imprimir_error_pf_out(FILE **pf_log);
+void imprimir_error_pf_out(FILE *pf_log); //Tamara saco un nivel de puntero
 /*
 void imprimir_estructura (gps_t gps);
 
