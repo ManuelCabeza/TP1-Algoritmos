@@ -65,17 +65,17 @@ etc.
 
 
 
-void imprimir_msj_errores_log(status_t *mensaje, FILE *archivo_log, gps_t *datos_satelite);
+void imprimir_msj_errores_log(status_t *mensaje, FILE *archivo_log, metadata_t *datos_usuario);
 /* Dependiendo del estado que reciba, imprime el correspondiente mensaje en el
  * archivo log. Los mensajes pueden ser: 
  * ERROR: Son errores graves que ocurren durante la ejecució
  * DEBUG: Son mensajes de información sobre lo que está haciendo el programa. 
  * WARN: Son avisos que ocurren durante la ejecucion 
  * Por defecto, la impresion sale por stderr. 
- * Recibe un estado, un puntero al archivo log y la estrustura datos_satelite,
+ * Recibe un estado, un puntero al archivo log y la estrustura datos_usuario,
  * donde se imprime la hora y fecha de cuando ocurren los mensajes.
 */
 
-void imprimir_msj_warn_log (procesar_t *mensaje, FILE *archivo_log, gps_t *datos_satelite);
+void imprimir_msj_warn_log (procesar_t *mensaje, FILE *archivo_log, metadata_t *datos_usuario);
 
 #endif
