@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
 		cerrar_archivos(entrada, salida, archivo_log);
 		return EXIT_FAILURE;
 	}
-	numero_random = 1000;
+	cantidad_datos_validos = 1000;
 	if (protocolo == PROTOCOLO_NMEA) { 
 		puts("Para procesar nmea");
 		generar_gpx(&gps, &datos_usuario, &procesar_nmea, entrada, salida, archivo_log, cantidad_datos_validos, &proceso);

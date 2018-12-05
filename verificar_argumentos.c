@@ -138,7 +138,7 @@ status_t validar_argumento_protocolo(char *argv_protocolo, protocolo_t *protocol
 
 status_t identificar_protocolo_auto(char *arg_archivo_entrada, protocolo_t *protocolo) { 
 
-    uchar aux[CANT_MAX_CARACTERES_SINCRONISMO] = {0,0}; //Creo un arrglo de dos uchar
+    uchar aux = 0; //Creo un arrglo de dos uchar
     //Abro por defecto en binario y comparo con los caracteres de sincronismo
     // O CON EL caracter peso
     FILE *p;
@@ -155,30 +155,30 @@ status_t identificar_protocolo_auto(char *arg_archivo_entrada, protocolo_t *prot
     if (p == NULL) {
         return ST_ERROR_ARCHIVO_ENTRADA_INVALIDO; //NO SE PUEDO ABRIR ARCHIVO
     }
-
-    if (fread(aux, sizeof(uchar), 2, p) != 2) { 
-        fclose(p);
-        return ST_ERROR_LECTURA;
-    }
-	
-    if (aux[POS_INICIAL_CARACTER_SINCRONISMO] == B_SYNC1 && aux[POS_FINAL_CARACTER_SINCRONISMO] == B_SYNC2) {
-        *protocolo = PROTOCOLO_UBX;
-		printf("Protocolo  ubx en identificar protocolo auto\n");
-        fclose(p);
-        return ST_OK;
-    }
-    else {
-        //no es ubx, pero puede ser NMEA
-        if (aux[POS_INICIAL_CARACTER_SINCRONISMO] == CARACTER_PESO) { //PORQUE YA HABIA LEIDO EL PRIMER CARACTER
-            *protocolo = PROTOCOLO_NMEA;
+    
+	while (fread(&aux, sizeof(uchar), 1, p) == 1) { 
+		if (aux == CARACTER_PESO) {
+			*protocolo = PROTOCOLO_NMEA;
             printf("Protocolo nmea en identificar protocolo auto\n");
 			fclose(p);
             return ST_OK;
-        }
+		}
+		if (aux == B_SYNC1) {
+			if (fread(&aux, sizeof(uchar), 1, p) != 1) {
+				fclose(p);
+				return ST_ERROR_ARCHIVO_ENTRADA_INVALIDO;
+			}
+			if (aux == B_SYNC2) {
+				*protocolo = PROTOCOLO_UBX;
+				printf("Protocolo  ubx en identificar protocolo auto\n");
+				fclose(p);
+				return ST_OK;
+			}
+		}
     }
-
+	
 	fclose(p);
-    return ST_ERROR_PROTOCOLO_INVALIDO;
+    return ST_ERROR_ARCHIVO_ENTRADA_INVALIDO;
 }
 
 FILE * abrir_archivo_entrada(char *arg_archivo_entrada, protocolo_t *protocolo, status_t *estado) {

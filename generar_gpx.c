@@ -64,12 +64,11 @@ void generar_gpx(gps_t *gps_ptr, metadata_t *metadata_ptr, procesar_t (*procesar
 			printf ("El valor de procesar_t %d\n", *proceso);
 			imprimir_msj_warn_log(proceso, pf_log, metadata_ptr);
 			puts("Imprimir error por log");
-			// Imprmir el error por log o stderr
 		}
 	}
 	/* Si es PR_FIN es por que la cantidad de datos a leer es mayor o igual a la 
 	 * cantidad de datos reales */
-	printf("Cantidad de elementos en la lista: %u %i\n", cantidad_datos(&lista), i);
+
 	if (*proceso == PR_FIN) {
 		cant_datos = i; 
 	}

@@ -25,10 +25,7 @@ procesar_t procesar_ubx (FILE **pf_in, gps_t *ubx_ptr) {
 	if (ferror(*pf_in))
 		return PR_ERR_ARCHIVO;
 	
-	if (feof(*pf_in))
-		return PR_FIN; 
-
-	return PR_DEBUG;
+	return PR_FIN; 
 }
 
 procesar_t _procesar_ubx (FILE **pf_in, gps_t *ubx_ptr) {
