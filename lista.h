@@ -64,6 +64,5 @@ void * liberar_lista (Lista *lista, void(*destructor)(void *));
 
 void * retornar_dato(Lista *lista, size_t i);
 
-size_t cantidad_datos(Lista *lista); 
 
 #endif

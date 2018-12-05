@@ -4,7 +4,6 @@
 #define MAX_LONG_NOMBRE 100
 
 #include <stdio.h>
-#include <stdlib.h>
 
 typedef struct {
 	int dia;

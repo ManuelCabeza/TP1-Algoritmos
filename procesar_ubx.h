@@ -37,6 +37,8 @@
 #define RANGO_SEGUNDO_MAX 60
 
 
+#ifndef PROCESAR
+#define PROCESAR
 typedef enum { PR_OK = 0, PR_FIN, PR_ERR_NO_CAR_INI, PR_ERR, PR_ERR_SENT, 
 			   PR_ERR_CAR_STATUS, PR_ERR_HORARIO, PR_ERR_CAR_LATITUD, 
 			   PR_ERR_LATITUD, PR_ERR_CAR_LONGITUD, PR_ERR_LONGITUD, 
@@ -45,7 +47,9 @@ typedef enum { PR_OK = 0, PR_FIN, PR_ERR_NO_CAR_INI, PR_ERR, PR_ERR_SENT,
 		       PR_ERR_MES, PR_ERR_ANIO, PR_ERR_DIA, PR_ERR_ZONA_HORARIA,
 			   PR_ERR_ARCHIVO, PR_ERR_PTR_NULL, PR_ERR_CLASE, 
 			   PR_ERR_ID, PR_ERR_LARGO, PR_ERR_SUM_VER, PR_ERR_VALID_FLAGS, 
-			   PR_ERR_VALID_FIX, PUE_NOT, PR_DEBUG, PR_ERR_SEG, PR_ERR_MIN /* Lo agregue por un warnign que habia*/ } procesar_t;
+			   PR_ERR_VALID_FIX, PUE_NOT, PR_DEBUG, PR_ERR_SEG, PR_ERR_MIN /* Lo agregue por un warnign que habia*/ 
+			   } procesar_t;
+#endif
 
 typedef unsigned char uchar;
 

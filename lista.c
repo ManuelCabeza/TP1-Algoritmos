@@ -96,20 +96,10 @@ void * liberar_lista (Lista *lista, void (*destructor)(void *)) {
 
     return liberar_lista(&siguiente, destructor);
 }
-
+// la posicion 0  equivale al primier nodo
 void * retornar_dato(Lista *lista, size_t i) {
 	if (i == 0)
 		return (*lista)->dato;
 	
 	return retornar_dato(&(*lista)->sig, i - 1);
-}
-
-size_t cantidad_datos(Lista *lista) {
-	size_t contador = 0;
-	
-	while (*lista != NULL) {
-		contador++;
-		lista = &((*lista)->sig);
-	}	
-	return contador;
 }

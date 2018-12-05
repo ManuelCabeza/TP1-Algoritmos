@@ -1,15 +1,13 @@
 #include "main.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "procesar_nmea.h"
 #include "verificar_argumentos.h"
 #include "log.h"
 #include "procesar_ubx.h"
 #include "generar_gpx.h"
-//#include "lista.h"
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
 
 int main(int argc, char *argv[]) {
 
@@ -18,7 +16,7 @@ int main(int argc, char *argv[]) {
 	gps_t gps;
 	procesar_t proceso = PR_OK;
 	protocolo_t protocolo = PROTOCOLO_AUTO; //VER ESTO
-	int numero_random = rand();
+	int cantidad_datos_validos = rand();
 	
     FILE *entrada = stdin;
     FILE *salida = stdout; 
@@ -46,11 +44,11 @@ int main(int argc, char *argv[]) {
 	numero_random = 1000;
 	if (protocolo == PROTOCOLO_NMEA) { 
 		puts("Para procesar nmea");
-		generar_gpx(&gps, &datos_usuario, &procesar_nmea, entrada, salida, archivo_log, numero_random, &proceso);
+		generar_gpx(&gps, &datos_usuario, &procesar_nmea, entrada, salida, archivo_log, cantidad_datos_validos, &proceso);
 	}
 	if (protocolo == PROTOCOLO_UBX) {
 		puts("Para procesar Ubx");
-		generar_gpx(&gps, &datos_usuario, &procesar_ubx, entrada, salida, archivo_log, numero_random, &proceso);
+		generar_gpx(&gps, &datos_usuario, &procesar_ubx, entrada, salida, archivo_log, cantidad_datos_validos, &proceso);
 	}
 
 
