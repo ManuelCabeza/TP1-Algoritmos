@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
 
 	inicializar_estructura(&gps);
 
-	printf("Cantidad aleatoria: %d\n", longitud_lista);
+	//printf("Cantidad aleatoria: %d\n", longitud_lista);
 
 	st = procesar_argumentos(argc, argv, &entrada, &salida, &archivo_log, &datos_usuario, &protocolo, &longitud_lista);
 

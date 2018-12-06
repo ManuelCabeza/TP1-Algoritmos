@@ -45,9 +45,7 @@ void imprimir_msj_warn_log (procesar_t *mensaje, FILE *archivo_log, metadata_t *
 								MSJ_WARN_VAL_FIX, MSJ_VACIO, MSJ_VACIO, MSJ_WARN_SEGUNDO, MSJ_WARN_MINUTO
 							   };
 
-	printf ("El numero de mensaje correspondiente es %d\n", *mensaje);
-
-	fprintf (archivo_log, "%04d-%02d-%02d %02d:%02d:%.0f [%s] %s\n", 
+		fprintf (archivo_log, "%04d-%02d-%02d %02d:%02d:%.0f [%s] %s\n", 
 													datos_usuario->fecha.anio, 
 													datos_usuario->fecha.mes,
 													datos_usuario->fecha.dia,
