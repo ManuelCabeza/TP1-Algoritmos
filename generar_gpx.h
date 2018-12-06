@@ -2,12 +2,8 @@
 #define GENERAR_GPX_H
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <stdbool.h>
-#include <time.h>
 
-#include "main.h"
 #include "procesar_nmea.h"
 
 #define MSJ_GPX_1 "?xml version=\"1.0\" encoding=\" UTF-8\"?"
