@@ -7,12 +7,12 @@
 #include "procesar_nmea_gga.h"
 #include "procesar_nmea_rmc.h"
 
-procesar_t procesar_nmea (FILE **pf, gps_t *gps_ptr) { //El archivo abierto en rt
+procesar_t procesar_nmea (FILE **pf, gps_t *gps_ptr) { 
 	
 	char cadena[MAX_LONG_SENTENCIA];
 	char * ch_ptr;
 	
-	/*Aca me salta error valgrind*/
+	
 	if (!(fgets(cadena, MAX_LONG_SENTENCIA, *pf))) { 
 		return PR_FIN; //Ver si esta bien esto
 	}

@@ -88,19 +88,6 @@ unsigned short u1_to_u2 (uchar *u1) {
 	return u2;
 }
 
-//Estas 2 funciones se pueden sacar o no nose 
-void imprimir_estructura (gps_t gps) {
-
-	printf("°°\nHora: %i, Minuto: %i, Segundo: %f\n", gps.horario.hora, gps.horario.minuto, gps.horario.segundos );
-	printf("Año: %i, Mes: %i, Día: %i\n", gps.fecha.anio, gps.fecha.mes, gps.fecha.dia);
-	printf("Latitud: %f\n", gps.latitud);
-	printf("Longitud: %f\n", gps.longitud);
-	printf("Elevacion: %f\n", gps.elevacion);
-	printf("SepGeo: %f\n", gps.sep_geo);
-	printf("HDop: %f\n", gps.hdop);
-	printf("Calidad Fix: %i\n", gps.calidad_fix);
-	printf("Cantidad satelites: %i\n°°\n", gps.cant_satelites);
-}
 
 void inicializar_estructura (gps_t *gps_ptr) {
 	gps_ptr->horario.hora = gps_ptr->horario.minuto = gps_ptr->horario.segundos = 0;

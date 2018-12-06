@@ -38,16 +38,18 @@
 
 typedef enum {INICIAR, INICIAR_ENTER, FINAL, FINAL_ENTER} tipo_tag;
 
-/* Imprime el formato tipo GPX por stdout.
+void generar_gpx(gps_t *gps_ptr, metadata_t *metptr, procesar_t (*procesar) (FILE **, gps_t *), FILE *pf_in, FILE *pf_out, FILE *pf_log, int cant_datos, procesar_t *proceso);
+/* Imprime el formato tipo GPX por *pf_out.
  * Se ocupa de imprimir los valores pertinentes de los argumentos de las 
- * estructuras gga_t y metadata_t. Además imprime los tags correspondientes.
+ * estructuras gps_t y metadata_t. Además imprime los tags correspondientes.
  * 
- * Recibe un puntero a la estructura metadata_t y otro a gga_t.
+ * Recibe un puntero a la estructura metadata_t, a gps_t. Un doble ptr a los archivos de salida/entrada/logs
+ * para imprimir en cualquiera de los tres, un puntero a la funcion de procesamiento para procesar UBX o NMEA
+ * lka cantidad delineas a imprimir y un ptr a proceso_t
  * No devuelve nada, solamente imprime. */
  
-void generar_gpx(gps_t *gps_ptr, metadata_t *metptr, procesar_t (*procesar) (FILE **, gps_t *), FILE *pf_in, FILE *pf_out, FILE *pf_log, int cant_datos, procesar_t *proceso);
-
-/* Imprime un tag con lo que contenga el puntero a char (que se asume que no es 
+void tag(char *strptr, tipo_tag tipo, size_t indentacion, FILE *pf_out);
+/* Imprime un tag por *pf_out con lo que contenga el puntero a char (que se asume que no es 
  * NULL) donde el tipo de tag define como se imprime de la forma:
  * INICIAR <"string">
  * INICIAR_ENTER <"string">\n
@@ -65,31 +67,26 @@ void generar_gpx(gps_t *gps_ptr, metadata_t *metptr, procesar_t (*procesar) (FIL
  * a char que contiene una cadena a imprimir en el tag.
  * No devuelve nada, ya que solamente imprime. */
 
-
-//Saque un nivel de puntero a po_out
-void tag(char *strptr, tipo_tag tipo, size_t indentacion, FILE *pf_out);
-
 bool cargar_hora_por_omision (horario_t *horario);
-/*
- *
- *
- */
+/* Carga la hora del sistema en la estructura horario_t
+ * devuelve true si pudo, false si recibe NULL */
 
 bool cargar_fecha_por_omision(fecha_t *fecha);
-/*
- *
- *
- */
+/* Carga la fecha del sistema en la estructura fecha_t
+ * devuelve true si pudo, false si recibe NULL */
  
 void * clonar_gps(void *llegada);
+/* Copia la estructra gps que recibe por ptr por interfaz con memoria dinámica
+ * y devuelve un puntero a esa posición de memoria (de la nueva estructura)
+*/
 
 void liberar_estructura_gps (void *gps_ptr);
-
-void imprimir_gps_formato_gpx(gps_t *gps_ptr, FILE *pf_out);//Tamara saco un nivel de puntero
-
-/*
-void imprimir_estructura (gps_t gps);
-
-void inicializar_estructura (gps_t *gps_ptr);
+/* Libera la memoria de la estructura gps, (en realidad es un free)
 */
+
+void imprimir_gps_formato_gpx(gps_t *gps_ptr, FILE *pf_out);
+/* Imprimie el contenido de *gps_ptr por *pf_out en formato GPX,
+ * recibe ambos punteros y como es de impresion no devuelve nada.
+*/
+
 #endif

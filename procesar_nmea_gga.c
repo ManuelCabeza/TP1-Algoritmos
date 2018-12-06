@@ -82,7 +82,6 @@ procesar_t procesar_nmea_gga (gps_t *gga_ptr, char *ch_ptr, char *cadena) {
 	if (nmea_verificar_suma(ch_ptr) != suma_verificacion) {
 		return PR_ERR_SUM_VER;
 	}
-	// printf("|%c %c %c|\n", *(ch_ptr-1), *(ch_ptr), *(ch_ptr+1));
 	return PR_OK;
 }
 

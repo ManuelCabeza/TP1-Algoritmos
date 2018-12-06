@@ -28,7 +28,7 @@ typedef enum { PR_OK = 0, PR_FIN, PR_ERR_NO_CAR_INI, PR_ERR, PR_ERR_SENT,
 		       PR_ERR_MES, PR_ERR_ANIO, PR_ERR_DIA, PR_ERR_ZONA_HORARIA,
 			   PR_ERR_ARCHIVO, PR_ERR_PTR_NULL, PR_ERR_CLASE, 
 			   PR_ERR_ID, PR_ERR_LARGO, PR_ERR_SUM_VER, PR_ERR_VALID_FLAGS, 
-			   PR_ERR_VALID_FIX, PUE_NOT, PR_DEBUG, PR_ERR_SEG, PR_ERR_MIN /* Lo agregue por un warnign que habia*/ 
+			   PR_ERR_VALID_FIX, PUE_NOT, PR_DEBUG, PR_ERR_SEG, PR_ERR_MIN 
 			   } procesar_t;
 
 #endif
@@ -56,11 +56,15 @@ unsigned char nmea_verificar_suma(const char *sentencia);
  * Devuelve la suma XOR
 */
 
-
-//MANUU te falto los prototipos de muchas funcones ajjja
-void imprimir_estructura (gps_t gps_ptr);
-
 procesar_t procesar_nmea (FILE ** pf, gps_t *gps_ptr);
+/* Recibe un doble ptr a un archivo abierto en modo lectura rt y un ptr a 
+ * la estructura gps.
+ * Si no se encuentra el caracter de incio de comando o una sentencia 
+ * valida, devuelve el tipo de error procesar_t correspondiente, sino
+ * dependiendo de la sentencia lo que devuelvan las funciones
+ * procesar_nmea_gga, procesar_nmea_rmc o procesar_nmea_zda.
+ * Ademas si no hay nada mas que leer devuelve PR_FIN
+*/
 
 #endif
 

@@ -22,17 +22,13 @@
 #define MULTIPLICADOR_NORTE  1
 
 procesar_t procesar_nmea_gga(gps_t *ggaptr, char *str, char *cadena);
-//Esta definicion esta vieja
-/* Procesa una línea de stdin (hasta \n) hasta MAX_LONG_SEN. Una vez que se 
- * verifica un dato y es correcto, se carga en la estructura gga_t, 
- * hasta que se acabe la sentencia o halla alguno incorrecto.
- * 
- * Recibe un puntero a la estructura del tipo gga_t
- * 
- * La funcion devuelve:
- * PR_FIN si no hay nada mas que leer en el archivo
- * PR_ERR si el formato de cualquier argument de una linea de datos no esta bien
- * PR_OK si el dato de una linea fue procesado correctamente. 
- */
-
+/* Recibe la estructura a cargar, la cadena de caracteres leida del archivo de entrada
+ * y un puntero con el cual recorrer la cadena para hacer las verificaciones y conversiones. 
+ *  De este tipo de sentencia se verifica que todos los campos sean válidos, y
+ * que cumplan con las condiciones necesarias (además del checksum final). 
+ * Mientras se leen y verifican los mismos se va cargando la estructura *gga_ptr con la 
+ * latitud, longitud, cal_fix, horario, cant_satelites, Hdop, elevación y sep_geo.
+ *  Dependiendo si pudo cargar correctamente la estructura devuelve PR_OK o
+ * en otro caso el tipo de error correspondiente del enumerativo procesar_t.
+*/
 #endif 

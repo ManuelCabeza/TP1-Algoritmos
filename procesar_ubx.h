@@ -19,11 +19,8 @@
 //Formatos de tamaños definidos para protocolo ubx
 #define U1 sizeof(unsigned char)
 #define U2 sizeof(unsigned short)
-//#define U4 sizeof(unsigned long)
-//#define I1 sizeof(signed char)
-//#define I2 sizeof(signed short)
 #define I4 sizeof(signed long)
-//#define X1 sizeof(unsigned char)
+
 
 #define RANGO_DIA_MIN 1
 #define RANGO_DIA_MAX 31
@@ -55,20 +52,50 @@ typedef enum { PR_OK = 0, PR_FIN, PR_ERR_NO_CAR_INI, PR_ERR, PR_ERR_SENT,
 typedef unsigned char uchar;
 
 signed long u1_to_i4 (uchar *u1);
+/*Función de conversión que permite cambiar de un conjunto de 4 uchar 
+ *a un signed long. Devuelve el signed long y recibe un puntero a la
+ * primer posición de los 4 uchar.
+ *   !!Al usar esta función se debe tener precacución ya que funciona
+ * para realizar conversiones sobre un arreglo donde ya se verifico que
+ * a donde apunten las 4 posiciones de u1 son válidas. Podría causar un
+ * error si no se usa adecuadamente.
+*/
 
 unsigned short u1_to_u2 (uchar *u1);
+/*Función de conversión que permite cambiar de un conjunto de 4 uchar 
+ *a un unsigned short. Devuelve el unsigned short y recibe un puntero a la
+ * primer posición de los 2 uchar.
+ *   !!Al usar esta función se debe tener precacución ya que funciona
+ * para realizar conversiones sobre un arreglo donde ya se verifico que
+ * a donde apunten las 2 posiciones de u1 son válidas. Podría causar un
+ * error si no se usa adecuadamente.
+*/
+
 
 procesar_t procesar_ubx (FILE **pf_in, gps_t *ubx_ptr);
+/* La función busca en *pf_in el par de caracteres de sincronismo
+ * definidos por las macros B_SYNC1 y B_SYNC2.
+ *   Si no los encuentra o hay un error devuelve el determinado tipo
+ * procesar_t, si lo logra devuelve lo que de _procesar_ubx
+ * (funciona como una función de wrapper para la misma).
+*/
 
 procesar_t _procesar_ubx (FILE **pf_in, gps_t *ubx_ptr);
+/* Lee a partir de *pf_in los byte de clase e id una vez leidos los
+ * de sincronismo en procesar_ubx. Una vez que se distingue el id
+ * se llama a la funcion de procesamiento correspondiente.
+ * Duevuelve PR_OK si se proceso correctamente la linea y el tipo de 
+ * error en el enumerativo procesar_t si hay un error.
+*/
 
 void check_sum (uchar payload[], size_t long_payload, uchar *ck_a, uchar *ck_b);
+/* Raliza el algoritmo de check sum para todo el payload y devuelve sus valores por interfaz.
+ * Se debe previamente, realizar el ch_sum de los bytes de clase e id
+ * fuera de la funcion.
+*/
 
-
-
-void imprimir_estructura (gps_t gps);
-
-void inicializar_estructura (gps_t *gps_ptr); //Esta deberia ir en main
-
+void inicializar_estructura (gps_t *gps_ptr);
+/* Inicializa todos los campos de la estructura en 0.
+*/
 
 #endif

@@ -4,8 +4,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-/* Sentencia tipo: $GPZDA,hhmmss.sss,dd,mm,yyyy,xx,xx*cc*/
-
 procesar_t procesar_nmea_zda(gps_t *zda_ptr, char *ch_ptr, char *cadena) {
 	long suma_verificacion;
 	float horario;
@@ -15,28 +13,29 @@ procesar_t procesar_nmea_zda(gps_t *zda_ptr, char *ch_ptr, char *cadena) {
 		if ((horario = strtof(ch_ptr, &ch_ptr)) < 0 || ((* (ch_ptr++)) != CARACTER_SEPARACION_COMANDO)) { 
 			return PR_ERR_HORARIO;
 		}
-	} // horario = hhmmss.sss
+	} 
 	procesar_horario(&(zda_ptr->horario), horario);
 	
 	zda_ptr->fecha.dia = strtol(ch_ptr, &ch_ptr, 10);
 	if (*(ch_ptr++) != CARACTER_SEPARACION_COMANDO) { 
-		return PR_ERR_DIA; // Ver que tipo de error es ==???
+		return PR_ERR_DIA; 
 	}
 	zda_ptr->fecha.mes = strtol(ch_ptr, &ch_ptr, 10); 
 	if (*(ch_ptr++) != CARACTER_SEPARACION_COMANDO) {
-		return PR_ERR_MES; // Ver que tipo de error es ==???
+		return PR_ERR_MES; 
 	}
 	
-	zda_ptr->fecha.anio = strtol(ch_ptr, &ch_ptr, 10); // aux es yyyy
+	zda_ptr->fecha.anio = strtol(ch_ptr, &ch_ptr, 10); 
 	if (*(ch_ptr++) != CARACTER_SEPARACION_COMANDO) { 
-		return PR_ERR_ANIO; // Ver que tipo de error es ==???
+		return PR_ERR_ANIO; 
 	}
-	strtol(ch_ptr, &ch_ptr, 10); // aux es xx (1)
+	strtol(ch_ptr, &ch_ptr, 10); 
+	// Este campo no se utiliza
 	if (*(ch_ptr++) != CARACTER_SEPARACION_COMANDO) { 
 		return PR_ERR_ZONA_HORARIA;
 	}
-	strtol(ch_ptr, &ch_ptr, 10); // aux es xx (2)
-	
+	strtol(ch_ptr, &ch_ptr, 10); 
+	// Este campo no se utiliza
 	if ((*ch_ptr) != CARACTER_SEPARACION_COMANDO) {
 		return PR_ERR_ZONA_HORARIA;
 	}

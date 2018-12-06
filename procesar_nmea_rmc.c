@@ -7,10 +7,6 @@
 
 #include "procesar_nmea_gga.h"
 
-/* $GPRMC,hhmmss.sss,A,ddmm.mmm,S,dddmmm.mmm,E,dddddd.d,ddd.d,ddmmyy,ddd.d,W*cc
- * _variaciones_   V   lat    N    long    W 
- * 
-*/
 procesar_t procesar_nmea_rmc(gps_t *rmc_ptr, char *ch_ptr, char *cadena) {
 	
 	long suma_verificacion;
@@ -31,23 +27,22 @@ procesar_t procesar_nmea_rmc(gps_t *rmc_ptr, char *ch_ptr, char *cadena) {
 	if ((c != CARACTER_STATUS_VOID) && (c != CARACTER_STATUS_ACTIVO)) { 
 		return PR_ERR_CAR_STATUS;
 	}
-	// Latitud ddmm.mmm
+	// Latitud, lee en formato ddmm.mmm
 	latitud = strtof(++ch_ptr, &ch_ptr);
-	//printf("|%c %c %c| c = %c\n", *(ch_ptr-1), *(ch_ptr), *(ch_ptr+1), c);
-	//printf("latitud = %.4f\n", latitud);
+
 	if (((*(ch_ptr++)) != CARACTER_SEPARACION_COMANDO)) { 
 		return PR_ERR_LATITUD;
 	}
 	c = tolower( *(ch_ptr++));
-	//printf("|%c %c %c| c = %c\n", *(ch_ptr-1), *(ch_ptr), *(ch_ptr+1), c);
+	
 	if ((c != CARACTER_NORTE) && (c != CARACTER_SUR)){ 
 		return PR_ERR_CAR_LATITUD;
 	}
 	
 	rmc_ptr->latitud = (((int)latitud / 100) + ((latitud - 100 * ((int)latitud / 100)) / 60 )) * (c == CARACTER_SUR ? MULTIPLICADOR_SUR : MULTIPLICADOR_NORTE);
 
-	// Longitud dddmm.mmm
-	//printf("|%c %c %c|\n", *(ch_ptr-1), *(ch_ptr), *(ch_ptr+1));
+	// Lee la longitud en fromato dddmm.mmm
+	
 	longitud = strtof(++ch_ptr, &ch_ptr);
 	if ((*(ch_ptr++)) != CARACTER_SEPARACION_COMANDO) { 
 		return PR_ERR_LONGITUD;
@@ -60,12 +55,12 @@ procesar_t procesar_nmea_rmc(gps_t *rmc_ptr, char *ch_ptr, char *cadena) {
 	
 	rmc_ptr->longitud = (((int)longitud / 100) + ((longitud - 100 * ((int)longitud / 100)) / 60 )) * (c == CARACTER_OESTE ? MULTIPLICADOR_OESTE : MULTIPLICADOR_ESTE);
 	
-	strtof(++ch_ptr, &ch_ptr); // La velocidad no se verifica o se carga
+	strtof(++ch_ptr, &ch_ptr); // La velocidad no se carga
 	if ((*ch_ptr) != CARACTER_SEPARACION_COMANDO) { 
 		return PR_ERR;
 	}
 	
-	strtof(++ch_ptr, &ch_ptr); // La velocidad no se verifica o se carga
+	strtof(++ch_ptr, &ch_ptr); // La velocidad no se carga
 	if (*(ch_ptr) != CARACTER_SEPARACION_COMANDO) { 
 		return PR_ERR;
 	}
@@ -77,7 +72,7 @@ procesar_t procesar_nmea_rmc(gps_t *rmc_ptr, char *ch_ptr, char *cadena) {
 		return PR_ERR_FECHA;
 	}
 	
-	strtof(++ch_ptr, &ch_ptr); // La desviación magnetica no se verifica
+	strtof(++ch_ptr, &ch_ptr); // La desviación magnetica no se carga
 	
 	if (*(ch_ptr) != CARACTER_SEPARACION_COMANDO) { 
 		return PR_ERR;

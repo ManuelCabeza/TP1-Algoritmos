@@ -15,14 +15,14 @@ void generar_gpx(gps_t *gps_ptr, metadata_t *metadata_ptr, procesar_t (*procesar
 	
 	Lista lista;
 	size_t i = 0;
-	status_t estado = ST_OK; // VER SI VALIDO
+	status_t estado = ST_OK;
 
 	if (!gps_ptr || !metadata_ptr || !procesar || !pf_in || !pf_out || !pf_log || !proceso) {
 		*proceso = PR_ERR_PTR_NULL;
 		return;
 	}
 	
-	if (!lista_crear(&lista)) { //Tamara toco aca 
+	if (!lista_crear(&lista)) {  
 		estado = ST_ERROR_LISTA_CREAR;
 		imprimir_msj_errores_log(&estado, pf_log, metadata_ptr);
 		return;
@@ -49,12 +49,11 @@ void generar_gpx(gps_t *gps_ptr, metadata_t *metadata_ptr, procesar_t (*procesar
 	tag(TAG_TRK, INICIAR_ENTER, INDENTACION_1, pf_out);
 	tag(TAG_TRKSEG, INICIAR_ENTER, INDENTACION_2, pf_out);
 	
-	/*A partir de aca se empieza a imprimir cada uno de los trkpt*/
+	/*A partir de aca se empieza a cargar cada uno de las sentencias correctas*/
 	while (((*proceso = (*procesar)(&pf_in, gps_ptr)) != PR_FIN) && (i < cant_datos)) { 
 		// Si se procesar bien se carga en la lista
 		if (*proceso == PR_OK) { 
-			if (!lista_insertar_ultimo(&lista, gps_ptr, &clonar_gps)) { //tamara toco aca
-				//Imprimr error de poner en la lista y hacer free etc (termina el programa no ?)
+			if (!lista_insertar_ultimo(&lista, gps_ptr, &clonar_gps)) {
 				estado = ST_ERROR_LISTA_CARGAR;
 				imprimir_msj_errores_log(&estado, pf_log, metadata_ptr);
 				liberar_lista(&lista, &liberar_estructura_gps);
@@ -66,12 +65,11 @@ void generar_gpx(gps_t *gps_ptr, metadata_t *metadata_ptr, procesar_t (*procesar
 		}
 	}
 	/* Si es PR_FIN es por que la cantidad de datos a leer es mayor o igual a la 
-	 * cantidad de datos reales */
-
+	 * cantidad de datos reales cuyo valor es ahora i */
 	if (*proceso == PR_FIN) {
 		cant_datos = i; 
 	}
-	
+	/*A partir de aca se empieza a imprimir cada uno de los trkpt*/
 	for (i = 0; i < cant_datos; i++) {
 		gps_ptr = retornar_dato(&lista, i);
 		imprimir_gps_formato_gpx(gps_ptr, pf_out);
@@ -85,7 +83,6 @@ void generar_gpx(gps_t *gps_ptr, metadata_t *metadata_ptr, procesar_t (*procesar
 	
 }
 
-//saco un nivel de puntero para la impresion Antes. FILE **pf_out
 void tag(char *strptr, tipo_tag tipo, size_t indentacion, FILE *pf_out) {
 
 	size_t i;
@@ -109,7 +106,6 @@ void tag(char *strptr, tipo_tag tipo, size_t indentacion, FILE *pf_out) {
 	}
 }
 
-/*Por ahora aca, si lo queres cambiar hacelo sin problema.*/
 bool cargar_fecha_por_omision(fecha_t *fecha) {
 
     time_t tiempo;
@@ -155,7 +151,7 @@ void * clonar_gps(void *llegada) {
     if (aux == NULL) {
         return NULL;
     }
-    *aux = *((gps_t *)llegada); //COPIA LAS ESTRUCTURAS ES MAGICO!
+    *aux = *((gps_t *)llegada);
 
     return aux;
 }
@@ -164,8 +160,6 @@ void liberar_estructura_gps (void *gps_ptr) {
     free(gps_ptr);
 }
 
-
-// 0 si mal, !0 si bien
 void imprimir_gps_formato_gpx(gps_t *gps_ptr, FILE *pf_out) {
 	int i;
 	

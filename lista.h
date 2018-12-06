@@ -13,7 +13,6 @@ struct nodo {
 typedef struct nodo * Lista;
 typedef struct nodo Nodo;
 
-//void imprimir_Lista(Lista * lista, int i );
 
 bool lista_crear (Lista * lista);
 /* Recibe un puntero donde crea la lista. 
@@ -28,29 +27,29 @@ bool lista_esta_vacia (Lista l);
 Nodo *crear_nodo (void *dato, void *(*clonar)(void *));
 /* Recibe como primer argumento un puntero al dato que desea crear en el nodo. 
  * Como segundo recibe un puntero a una funcion con el siguiente prototipo:
- * void *(*clonar)(void *) donde recibe el dato que desea copiar en el nodo cnlaksnakldakl
+ * void *(*clonar)(void *) donde recibe el dato que desea copiar en el nodo 
  * Devuelve NULL en caso que se haya producido un error en algunos de los 
  * pasos de la funcion. Caso contrario, devuelve el nodo creado.
  */
 
 bool lista_insertar_primero (Lista *l, void *dato, void *(*clonar)(void *)); 
-/* 0 si ok !0 si mal
- *
- *
+/* Recibe un * Lista, un ptr a un dato y la funcion para clonar el mismo.
+ * Crea un nodo en la primera posicion de la lista con el dato recibido.
+ * Si pudo hacerlo devuelve true, sino false
  */
-/*NO ESTOY TAN SEGURA*/
+ 
 bool lista_insertar_ultimo (Lista *l, void *dato, void *(*clonar)(void *));
-/* Recibe como primer argumento un puntero al ultimo nodo de la lista, como 
+/* Recibe como primer argumento un puntero a Lista, como 
  * segundo el tipo de dato que desea insertar y por ultimo un puntero a una 
  * funcion que clona el dato que recibe por parametro y lo devuelve por
- * nombre, para poder cargarlo en el dato.
+ * nombre, para poder cargarlo en el dato. 
+ * Crea un nodo en la ultima posicion de la lista con el dato recibido.
  * Devuelve un 0 si mal !0 si bien
  */
 
 void destruir_nodo (struct nodo **pnodo, void (*destructor)(void *));
-/* 
- *
- *
+/* Destruye el nodo al que apunta *pnodo mediante la funcion recibida 
+ * por interfaz, si no puede hacerlo, no hace nada. 
  */
 
 void * liberar_lista (Lista *lista, void(*destructor)(void *));
@@ -61,6 +60,9 @@ void * liberar_lista (Lista *lista, void(*destructor)(void *));
  
 
 void * retornar_dato(Lista *lista, size_t i);
-
+/* Devuelve el dato que se encuentra en la posicion i de la lista, 
+ * se considera la posicion 0 como el primer nodo, si no puede llegar
+ * al dato que busca devuelve NULL
+*/
 
 #endif

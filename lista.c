@@ -65,7 +65,6 @@ bool lista_insertar_primero (Lista *l, void *dato, void *(*clonar)(void *)) {
     return true;
 }
 
-//struct nodo = Nodo -> SI
 void destruir_nodo (Nodo **ptr_nodo, void (*destructor)(void *)) {
     
     void *dato;
@@ -98,8 +97,12 @@ void * liberar_lista (Lista *lista, void (*destructor)(void *)) {
 
     return liberar_lista(&siguiente, destructor);
 }
-// la posicion 0  equivale al primier nodo
+
+// la posicion 0  equivale al primer nodo
 void * retornar_dato(Lista *lista, size_t i) {
+	if (!lista)
+		return NULL;
+
 	if (i == 0)
 		return (*lista)->dato;
 	
