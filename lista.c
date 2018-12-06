@@ -1,5 +1,7 @@
 #include "lista.h"
 
+#include <stdbool.h>
+
 bool lista_crear (Lista *lista) {
     
     if (!lista) {
@@ -64,7 +66,7 @@ bool lista_insertar_primero (Lista *l, void *dato, void *(*clonar)(void *)) {
 }
 
 //struct nodo = Nodo -> SI
-void destruir_nodo(Nodo **ptr_nodo, void (*destructor)(void *)) {
+void destruir_nodo (Nodo **ptr_nodo, void (*destructor)(void *)) {
     
     void *dato;
 

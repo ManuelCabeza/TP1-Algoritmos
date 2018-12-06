@@ -1,6 +1,9 @@
 #include "procesar_ubx_timtos.h"
 
+#include <stdio.h>
+
 procesar_t _procesar_ubx_timtos (FILE **pf_in, gps_t *timtos_ptr) {
+
 	size_t largo = 0;
 	uchar payload[B_MAX_CANT_SENT];
 	uchar aux, ck_a = 0, ck_b = 0;

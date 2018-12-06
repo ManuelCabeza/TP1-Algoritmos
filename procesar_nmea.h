@@ -2,7 +2,6 @@
 #define PROCESAR_NMEA_H
 
 #include <stdio.h>
-#include <string.h>
 
 #include "main.h"
 
@@ -14,7 +13,6 @@
 #define LONG_SENT_ZDA 3
 #define SENT_RMC "RMC"
 #define LONG_SENT_RMC 3
-
 
 #define CARACTER_SEPARACION_COMANDO ','
 #define CARACTER_SUMA_VER '*'

@@ -2,6 +2,7 @@
 #define PROCESAR_UBX
 
 #include <stdio.h>
+
 #include "main.h"
 
 #define B_MAX_CANT_SENT 100 
@@ -47,7 +48,7 @@ typedef enum { PR_OK = 0, PR_FIN, PR_ERR_NO_CAR_INI, PR_ERR, PR_ERR_SENT,
 		       PR_ERR_MES, PR_ERR_ANIO, PR_ERR_DIA, PR_ERR_ZONA_HORARIA,
 			   PR_ERR_ARCHIVO, PR_ERR_PTR_NULL, PR_ERR_CLASE, 
 			   PR_ERR_ID, PR_ERR_LARGO, PR_ERR_SUM_VER, PR_ERR_VALID_FLAGS, 
-			   PR_ERR_VALID_FIX, PUE_NOT, PR_DEBUG, PR_ERR_SEG, PR_ERR_MIN /* Lo agregue por un warnign que habia*/ 
+			   PR_ERR_VALID_FIX, PUE_NOT, PR_DEBUG, PR_ERR_SEG, PR_ERR_MIN 
 			   } procesar_t;
 #endif
 

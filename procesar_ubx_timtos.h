@@ -1,9 +1,9 @@
 #ifndef PROCESAR_UBX_TIMTOS
 #define PROCESAR_UBX_TIMTOS
 
-#include "procesar_ubx.h"
+#include <stdio.h>
 
-#include "main.h"
+#include "procesar_ubx.h"
 
 #define LARGO_PAYLOAD_TIMTOS 56
 

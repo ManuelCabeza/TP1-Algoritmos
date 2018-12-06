@@ -2,12 +2,8 @@
 #define VALIDACIONES_MAIN_H
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <stdbool.h>
-#include <time.h>
 
-#include "main.h"
 #include "procesar_ubx.h"
 
 #define ARG_VALIDO_AYUDA "-h"
@@ -83,7 +79,7 @@ typedef enum estados {ST_OK, ST_PEDIR_AYUDA, ST_ERROR_PUNTERO_NULO,
 					  ST_ERROR_ARCHIVO_ENTRADA_INVALIDO, ST_ERROR_ARCHIVO_SALIDA_INVALIDO,
 					  ST_ERROR_ARCHIVO_LOGS_INVALIDO, ST_ERROR_CANT_MENSAJES_INVALIDOS,
 					  ST_ERROR_CANT_ARG_INVALIDO, ST_ERROR_ARG_INVALIDO, 
-					  ST_ERROR_LECTURA} status_t;  
+					  ST_ERROR_LECTURA, ST_ERROR_LISTA_CREAR, ST_ERROR_LISTA_CARGAR} status_t;  
 
 typedef enum {PROTOCOLO_NMEA, PROTOCOLO_UBX, PROTOCOLO_AUTO, PROTOCOLO_INVALIDO} protocolo_t;
 
@@ -94,7 +90,7 @@ arg_t validar_arg(char *arg);
  * Caso contrario, devuelve un ARG_INVALIDO.
  */
 
-status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **salida, FILE **archivo_log, metadata_t *datos_usuario, protocolo_t *protocolo);
+status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **salida, FILE **archivo_log, metadata_t *datos_usuario, protocolo_t *protocolo, int *longitud_lista);
 /* Verifica que los argumentos que se ingresan por linea de comando sean validos.
  * En caso de que sean validos, los almacena en la estructura datos_usuario.
  * Caso contrario, devuelve un estado de error que corresponda.  
@@ -104,7 +100,8 @@ status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **sali
  * puntero a los archivos de salida e archivo_log donde se van imprimiendo el
  * formato gpx e imprimeindo los mensajes de errores, warn o debug en el log,
  * un puntero a una estructura datos_usuario donde se guardaran los resultados
- * y un puntero a protocolo_t, donde aclara que tipo de protocolo es.
+ * un puntero a protocolo_t, donde aclara que tipo de protocolo es y por ultimo
+ * un puntero a longitud de la listJASKJANSKJDANSDKJNASKDJASDAKSND
  * Devuelve un ST_AYUDA en caso de que se haya ingresado el argumento -h o --help
  * ST_ERROR_* en caso que algun argumento no sea valido
  * ST_OK si todos los argumentos son validos y sus contenidos tambien. 

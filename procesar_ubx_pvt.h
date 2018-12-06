@@ -3,11 +3,6 @@
 
 #include "procesar_ubx.h"
 
-
-#include "main.h"
-
-
-
 #define LARGO_PAYLOAD_PVT 92
 #define MASCARA_VALID 0x0F
 #define MASCARA_FLAGS 0x01

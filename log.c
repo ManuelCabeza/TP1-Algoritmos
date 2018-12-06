@@ -1,8 +1,9 @@
 #include "log.h"
-#include "verificar_argumentos.h"
-#include "main.h"
 
-//VER PROCESAR_T EN PROCESAR_UBX.H esta definido
+#include <stdio.h>
+
+#include "verificar_argumentos.h"
+
 
 void imprimir_msj_errores_log (status_t *mensaje, FILE *archivo_log, metadata_t *datos_usuario) { 
 
@@ -12,10 +13,10 @@ void imprimir_msj_errores_log (status_t *mensaje, FILE *archivo_log, metadata_t 
 							    MSJ_ERROR_ARCHIVO_ENTRADA, MSJ_ERROR_ARCHIVO_SALIDA,
 								MSJ_ERROR_ARCHIVO_LOG, MSJ_ERROR_CANTIDAD_MSJ,
 								MSJ_ERROR_CANT_ARG_INVALIDO,
-								MSJ_ERROR_ARG_INVALIDO, MSJ_ERROR_LECTURA
+								MSJ_ERROR_ARG_INVALIDO, MSJ_ERROR_LECTURA,
+								MSJ_ERROR_LISTA_CREAR, MSJ_ERROR_LISTA_CARGAR
 							   }; 
 	/*Tiene que tener el mismo orden de status_t para que sea un diccionario*/
-
 	fprintf (archivo_log, "%04d-%02d-%02d %02d:%02d:%.0f [%s] %s\n", 
 													datos_usuario->fecha.anio, 
 													datos_usuario->fecha.mes,
@@ -27,6 +28,7 @@ void imprimir_msj_errores_log (status_t *mensaje, FILE *archivo_log, metadata_t 
 													msj_error[*mensaje]
 													);
 }
+
 void imprimir_msj_warn_log (procesar_t *mensaje, FILE *archivo_log, metadata_t *datos_usuario) { 
 
 	const char * msj_warn[] = { MSJ_VACIO, MSJ_FIN, MSJ_WARN_CARACTER_NO_INICIAL,
@@ -44,7 +46,6 @@ void imprimir_msj_warn_log (procesar_t *mensaje, FILE *archivo_log, metadata_t *
 							   };
 
 	printf ("El numero de mensaje correspondiente es %d\n", *mensaje);
-
 
 	fprintf (archivo_log, "%04d-%02d-%02d %02d:%02d:%.0f [%s] %s\n", 
 													datos_usuario->fecha.anio, 

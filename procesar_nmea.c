@@ -1,5 +1,8 @@
 #include "procesar_nmea.h"
 
+#include <stdio.h>
+#include <string.h>
+
 #include "procesar_nmea_zda.h"
 #include "procesar_nmea_gga.h"
 #include "procesar_nmea_rmc.h"

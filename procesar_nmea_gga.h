@@ -1,12 +1,9 @@
 #ifndef PROCESAR_NMEA_GGA_H
 #define PROCESAR_NMEA_GGA_H
 
-#include "procesar_nmea.h"
-
-#include <stdlib.h>
 #include <stdio.h>
-#include <ctype.h>
-#include <string.h>
+
+#include "procesar_nmea.h"
 
 #define MAX_VALOR_FIX 8
 #define MIN_VALOR_FIX 0

@@ -1,16 +1,22 @@
 #include "verificar_argumentos.h"
-#include "main.h"
-#include "log.h"
 
-status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **salida, FILE **archivo_log, metadata_t *datos_usuario, protocolo_t *protocolo ) {
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include <time.h>
+
+#include "procesar_ubx.h"
+//#include "log.h"
+
+
+status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **salida, FILE **archivo_log, metadata_t *datos_usuario, protocolo_t *protocolo, int *longitud_lista) {
 
 	int i;
 	status_t estado;
 	arg_t argumento;
 
-	int cant_msj; //PROPENSO A CAMBIO, DEPENDE DE LO QUE NECESITE MANU
-
-	if (!argv || !entrada || !salida || !archivo_log || !datos_usuario) {  
+	if (!argv || !entrada || !salida || !archivo_log || !datos_usuario || !protocolo || !longitud_lista) {  
 		return ST_ERROR_PUNTERO_NULO;
 	}
 
@@ -30,39 +36,24 @@ status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **sali
 				break;
 			case ARG_PROTOCOLO:
 				++i;
-				printf("Encontre protocolo\n");
 				estado = validar_argumento_protocolo(argv[i], protocolo); 
-				/*if (protocolo == PROTOCOLO_NMEA)
-					printf("Protoclo nmea\n" );
-				if (protocolo == PROTOCOLO_UBX)
-					printf("Protoclo ubx\n" );
-				if (protocolo == PROTOCOLO_AUTO)
-					printf("Protoclo auto\n" );
-				if (protocolo == PROTOCOLO_INVALIDO) 
-					printf("Protocolo invalido\n");
-				*/
 				break;
 			case ARG_ARCHIVO_ENTRADA:
 				++i;
-				printf("Encontre archivo de entrada\n");
 				*entrada = abrir_archivo_entrada(argv[i], protocolo, &estado); 
 				if (*entrada == NULL) {
-					printf("llegue aca");
 					return ST_ERROR_ARCHIVO_ENTRADA_INVALIDO;
 				}
 				break;
 			case ARG_ARCHIVO_SALIDA:
 				++i;
-				printf("Encontre archivo de salida\n");
 				*salida = abrir_archivo_salida(argv[i], &estado);
-				puts("AAAAAAAAAAAAAAAAAAAAAAAA");
 				if (*salida == NULL) {
 					return ST_ERROR_ARCHIVO_SALIDA_INVALIDO;
 				}
 				break;
 			case ARG_ARCHIVO_LOG:
 				++i;
-				printf("Encontre archivo log\n");
 				*archivo_log = abrir_archivo_log(argv[i], &estado);
 				if (*archivo_log == NULL) {
 					*archivo_log = stderr; /*Para informar que error se cometio*/
@@ -71,7 +62,7 @@ status_t procesar_argumentos(int argc, char *argv[], FILE **entrada, FILE **sali
 				break;
 			case ARG_CANT_MENSAJES:
 				++i;
-				estado = validar_argumento_cant_msj(argv[i], &cant_msj);
+				estado = validar_argumento_cant_msj(argv[i], longitud_lista);
 				break;
 			case ARG_INVALIDO: 
 				return ST_ERROR_ARG_INVALIDO;
@@ -109,7 +100,6 @@ arg_t validar_arg(char *arg) {
 	return ARG_INVALIDO;
 }
 
-
 status_t validar_argumento_protocolo(char *argv_protocolo, protocolo_t *protocolo) {
 
 	if (!argv_protocolo || !protocolo) {
@@ -120,12 +110,10 @@ status_t validar_argumento_protocolo(char *argv_protocolo, protocolo_t *protocol
         *protocolo = PROTOCOLO_NMEA; 
         return ST_OK;
     }
-
     else if (strcmp(argv_protocolo, ARG_PROTOCOLO_UBX) == 0) { 
         *protocolo = PROTOCOLO_UBX;
         return ST_OK;
     }
- 
     if (strcmp(argv_protocolo, ARG_PROTOCOLO_AUTO) == 0) { 
         *protocolo = PROTOCOLO_AUTO;
         return ST_OK;
@@ -138,10 +126,8 @@ status_t validar_argumento_protocolo(char *argv_protocolo, protocolo_t *protocol
 
 status_t identificar_protocolo_auto(char *arg_archivo_entrada, protocolo_t *protocolo) { 
 
-    uchar aux = 0; //Creo un arrglo de dos uchar
-    //Abro por defecto en binario y comparo con los caracteres de sincronismo
-    // O CON EL caracter peso
-    FILE *p;
+    uchar aux = 0;
+    FILE *entrada;
 
 	if (!arg_archivo_entrada || !protocolo) {
 		return ST_ERROR_PUNTERO_NULO;
@@ -151,33 +137,31 @@ status_t identificar_protocolo_auto(char *arg_archivo_entrada, protocolo_t *prot
 		return ST_ERROR_PROTOCOLO_INVALIDO;	
 	}
 	
-    p = fopen(arg_archivo_entrada, "rb");
-    if (p == NULL) {
-        return ST_ERROR_ARCHIVO_ENTRADA_INVALIDO; //NO SE PUEDO ABRIR ARCHIVO
+    entrada = fopen(arg_archivo_entrada, "rb");
+    if (entrada == NULL) {
+        return ST_ERROR_ARCHIVO_ENTRADA_INVALIDO; 
     }
     
-	while (fread(&aux, sizeof(uchar), 1, p) == 1) { 
+	while (fread(&aux, sizeof(uchar), 1, entrada) == 1) { 
 		if (aux == CARACTER_PESO) {
 			*protocolo = PROTOCOLO_NMEA;
-            printf("Protocolo nmea en identificar protocolo auto\n");
-			fclose(p);
+			fclose(entrada);
             return ST_OK;
 		}
 		if (aux == B_SYNC1) {
-			if (fread(&aux, sizeof(uchar), 1, p) != 1) {
-				fclose(p);
+			if (fread(&aux, sizeof(uchar), 1, entrada) != 1) {
+				fclose(entrada);
 				return ST_ERROR_ARCHIVO_ENTRADA_INVALIDO;
 			}
 			if (aux == B_SYNC2) {
 				*protocolo = PROTOCOLO_UBX;
-				printf("Protocolo  ubx en identificar protocolo auto\n");
-				fclose(p);
+				fclose(entrada);
 				return ST_OK;
 			}
 		}
     }
 	
-	fclose(p);
+	fclose(entrada);
     return ST_ERROR_ARCHIVO_ENTRADA_INVALIDO;
 }
 
@@ -205,11 +189,11 @@ FILE * abrir_archivo_entrada(char *arg_archivo_entrada, protocolo_t *protocolo, 
 	/*Si no me dice nada uso la aplicacion automatico */ 
     if (*protocolo == PROTOCOLO_UBX) {
 		*estado = ST_OK;        
-		return fopen(arg_archivo_entrada,"rb");
+		return fopen(arg_archivo_entrada, "rb");
     }
     if (*protocolo == PROTOCOLO_NMEA) {
         *estado = ST_OK;
-		return fopen(arg_archivo_entrada,"rt");
+		return fopen(arg_archivo_entrada, "rt");
     }
 
 	*estado = ST_ERROR_ARCHIVO_ENTRADA_INVALIDO;
@@ -264,24 +248,11 @@ status_t validar_argumento_nombre(char *argv_nombre, char *nombre) {
 	return ST_OK;
 }
 
-/*
-Todo lo que comente en cargar_nombre_por_omision lo saque porque valgrind
-me tiraba un error como que no podia hacer un strlen a algo que no estaba
-inicializado
-*/
 bool cargar_nombre_por_omision(char *nombre) {
-
-	//size_t largo;
 
 	if (!nombre) {
 		return false;
 	}
-/*	largo = (strlen(nombre) + 1); 
-
-	if (largo > CANT_MAX) {
-		return ST_ERROR_NOMBRE_INVALIDO;
-	}
-*/
 	strcpy(nombre, NOMBRE_POR_OMISION);
 
 	return true;

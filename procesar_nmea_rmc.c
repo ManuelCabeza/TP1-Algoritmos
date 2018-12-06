@@ -1,21 +1,23 @@
 #include "procesar_nmea_rmc.h"
+
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
+
 #include "procesar_nmea_gga.h"
-
-
 
 /* $GPRMC,hhmmss.sss,A,ddmm.mmm,S,dddmmm.mmm,E,dddddd.d,ddd.d,ddmmyy,ddd.d,W*cc
  * _variaciones_   V   lat    N    long    W 
  * 
 */
-
-procesar_t procesar_nmea_rmc(gps_t *rmc_ptr, char * ch_ptr, char * cadena) {
+procesar_t procesar_nmea_rmc(gps_t *rmc_ptr, char *ch_ptr, char *cadena) {
 	
 	long suma_verificacion;
 	long fecha;
 	float horario;
 	float longitud, latitud;
 	char c;
-	
 	
 	if ((ch_ptr = strchr(cadena, CARACTER_SEPARACION_COMANDO)) != NULL) {
 		ch_ptr++;
@@ -26,14 +28,14 @@ procesar_t procesar_nmea_rmc(gps_t *rmc_ptr, char * ch_ptr, char * cadena) {
 	procesar_horario(&(rmc_ptr->horario), horario);
 	
 	c = tolower( *(ch_ptr++));
-	if ((c != CARACTER_STATUS_VOID) && (c != CARACTER_STATUS_ACTIVO))
+	if ((c != CARACTER_STATUS_VOID) && (c != CARACTER_STATUS_ACTIVO)) { 
 		return PR_ERR_CAR_STATUS;
-	
+	}
 	// Latitud ddmm.mmm
 	latitud = strtof(++ch_ptr, &ch_ptr);
 	//printf("|%c %c %c| c = %c\n", *(ch_ptr-1), *(ch_ptr), *(ch_ptr+1), c);
 	//printf("latitud = %.4f\n", latitud);
-	if (((* (ch_ptr++)) != CARACTER_SEPARACION_COMANDO)) { 
+	if (((*(ch_ptr++)) != CARACTER_SEPARACION_COMANDO)) { 
 		return PR_ERR_LATITUD;
 	}
 	c = tolower( *(ch_ptr++));
@@ -47,12 +49,12 @@ procesar_t procesar_nmea_rmc(gps_t *rmc_ptr, char * ch_ptr, char * cadena) {
 	// Longitud dddmm.mmm
 	//printf("|%c %c %c|\n", *(ch_ptr-1), *(ch_ptr), *(ch_ptr+1));
 	longitud = strtof(++ch_ptr, &ch_ptr);
-	if ((* (ch_ptr++)) != CARACTER_SEPARACION_COMANDO) { 
+	if ((*(ch_ptr++)) != CARACTER_SEPARACION_COMANDO) { 
 		return PR_ERR_LONGITUD;
 	}
 	
 	c = tolower( *(ch_ptr++));
-	if ((c != CARACTER_ESTE) && (c != CARACTER_OESTE)){ 
+	if ((c != CARACTER_ESTE) && (c != CARACTER_OESTE)) { 
 		return PR_ERR_CAR_LONGITUD;
 	}
 	
@@ -81,13 +83,11 @@ procesar_t procesar_nmea_rmc(gps_t *rmc_ptr, char * ch_ptr, char * cadena) {
 		return PR_ERR;
 	}
 	
-	
 	// Solo se verfica que la unidad magnetica sea 'w'
 	c = tolower(*(++ch_ptr)); 
-	if (c != CARACTER_UNIDAD_MAGNETICA)
+	if (c != CARACTER_UNIDAD_MAGNETICA) { 
 		return PR_ERR;
-	
-	
+	}
 	if (!(ch_ptr = strrchr(cadena, CARACTER_SUMA_VER))) {
 		return PR_ERR;
 	}
